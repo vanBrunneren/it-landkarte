@@ -13,7 +13,8 @@ import {
 } from "@material-ui/core";
 
 import {
-    Edit
+    Edit,
+    Delete
 } from '@material-ui/icons';
 
 export default function CustomerList() {
@@ -58,6 +59,7 @@ export default function CustomerList() {
                                     <TableCell>
                                         <Link key={customer.id} to={'/customer/edit/'+customer.id}>
                                             <Edit />
+                                            <Delete />
                                         </Link>
                                     </TableCell>
                                 </TableRow>

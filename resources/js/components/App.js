@@ -1,14 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
-import CustomerList from "./customer/CustomerList";
-import CustomerCreate from "./customer/CustomerCreate";
-import CustomerEdit from "./customer/CustomerEdit";
-import CustomerDetail from "./customer/CustomerDetail";
 
 import {
     BrowserRouter as Router,
@@ -17,18 +9,34 @@ import {
     Link
 } from "react-router-dom";
 
-import Drawer from '@material-ui/core/Drawer';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import MenuIcon from "@material-ui/icons/Menu";
-import PeopleIcon from "@material-ui/icons/People";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
-import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
-import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
+
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Drawer,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Divider,
+    Breadcrumbs,
+    CardMedia
+} from '@material-ui/core';
+
+import {
+    People,
+    LibraryBooks,
+    QuestionAnswer,
+    ChatBubble,
+} from "@material-ui/icons";
+
+
+import CustomerList from "./customer/CustomerList";
+import CustomerCreate from "./customer/CustomerCreate";
+import CustomerEdit from "./customer/CustomerEdit";
+import CustomerDetail from "./customer/CustomerDetail";
+
 import {makeStyles} from "@material-ui/core/styles";
 
 const drawerWidth = 240;
@@ -54,6 +62,9 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3),
     },
+    logo: {
+        height: '64px'
+    }
 }));
 
 const routes = [
@@ -61,25 +72,25 @@ const routes = [
         id: 0,
         title: 'Kunden',
         link: '/customers',
-        icon: <PeopleIcon />
+        icon: <People />
     },
     {
         id: 1,
         title: 'Themen',
         link: '/themes',
-        icon: <LibraryBooksIcon />
+        icon: <LibraryBooks />
     },
     {
         id: 2,
         title: 'Fragen',
         link: '/questions',
-        icon: <QuestionAnswerIcon />
+        icon: <QuestionAnswer />
     },
     {
         id: 3,
         title: 'Auswertungen',
         link: '/results',
-        icon: <ChatBubbleIcon />
+        icon: <ChatBubble />
     }
 ];
 
@@ -96,6 +107,17 @@ export default function App() {
                             Permanent drawer
                         </Typography>
                     </Toolbar>
+                    {/*
+                    <Breadcrumbs aria-label="breadcrumb">
+                        <Link color="inherit" to="/">
+                            Material-UI
+                        </Link>
+                        <Link color="inherit" to="/getting-started/installation/">
+                            Core
+                        </Link>
+                        <Typography color="textPrimary">Breadcrumb</Typography>
+                    </Breadcrumbs>
+                    */}
                 </AppBar>
                 <Drawer
                     className={classes.drawer}
@@ -104,7 +126,15 @@ export default function App() {
                         paper: classes.drawerPaper,
                     }}
                     anchor="left">
-                    <div className={classes.toolbar} />
+                    <div className={classes.toolbar}>
+                        <Link to={"/"}>
+                            <CardMedia
+                                className={classes.logo}
+                                image="/img/logo.png"
+                                title="Logo"
+                            />
+                        </Link>
+                    </div>
                     <Divider />
                     <List>
                         {routes.map((route) => (
