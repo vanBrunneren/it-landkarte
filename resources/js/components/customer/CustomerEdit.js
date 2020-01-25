@@ -3,17 +3,27 @@ import React, {useEffect, useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import {
     CircularProgress,
-    Button
+    Button,
+    Grid
 } from "@material-ui/core";
 
 import { useForm } from "react-hook-form";
 
-import Grid from '@material-ui/core/Grid';
-
 export default function CustomerEdit(props) {
 
     const { register, handleSubmit, watch, errors, setValue } = useForm();
-    const onSubmit = data => { console.log(data) }
+    const onSubmit = data => {
+        fetch('/api/customers/' + props.match.params.id, {
+            method: 'PUT',
+            mode: 'cors',
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    };
 
     const[isLoading, setIsLoading] = useState(true);
     const[customer, setCustomer] = useState([]);

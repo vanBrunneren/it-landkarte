@@ -38,7 +38,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = new Customer();
+        $customer['name'] = $request['name'];
+        $customer['street'] = $request['street'];
+        $customer['plz'] = $request['plz'];
+        $customer['city'] = $request['city'];
+        $customer->save();
+        return $customer;
     }
 
     /**
@@ -72,7 +78,12 @@ class CustomerController extends Controller
      */
     public function update(Request $request, customer $customer)
     {
-        //
+        $customer['name'] = $request['name'];
+        $customer['street'] = $request['street'];
+        $customer['plz'] = $request['plz'];
+        $customer['city'] = $request['city'];
+        $customer->save();
+        return $customer;
     }
 
     /**
@@ -83,6 +94,7 @@ class CustomerController extends Controller
      */
     public function destroy(customer $customer)
     {
-        //
+        $customer->delete();
+        return "deleted";
     }
 }

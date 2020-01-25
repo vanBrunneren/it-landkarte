@@ -9,12 +9,14 @@ import {
     TableHead,
     TableRow,
     Paper,
-    CircularProgress
+    CircularProgress,
+    Button
 } from "@material-ui/core";
 
 import {
     Edit,
-    Delete
+    Delete,
+    Add
 } from '@material-ui/icons';
 
 export default function CustomerList() {
@@ -36,37 +38,59 @@ export default function CustomerList() {
             {isLoading && <CircularProgress />}
 
             {customers &&
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Kundenname</TableCell>
-                                <TableCell>Strasse</TableCell>
-                                <TableCell>PLZ</TableCell>
-                                <TableCell>Ort</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {customers.map((customer, index) => (
-                                <TableRow key={customer.id}>
-                                    <TableCell component="th" scope="row">
-                                        {customer.name}
-                                    </TableCell>
-                                    <TableCell>{customer.street}</TableCell>
-                                    <TableCell>{customer.plz}</TableCell>
-                                    <TableCell>{customer.city}</TableCell>
-                                    <TableCell>
-                                        <Link key={customer.id} to={'/customer/edit/'+customer.id}>
-                                            <Edit />
-                                            <Delete />
-                                        </Link>
-                                    </TableCell>
+                <div>
+                    <div style={{marginBottom: "20px"}}>
+                        <Link to={"/customer/create"}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<Add />}>
+                                Kunde hinzufügen
+                            </Button>
+                        </Link>
+                    </div>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Kundenname</TableCell>
+                                    <TableCell>Strasse</TableCell>
+                                    <TableCell>PLZ</TableCell>
+                                    <TableCell>Ort</TableCell>
+                                    <TableCell>Actions</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {customers.map((customer, index) => (
+                                    <TableRow key={customer.id}>
+                                        <TableCell component="th" scope="row">
+                                            {customer.name}
+                                        </TableCell>
+                                        <TableCell>{customer.street}</TableCell>
+                                        <TableCell>{customer.plz}</TableCell>
+                                        <TableCell>{customer.city}</TableCell>
+                                        <TableCell>
+                                            <Link key={customer.id} to={'/customer/edit/'+customer.id}>
+                                                <Edit />
+                                            </Link>
+                                            <Delete onClick={ () => {
+                                                fetch('/api/customers/'+customer.id, {
+                                                    method: 'DELETE',
+                                                    mode: 'cors',
+                                                    cache: "no-cache",
+                                                    credentials: "same-origin",
+                                                    headers: {
+                                                        "Content-Type": 'application/json'
+                                                    }
+                                                });
+                                            }} />
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
             }
 
         </div>

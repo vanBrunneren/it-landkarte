@@ -6,7 +6,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    useLocation,
 } from "react-router-dom";
 
 
@@ -37,7 +38,9 @@ import CustomerCreate from "./customer/CustomerCreate";
 import CustomerEdit from "./customer/CustomerEdit";
 import CustomerDetail from "./customer/CustomerDetail";
 
-import {makeStyles} from "@material-ui/core/styles";
+import {
+    makeStyles
+} from "@material-ui/core/styles";
 
 const drawerWidth = 240;
 
@@ -94,6 +97,25 @@ const routes = [
     }
 ];
 
+function HomeAppBar() {
+    let location = useLocation();
+
+    let title;
+    routes.forEach( route => {
+        if(location.pathname.indexOf(route.link) != -1) {
+           title = route.title;
+        }
+    });
+
+    return(
+        <Toolbar>
+            <Typography variant="h6" noWrap>
+                {title}
+            </Typography>
+        </Toolbar>
+    )
+}
+
 export default function App() {
     const classes = useStyles();
 
@@ -102,11 +124,7 @@ export default function App() {
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar>
-                        <Typography variant="h6" noWrap>
-                            Permanent drawer
-                        </Typography>
-                    </Toolbar>
+                    <HomeAppBar/>
                     {/*
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link color="inherit" to="/">
