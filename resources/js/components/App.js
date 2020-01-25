@@ -30,6 +30,8 @@ import {
     LibraryBooks,
     QuestionAnswer,
     ChatBubble,
+    ExitToApp,
+    Person
 } from "@material-ui/icons";
 
 
@@ -41,6 +43,7 @@ import CustomerDetail from "./customer/CustomerDetail";
 import {
     makeStyles
 } from "@material-ui/core/styles";
+import LogoutHelper from "./auth/logout";
 
 const drawerWidth = 240;
 
@@ -94,6 +97,21 @@ const routes = [
         title: 'Auswertungen',
         link: '/results',
         icon: <ChatBubble />
+    }
+];
+
+const bottomRoutes = [
+    {
+        id: 0,
+        title: 'Benutzer',
+        link: '/user',
+        icon: <Person />
+    },
+    {
+        id: 1,
+        title: 'Logout',
+        link: '/logout',
+        icon: <ExitToApp />
     }
 ];
 
@@ -166,10 +184,11 @@ export default function App() {
                     </List>
                     <Divider />
                     <List>
-                        {['User Settings', 'Logout'].map((text, index) => (
-                            <Link key={text} to="/businesspartners" style={{ textDecoration: 'none', color: 'black' }}>
+                        {bottomRoutes.map((route, index) => (
+                            <Link to={route.link} key={route.id} style={{ textDecoration: 'none', color: 'black' }}>
                                 <ListItem button>
-                                    <ListItemText primary={text} />
+                                    <ListItemIcon>{route.icon}</ListItemIcon>
+                                    <ListItemText primary={route.title} />
                                 </ListItem>
                             </Link>
                         ))}
@@ -182,6 +201,8 @@ export default function App() {
                         <Route path={"/customer/create"} component={CustomerCreate} />
                         <Route path={"/customer/edit/:id"} component={CustomerEdit} />
                         <Route path={"/customer/:id"} component={CustomerDetail} />
+
+                        <Route path={"/logout"} component={LogoutHelper} />
                     </Switch>
                 </main>
             </div>

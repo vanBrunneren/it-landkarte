@@ -11,10 +11,20 @@
 |
 */
 
-//Auth::routes();
+Route::get('public/test', function() {
+    return "Public Test";
+});
 
-Route::get( '{any}', function () {
-    return view('app');
-})->where('any', '.*');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
+Auth::routes();
 
+Route::middleware('auth')->group(function () {
+
+    Route::apiResource('api/customers', 'Api\CustomerController');
+
+    // Has to be the last entry ========
+    Route::get( '{any}', function () {
+        return view('app');
+    })->where('any', '.*');
+});

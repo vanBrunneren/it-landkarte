@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return 'You are logged in';
-        return view('home');
+        //return 'You are logged in';
+        //return view('home');
     }
 }
