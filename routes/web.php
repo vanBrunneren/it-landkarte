@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
 
     Route::apiResource('api/customers', 'Api\CustomerController');
 
+    Route::get('api/persons/customer/{id}', 'Api\PersonController@customer');
+    Route::apiResource('api/persons', 'Api\PersonController');
+
     // Has to be the last entry ========
     Route::get( '{any}', function () {
         return view('app');

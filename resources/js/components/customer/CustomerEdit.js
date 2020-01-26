@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 
-import TextField from '@material-ui/core/TextField';
 import {
     CircularProgress,
     Button,
-    Grid
+    Grid, TableHead, TableRow, TableCell, Table, TableBody, Paper, TableContainer,
+    TextField
 } from "@material-ui/core";
 
 import { useForm } from "react-hook-form";
+import {Delete, Edit} from "@material-ui/icons";
+import {Link} from "react-router-dom";
 
 export default function CustomerEdit(props) {
 
@@ -27,19 +29,27 @@ export default function CustomerEdit(props) {
 
     const[isLoading, setIsLoading] = useState(true);
     const[customer, setCustomer] = useState([]);
+    const[persons, setPersons] = useState([]);
 
     useEffect( () => {
         fetch('/api/customers/' + props.match.params.id)
             .then(response => response.json())
             .then(jsonResponse => {
-                setIsLoading(false);
                 setCustomer(jsonResponse);
                 setValue("name", jsonResponse.name);
                 setValue("street", jsonResponse.street);
                 setValue("plz", jsonResponse.plz);
                 setValue("city", jsonResponse.city);
+
+                fetch('/api/persons/customer/' + props.match.params.id)
+                    .then(response => response.json())
+                    .then(jsonResponse => {
+                        setPersons(jsonResponse);
+                        setIsLoading(false);
+                    });
+
             });
-    }, []);
+    }, [props.match.params.id]);
 
     return (
         <div>
@@ -104,6 +114,39 @@ export default function CustomerEdit(props) {
                             </Grid>
                         </Grid>
                     </form>
+
+                    {persons &&
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Vorname</TableCell>
+                                        <TableCell>Nachname</TableCell>
+                                        <TableCell>E-Mail</TableCell>
+                                        <TableCell>Funktion</TableCell>
+                                        <TableCell>Actions</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {persons.map( person => (
+                                        <TableRow key={person.id}>
+                                            <TableCell>{person.prename}</TableCell>
+                                            <TableCell>{person.name}</TableCell>
+                                            <TableCell>{person.email}</TableCell>
+                                            <TableCell>{person.person_function.name}</TableCell>
+                                            <TableCell>
+                                                <Link to={'/customer/edit/'+props.match.params.id+"/person/"+person.id}>
+                                                    <Edit />
+                                                </Link>
+                                                <Delete />
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    }
+
                 </div>
             }
 

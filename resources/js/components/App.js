@@ -39,11 +39,13 @@ import CustomerList from "./customer/CustomerList";
 import CustomerCreate from "./customer/CustomerCreate";
 import CustomerEdit from "./customer/CustomerEdit";
 import CustomerDetail from "./customer/CustomerDetail";
+import LogoutHelper from "./auth/LogoutHelper";
+
+import PersonEdit from "./person/PersonEdit";
 
 import {
     makeStyles
 } from "@material-ui/core/styles";
-import LogoutHelper from "./auth/logout";
 
 const drawerWidth = 240;
 
@@ -199,6 +201,7 @@ export default function App() {
                     <Switch>
                         <Route path={"/customers"} component={CustomerList} />
                         <Route path={"/customer/create"} component={CustomerCreate} />
+                        <Route path={"/customer/edit/:id/person/:personId"} component={PersonEdit} />
                         <Route path={"/customer/edit/:id"} component={CustomerEdit} />
                         <Route path={"/customer/:id"} component={CustomerDetail} />
 

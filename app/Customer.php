@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use SoftDeletes;
+
+    public function people()
+    {
+        return $this->hasMany('App\Person');
+    }
+
 }

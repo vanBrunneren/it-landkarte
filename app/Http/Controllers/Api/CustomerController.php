@@ -97,4 +97,5 @@ class CustomerController extends Controller
         $customer->delete();
         return "deleted";
     }
+
 }
