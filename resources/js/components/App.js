@@ -46,6 +46,9 @@ import PersonEdit from "./person/PersonEdit";
 import {
     makeStyles
 } from "@material-ui/core/styles";
+import ThemeList from "./theme/ThemeList";
+import ThemeCreate from "./theme/ThemeCreate";
+import ThemeEdit from "./theme/ThemeEdit";
 
 const drawerWidth = 240;
 
@@ -204,6 +207,10 @@ export default function App() {
                         <Route path={"/customer/edit/:id/person/:personId"} component={PersonEdit} />
                         <Route path={"/customer/edit/:id"} component={CustomerEdit} />
                         <Route path={"/customer/:id"} component={CustomerDetail} />
+
+                        <Route path={"/themes"} component={ThemeList} />
+                        <Route path={"/theme/create"} component={ThemeCreate} />
+                        <Route path={"/theme/edit/:id"} component={ThemeEdit} />
 
                         <Route path={"/logout"} component={LogoutHelper} />
                     </Switch>
