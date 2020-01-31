@@ -45,9 +45,11 @@ class ThemeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(theme $theme)
+    public function show(int $id)
     {
-        return $theme;
+        $theme = Theme::find($id);
+        //$theme['img'] = Storage->get
+        return Theme::find($id);
     }
 
     /**
@@ -68,11 +70,19 @@ class ThemeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, theme $theme)
+    public function update(Request $request, int $id)
     {
+        $uploadedFile = $request->file('file');
+        $fileName = "intro-image-theme-" . $id . "." . strtolower($uploadedFile->getClientOriginalExtension());
+        $uploadedFile->storeAs('themes', $fileName);
+
+        $theme = Theme::find($id);
         $theme['title'] = $request['title'];
         $theme['description'] = $request['description'];
+        $theme['img'] = 'themes/' . $fileName;
         $theme->save();
+
+        return "";
     }
 
     /**

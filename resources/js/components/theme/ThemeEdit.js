@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Button, CircularProgress,
     Grid,
@@ -15,6 +15,7 @@ export default function ThemeEdit(props) {
     const [titleError, setTitleError] = useState(false);
     const [descriptionError, setDescriptionError] = useState(false);
     const [successMessage, setSuccessMessage] = useState(null);
+    const fileInput = useRef(null);
 
     useEffect( () => {
 
@@ -31,18 +32,38 @@ export default function ThemeEdit(props) {
 
     }, [props.match.params.id]);
 
-    const onSubmit = e => {
+    const onSubmit = async (e) => {
 
         title ? setTitleError(false) : setTitleError(true);
         description ? setDescriptionError(false) : setDescriptionError(true);
 
-        axios.put('/api/themes/' + props.match.params.id, { title, description })
-            .then( response => {
-                setSuccessMessage("Die Änderungen wurden gespeichert!");
+        if(title && description) {
+
+            const data = new FormData();
+            data.append('file', fileInput.current.files[0]);
+            data.append('title', title);
+            data.append('description', description);
+
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+            axios.post('/api/themes/' + props.match.params.id, data, config)
+                .then(response => console.log(response));
+
+            /*
+            axios.put('/api/themes/' + props.match.params.id, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             })
-            .catch( error => {
-                console.erro(error);
-            });
+                .then(response => {
+                    setSuccessMessage("Die Änderungen wurden gespeichert!");
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+             */
+        }
 
         // Fetch to create
         //console.log(title);
@@ -90,6 +111,15 @@ export default function ThemeEdit(props) {
                         InputLabelProps={{
                         shrink: true,
                     }} />
+                    <Button
+                        variant="contained"
+                        component="label">
+                        Introbild hochladen
+                        <input
+                            ref={fileInput}
+                            type="file"
+                            style={{ display: "none" }} />
+                    </Button>
                     <Grid container spacing={3}>
                         <Grid item xs={4}>
                             <Button onClick={() => onSubmit()} variant="contained" type="submit" color="primary">Speichern</Button>
