@@ -97,4 +97,9 @@ class ThemeController extends Controller
         echo $contents;
     }
 
+    public function getQuestionsByTheme(int $theme)
+    {
+        return Theme::find($theme)->questions;
+    }
+
 }

@@ -22,16 +22,12 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
 
-    /*
-    Route::post('api/testupload', function() {
-        dd(request()->all());
-        request()->file('file')->store('test');
-        return "hallo";
-    });*/
-
     // Custom Routes
     Route::get('api/persons/functions', 'Api\PersonController@personFunctions');
     Route::get('api/persons/customer/{id}', 'Api\PersonController@customer');
+
+    Route::get('api/questions/bytype/{id}', 'Api\QuestionTypeController@getQuestionsByType');
+    Route::get('api/questions/bytheme/{id}', 'Api\ThemeController@getQuestionsByTheme');
 
     // WTF why is PUT not working with Images? -____-
     //Route::apiResource('api/themes', 'Api\ThemeController');
@@ -45,6 +41,8 @@ Route::middleware('auth')->group(function () {
     // CRUD Routes (must be under the custom routes)
     Route::apiResource('api/customers', 'Api\CustomerController');
     Route::apiResource('api/persons', 'Api\PersonController');
+    Route::apiResource('api/questions', 'Api\QuestionController');
+    Route::apiResource('api/questiontypes', 'Api\QuestionTypeController');
 
 
     // Has to be the last entry ========

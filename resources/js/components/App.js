@@ -51,6 +51,10 @@ import ThemeList from "./theme/ThemeList";
 import ThemeCreate from "./theme/ThemeCreate";
 import ThemeEdit from "./theme/ThemeEdit";
 
+import QuestionList from "./question/QuestionList";
+import QuestionCreate from "./question/QuestionCreate";
+import QuestionEdit from "./question/QuestionEdit";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -213,6 +217,10 @@ export default function App() {
                         <Route path={"/themes"} component={ThemeList} />
                         <Route path={"/theme/create"} component={ThemeCreate} />
                         <Route path={"/theme/edit/:id"} component={ThemeEdit} />
+
+                        <Route path={"/questions"} component={QuestionList} />
+                        <Route path={"/question/create"} component={QuestionCreate} />
+                        <Route path={"/question/edit/:id"} component={QuestionEdit} />
 
                         <Route path={"/logout"} component={LogoutHelper} />
                     </Switch>

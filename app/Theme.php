@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Theme extends Model
 {
     use SoftDeletes;
+
+    public function questions()
+    {
+        return $this->hasMany('App\Question');
+    }
 }
