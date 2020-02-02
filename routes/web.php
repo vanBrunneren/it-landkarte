@@ -38,7 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('api/themes', 'Api\ThemeController@index');
     Route::get('api/themes/{id}', 'Api\ThemeController@show');
     Route::post('api/themes', 'Api\ThemeController@store');
+    Route::get('api/themes/{id}/image', 'Api\ThemeController@showImage');
     Route::post('api/themes/{id}', 'Api\ThemeController@update');
+    Route::delete('api/themes/{id}', 'Api\ThemeController@destroy');
 
     // CRUD Routes (must be under the custom routes)
     Route::apiResource('api/customers', 'Api\CustomerController');

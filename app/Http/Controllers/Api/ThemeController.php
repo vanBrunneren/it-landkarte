@@ -19,16 +19,6 @@ class ThemeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -36,7 +26,21 @@ class ThemeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $theme = new Theme();
+        $theme['title'] = $request['title'];
+        $theme['description'] = $request['description'];
+        $theme->save();
+
+        $id = $theme['id'];
+        $uploadedFile = $request->file('file');
+        $fileName = "intro-image-theme-" . $id . "." . strtolower($uploadedFile->getClientOriginalExtension());
+        $uploadedFile->storeAs('themes', $fileName);
+
+        $theme['img'] = 'themes/' . $fileName;
+        $theme->save();
+
+        return "";
+
     }
 
     /**
@@ -47,20 +51,7 @@ class ThemeController extends Controller
      */
     public function show(int $id)
     {
-        $theme = Theme::find($id);
-        //$theme['img'] = Storage->get
         return Theme::find($id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -93,6 +84,17 @@ class ThemeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $theme = Theme::find($id);
+        $theme->delete();
+        return "deleted";
     }
+
+    public function showImage($id)
+    {
+        $theme = Theme::find($id);
+        $contents = \Storage::get($theme['img']);
+        header("Content-Type: image/jpg");
+        echo $contents;
+    }
+
 }

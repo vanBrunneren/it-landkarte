@@ -27,16 +27,6 @@ class PersonController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,7 +34,15 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $person = new Person();
+        $person['customer_id'] = $request['customer_id'];
+        $person['sex'] = $request['sex'];
+        $person['prename'] = $request['prename'];
+        $person['name'] = $request['name'];
+        $person['email'] = $request['email'];
+        $person['function_id'] = $request['function_id'];
+        $person->save();
+        return "ja";
     }
 
     /**
@@ -59,17 +57,6 @@ class PersonController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(person $person)
-    {
-        return $person;
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -78,7 +65,14 @@ class PersonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $person = Person::find($id);
+        $person['sex'] = $request['sex'];
+        $person['prename'] = $request['prename'];
+        $person['name'] = $request['name'];
+        $person['email'] = $request['email'];
+        $person['function_id'] = $request['function_id'];
+        $person->save();
+        return "";
     }
 
     /**

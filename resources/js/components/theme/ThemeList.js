@@ -24,7 +24,7 @@ export default function ThemeList() {
             .then( jsonResponse => {
                 setThemes(jsonResponse);
                 setIsLoading(false);
-            })
+            });
 
     }, []);
 
@@ -62,15 +62,16 @@ export default function ThemeList() {
                                                 <Edit />
                                             </Link>
                                             <Delete onClick={ () => {
-                                                fetch('/api/theme/'+theme.id, {
-                                                    method: 'DELETE',
-                                                    mode: 'cors',
-                                                    cache: "no-cache",
-                                                    credentials: "same-origin",
-                                                    headers: {
-                                                        "Content-Type": 'application/json'
-                                                    }
-                                                });
+                                                axios.delete('/api/themes/'+theme.id)
+                                                    .then( () => {
+                                                        setIsLoading(true);
+                                                        fetch('api/themes')
+                                                            .then( response => response.json() )
+                                                            .then( jsonResponse => {
+                                                                setThemes(jsonResponse);
+                                                                setIsLoading(false);
+                                                            });
+                                                    })
                                             }} />
                                         </TableCell>
                                     </TableRow>

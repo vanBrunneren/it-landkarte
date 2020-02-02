@@ -146,7 +146,9 @@ export default function CustomerEdit(props) {
                             </Table>
                         </TableContainer>
                     }
-
+                    <Link to={'/customer/edit/'+props.match.params.id+"/person/create"}>
+                        <Button variant="contained" type="submit" color="primary">Person hinzufügen</Button>
+                    </Link>
                 </div>
             }
 

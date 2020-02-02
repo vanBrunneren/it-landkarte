@@ -42,6 +42,7 @@ import CustomerDetail from "./customer/CustomerDetail";
 import LogoutHelper from "./auth/LogoutHelper";
 
 import PersonEdit from "./person/PersonEdit";
+import PersonCreate from "./person/PersonCreate";
 
 import {
     makeStyles
@@ -204,6 +205,7 @@ export default function App() {
                     <Switch>
                         <Route path={"/customers"} component={CustomerList} />
                         <Route path={"/customer/create"} component={CustomerCreate} />
+                        <Route path={"/customer/edit/:id/person/create"} component={PersonCreate} />
                         <Route path={"/customer/edit/:id/person/:personId"} component={PersonEdit} />
                         <Route path={"/customer/edit/:id"} component={CustomerEdit} />
                         <Route path={"/customer/:id"} component={CustomerDetail} />

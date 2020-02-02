@@ -2,7 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
     Button, CircularProgress,
     Grid,
-    TextField
+    TextField,
+    CardMedia
 } from "@material-ui/core";
 
 import Alert from '@material-ui/lab/Alert';
@@ -34,6 +35,8 @@ export default function ThemeEdit(props) {
 
     const onSubmit = async (e) => {
 
+        setIsLoading(true);
+
         title ? setTitleError(false) : setTitleError(true);
         description ? setDescriptionError(false) : setDescriptionError(true);
 
@@ -47,27 +50,16 @@ export default function ThemeEdit(props) {
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
             axios.post('/api/themes/' + props.match.params.id, data, config)
-                .then(response => console.log(response));
-
-            /*
-            axios.put('/api/themes/' + props.match.params.id, data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
                 .then(response => {
                     setSuccessMessage("Die Änderungen wurden gespeichert!");
+                    setIsLoading(false);
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
-             */
         }
 
-        // Fetch to create
-        //console.log(title);
-        //console.log(description);
     };
 
     return(
@@ -111,6 +103,9 @@ export default function ThemeEdit(props) {
                         InputLabelProps={{
                         shrink: true,
                     }} />
+                    <img
+                        style={{height: '250px'}}
+                        src={"/api/themes/" + props.match.params.id + "/image"} />
                     <Button
                         variant="contained"
                         component="label">
