@@ -24,13 +24,18 @@ export default function CustomerList() {
     const[isLoading, setIsLoading] = useState(true);
     const[customers, setCustomers] = useState([]);
 
-    useEffect( () => {
-        fetch('/api/customers')
-            .then(response => response.json())
-            .then(jsonResponse => {
+    const fetchAllCustomers = () => {
+
+        axios('/api/customers')
+            .then(response => {
                 setIsLoading(false);
-                setCustomers(jsonResponse);
+                setCustomers(response.data);
             });
+
+    };
+
+    useEffect( () => {
+        fetchAllCustomers();
     }, []);
 
     return (
@@ -70,19 +75,20 @@ export default function CustomerList() {
                                         <TableCell>{customer.plz}</TableCell>
                                         <TableCell>{customer.city}</TableCell>
                                         <TableCell>
-                                            <Link key={customer.id} to={'/customer/edit/'+customer.id}>
+                                            <Link
+                                                style={{color: 'black'}}
+                                                key={customer.id}
+                                                to={'/customer/edit/'+customer.id}>
                                                 <Edit />
                                             </Link>
-                                            <Delete onClick={ () => {
-                                                fetch('/api/customers/'+customer.id, {
-                                                    method: 'DELETE',
-                                                    mode: 'cors',
-                                                    cache: "no-cache",
-                                                    credentials: "same-origin",
-                                                    headers: {
-                                                        "Content-Type": 'application/json'
-                                                    }
-                                                });
+                                            <Delete
+                                                style={{cursor: "pointer"}}
+                                                onClick={ () => {
+                                                axios.delete('/api/customers/'+customer.id)
+                                                    .then( () => {
+                                                        setIsLoading(true);
+                                                        fetchAllCustomers();
+                                                    });
                                             }} />
                                         </TableCell>
                                     </TableRow>

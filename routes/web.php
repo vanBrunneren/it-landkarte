@@ -29,6 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::get('api/questions/bytype/{id}', 'Api\QuestionTypeController@getQuestionsByType');
     Route::get('api/questions/bytheme/{id}', 'Api\ThemeController@getQuestionsByTheme');
 
+    // User Routes
+    Route::get('api/user', 'Api\ApiUserController@show');
+    Route::put('api/user', 'Api\ApiUserController@update');
+
     // WTF why is PUT not working with Images? -____-
     //Route::apiResource('api/themes', 'Api\ThemeController');
     Route::get('api/themes', 'Api\ThemeController@index');

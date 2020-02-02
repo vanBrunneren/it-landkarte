@@ -22,7 +22,6 @@ export default function QuestionList() {
 
         axios('/api/questions')
             .then( response => {
-                console.log(response.data);
                 setQuestions(response.data);
                 setIsLoading(false);
             });
@@ -35,14 +34,16 @@ export default function QuestionList() {
 
             {questions &&
                 <div>
-                    <Link to={"/question/create"}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<Add/>}>
-                            Frage hinzufügen
-                        </Button>
-                    </Link>
+                    <div style={{marginBottom: "20px"}}>
+                        <Link to={"/question/create"}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<Add/>}>
+                                Frage hinzufügen
+                            </Button>
+                        </Link>
+                    </div>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
