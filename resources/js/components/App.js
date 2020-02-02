@@ -55,6 +55,9 @@ import QuestionList from "./question/QuestionList";
 import QuestionCreate from "./question/QuestionCreate";
 import QuestionEdit from "./question/QuestionEdit";
 
+import AnswerpossibilityCreate from "./answerpossibility/AnswerpossibilityCreate";
+import AnswerpossibilityEdit from "./answerpossibility/AnswerpossibilityEdit";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -221,6 +224,8 @@ export default function App() {
                         <Route path={"/questions"} component={QuestionList} />
                         <Route path={"/question/create"} component={QuestionCreate} />
                         <Route path={"/question/edit/:id"} component={QuestionEdit} />
+                        <Route path={"/question/:questionId/answerpossibility/create"} component={AnswerpossibilityCreate} />
+                        <Route path={"/question/:questionId/answerpossibility/edit/:id"} component={AnswerpossibilityEdit} />
 
                         <Route path={"/logout"} component={LogoutHelper} />
                     </Switch>

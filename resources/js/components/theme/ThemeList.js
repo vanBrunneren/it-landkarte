@@ -47,17 +47,17 @@ export default function ThemeList() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>#</TableCell>
                                     <TableCell>Titel</TableCell>
-                                    <TableCell>Actions</TableCell>
+                                    <TableCell>Beschreibung</TableCell>
+                                    <TableCell align={"right"}>Aktionen</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 { themes && themes.map( theme => (
                                     <TableRow key={theme.id}>
-                                        <TableCell>{theme.id}</TableCell>
                                         <TableCell>{theme.title}</TableCell>
-                                        <TableCell>
+                                        <TableCell>{theme.description}</TableCell>
+                                        <TableCell align={"right"}>
                                             <Link key={theme.id} to={'/theme/edit/'+theme.id}>
                                                 <Edit />
                                             </Link>

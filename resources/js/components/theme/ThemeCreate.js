@@ -14,6 +14,7 @@ export default function ThemeCreate() {
     const [titleError, setTitleError] = useState(false);
     const [descriptionError, setDescriptionError] = useState(false);
     const fileInput = useRef(null);
+    const [successMessage, setSuccessMessage] = useState("");
 
     const onSubmit = e => {
 

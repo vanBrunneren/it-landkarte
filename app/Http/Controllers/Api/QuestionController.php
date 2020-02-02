@@ -16,7 +16,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return Question::all();
+        return Question::with('questionType')->get();
     }
 
     /**
@@ -43,6 +43,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
+        $question = Question::with(['answerPossibilities', 'questionType'])->find($question['id']);
         return $question;
     }
 

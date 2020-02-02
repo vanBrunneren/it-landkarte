@@ -14,9 +14,14 @@ class Question extends Model
         return $this->belongsTo('App\Theme');
     }
 
-    public function type()
+    public function questionType()
     {
         return $this->belongsTo('App\QuestionType');
+    }
+
+    public function answerPossibilities()
+    {
+        return $this->hasMany('App\AnswerPossibility');
     }
 
 }

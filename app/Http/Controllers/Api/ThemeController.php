@@ -31,12 +31,13 @@ class ThemeController extends Controller
         $theme['description'] = $request['description'];
         $theme->save();
 
-        $id = $theme['id'];
-        $uploadedFile = $request->file('file');
-        $fileName = "intro-image-theme-" . $id . "." . strtolower($uploadedFile->getClientOriginalExtension());
-        $uploadedFile->storeAs('themes', $fileName);
-
-        $theme['img'] = 'themes/' . $fileName;
+        if($request->file('file')) {
+            $id = $theme['id'];
+            $uploadedFile = $request->file('file');
+            $fileName = "intro-image-theme-" . $id . "." . strtolower($uploadedFile->getClientOriginalExtension());
+            $uploadedFile->storeAs('themes', $fileName);
+            $theme['img'] = 'themes/' . $fileName;
+        }
         $theme->save();
 
         return "";

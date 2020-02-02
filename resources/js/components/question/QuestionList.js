@@ -22,8 +22,9 @@ export default function QuestionList() {
 
         axios('/api/questions')
             .then( response => {
-               setQuestions(response.data);
-               setIsLoading(false);
+                console.log(response.data);
+                setQuestions(response.data);
+                setIsLoading(false);
             });
 
     }, []);
@@ -46,25 +47,36 @@ export default function QuestionList() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>#</TableCell>
                                     <TableCell>Titel</TableCell>
-                                    <TableCell>Thema</TableCell>
                                     <TableCell>Typ</TableCell>
-                                    <TableCell>Actions</TableCell>
+                                    <TableCell align={"right"}>Aktionen</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {questions.map( (question) => (
                                     <TableRow key={question.id}>
-                                        <TableCell>{question.id}</TableCell>
                                         <TableCell>{question.title}</TableCell>
-                                        <TableCell>{question.theme_id}</TableCell>
-                                        <TableCell>{question.question_type_id}</TableCell>
-                                        <TableCell>
-                                            <Link key={question.id} to={'/question/edit/'+question.id}>
+                                        <TableCell>{question.question_type.title}</TableCell>
+                                        <TableCell align={"right"}>
+                                            <Link
+                                                style={{color: "#000000"}}
+                                                key={question.id}
+                                                to={'/question/edit/'+question.id}>
                                                 <Edit />
                                             </Link>
-                                            <Delete onClick={ () => axios.delete('/api/questions/'+question.id) } />
+                                            <Delete
+                                                style={{cursor: "pointer"}}
+                                                onClick={ () => {
+                                                axios.delete('/api/questions/'+question.id)
+                                                    .then( () => {
+                                                        setIsLoading(true);
+                                                        axios('/api/questions')
+                                                            .then( response => {
+                                                                setQuestions(response.data);
+                                                                setIsLoading(false);
+                                                            });
+                                                    });
+                                            } } />
                                         </TableCell>
                                     </TableRow>
                                 ))}
