@@ -51,48 +51,54 @@ export default function ThemeCreate() {
     return(
         <div>
             { successMessage && <Alert severity="success">{successMessage}</Alert> }
-            <TextField
-                required
-                error={titleError}
-                helperText={titleError ? "Bitte füllen Sie dieses Feld aus." : ""}
-                fullWidth
-                id={"title"}
-                name={"title"}
-                label="Titel"
-                margin="normal"
-                variant="outlined"
-                onChange={ (e) => setTitle(e.target.value) }
-                InputLabelProps={{
-                    shrink: true,
-                }} />
-            <TextField
-                required
-                error={descriptionError}
-                helperText={descriptionError ? "Bitte füllen Sie dieses Feld aus." : ""}
-                fullWidth
-                id={"description"}
-                name={"description"}
-                label="Beschreibung"
-                margin="normal"
-                variant="outlined"
-                multiline
-                rows={"8"}
-                rowsMax="8"
-                onChange={ (e) => setDescription(e.target.value) }
-                InputLabelProps={{
-                    shrink: true,
-                }} />
-            <Button
-                variant="contained"
-                component="label">
-                Introbild hochladen
-                <input
-                    ref={fileInput}
-                    type="file"
-                    style={{ display: "none" }} />
-            </Button>
-            <Grid container spacing={3}>
-                <Grid item xs={4}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        error={titleError}
+                        helperText={titleError ? "Bitte füllen Sie dieses Feld aus." : ""}
+                        fullWidth
+                        id={"title"}
+                        name={"title"}
+                        label="Titel"
+                        margin="normal"
+                        variant="filled"
+                        onChange={ (e) => setTitle(e.target.value) }
+                        InputLabelProps={{
+                            shrink: true,
+                        }} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        error={descriptionError}
+                        helperText={descriptionError ? "Bitte füllen Sie dieses Feld aus." : ""}
+                        fullWidth
+                        id={"description"}
+                        name={"description"}
+                        label="Beschreibung"
+                        margin="normal"
+                        variant="filled"
+                        multiline
+                        rows={"8"}
+                        rowsMax="8"
+                        onChange={ (e) => setDescription(e.target.value) }
+                        InputLabelProps={{
+                            shrink: true,
+                        }} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        variant="contained"
+                        component="label">
+                        Introbild hochladen
+                        <input
+                            ref={fileInput}
+                            type="file"
+                            style={{ display: "none" }} />
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
                     <Button onClick={ () => onSubmit() } variant="contained" type="submit" color="primary">Speichern</Button>
                 </Grid>
             </Grid>

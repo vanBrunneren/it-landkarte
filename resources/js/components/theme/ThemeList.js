@@ -12,7 +12,7 @@ import {
 import {Link} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
 
-export default function ThemeList() {
+export default function ThemeList(props) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [themes, setThemes] = useState([]);
@@ -58,9 +58,7 @@ export default function ThemeList() {
                                         <TableCell>{theme.title}</TableCell>
                                         <TableCell>{theme.description}</TableCell>
                                         <TableCell align={"right"}>
-                                            <Link key={theme.id} to={'/theme/edit/'+theme.id}>
-                                                <Edit />
-                                            </Link>
+                                            <Edit onClick={ () => props.history.push('/theme/edit/'+theme.id) }/>
                                             <Delete onClick={ () => {
                                                 axios.delete('/api/themes/'+theme.id)
                                                     .then( () => {

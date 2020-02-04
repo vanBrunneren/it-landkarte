@@ -41,6 +41,7 @@ class CustomerController extends Controller
         $customer = new Customer();
         $customer['name'] = $request['name'];
         $customer['street'] = $request['street'];
+        $customer['house_number'] = $request['houseNumber'];
         $customer['plz'] = $request['plz'];
         $customer['city'] = $request['city'];
         $customer->save();
@@ -55,7 +56,7 @@ class CustomerController extends Controller
      */
     public function show(customer $customer)
     {
-        return $customer;
+        return Customer::with(['people', 'people.personFunction'])->find($customer['id']);
     }
 
     /**
@@ -80,6 +81,7 @@ class CustomerController extends Controller
     {
         $customer['name'] = $request['name'];
         $customer['street'] = $request['street'];
+        $customer['house_number'] = $request['houseNumber'];
         $customer['plz'] = $request['plz'];
         $customer['city'] = $request['city'];
         $customer->save();

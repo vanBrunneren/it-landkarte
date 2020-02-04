@@ -28,7 +28,7 @@ export default function AnswerpossibilityEdit(props) {
     return(
         <div>
             <div>
-                <Grid container spacing={3}>
+                <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
                             name={"title"}
@@ -38,7 +38,7 @@ export default function AnswerpossibilityEdit(props) {
                             id={"title"}
                             label="Titel"
                             margin="normal"
-                            variant="outlined"
+                            variant="filled"
                             InputLabelProps={{
                                 shrink: true,
                             }} />

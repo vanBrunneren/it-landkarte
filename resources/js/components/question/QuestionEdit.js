@@ -9,10 +9,13 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField
+    TextField,
+    Collapse, InputLabel, Select, MenuItem, FormControl,
+    Typography
 } from "@material-ui/core";
 import {Add, Delete, Edit} from "@material-ui/icons";
 import {Link} from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
 
 export default function QuestionEdit(props) {
 
@@ -26,6 +29,8 @@ export default function QuestionEdit(props) {
     const [questionTypeId, setQuestionTypeId] = useState("");
 
     const [answerPossibilities, setAnswerPossibilities] = useState([]);
+
+    const [successMessage, setSuccessMessage] = useState("");
 
     const fetchAllQuestions = () => {
 
@@ -75,17 +80,24 @@ export default function QuestionEdit(props) {
           title,
           theme_id: themeId,
           question_type_id: questionTypeId
-      }).then( response => console.log(response) );
+      }).then( response => {
+          //console.log(response);
+          setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
+      });
 
     };
 
     return(
         <div>
             {isLoading && <CircularProgress />}
-
+            {successMessage &&
+                <Alert onClose={() => setSuccessMessage(false) } severity="success">
+                    {successMessage}
+                </Alert>
+            }
             {!isLoading &&
                 <div>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
                                 name={"title"}
@@ -95,32 +107,53 @@ export default function QuestionEdit(props) {
                                 id={"title"}
                                 label="Titel"
                                 margin="normal"
-                                variant="outlined"
+                                variant="filled"
                                 InputLabelProps={{
                                     shrink: true,
                                 }} />
                         </Grid>
                         <Grid item xs={12}>
-                            <select name={"theme_id"} value={themeId} onChange={ e => setThemeId(e.target.value)}>
-                                {themes.map( item => (
-                                    <option
-                                        key={item.id}
-                                        value={item.id}>
-                                        {item.title}
-                                    </option>
-                                ))}
-                            </select>
+                            <FormControl fullWidth variant="filled">
+                                <InputLabel id={"theme_id_label"}>Thema</InputLabel>
+                                <Select
+                                    id={"theme_id"}
+                                    labelId={"theme_id_label"}
+                                    name={"theme_id"}
+                                    value={themeId}
+                                    onChange={ (e) => setThemeId(e.target.value)}>
+                                    {themes.map(theme => (
+                                        <MenuItem
+                                            key={theme.id}
+                                            value={theme.id}>
+                                            {theme.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            <select name={"question_type_id"} value={questionTypeId} onChange={ e => setQuestionTypeId(e.target.value)}>
-                                {questionTypes.map( item => (
-                                    <option
-                                        key={item.id}
-                                        value={item.id}>
-                                        {item.title}
-                                    </option>
-                                ))}
-                            </select>
+                            <FormControl fullWidth variant="filled">
+                                <InputLabel id={"question_type_id_label"}>Fragetyp</InputLabel>
+                                <Select
+                                    id={"question_type_id"}
+                                    labelId={"question_type_id_label"}
+                                    name={"question_type_id"}
+                                    value={questionTypeId}
+                                    onChange={ (e) => setQuestionTypeId(e.target.value)}>
+                                    {questionTypes.map(questionType => (
+                                        <MenuItem
+                                            key={questionType.id}
+                                            value={questionType.id}>
+                                            {questionType.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" gutterBottom>
+                                Antworten
+                            </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <TableContainer component={Paper}>
@@ -136,12 +169,7 @@ export default function QuestionEdit(props) {
                                             <TableRow key={item.id}>
                                                 <TableCell>{item.title}</TableCell>
                                                 <TableCell align={"right"}>
-                                                    <Link
-                                                        style={{color: "#000000"}}
-                                                        key={item.id}
-                                                        to={'/question/'+props.match.params.id+'/answerpossibility/edit/'+item.id}>
-                                                        <Edit />
-                                                    </Link>
+                                                    <Edit onClick={ () => props.history.push('/question/'+props.match.params.id+'/answerpossibility/edit/'+item.id) } />
                                                     <Delete
                                                         style={{cursor: "pointer"}}
                                                         onClick={ () => {
@@ -159,14 +187,13 @@ export default function QuestionEdit(props) {
                             </TableContainer>
                         </Grid>
                         <Grid item xs={12}>
-                            <Link to={"/question/" + props.match.params.id + "/answerpossibility/create"}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    startIcon={<Add/>}>
-                                    Antwortmöglichkeit hinzufügen
-                                </Button>
-                            </Link>
+                            <Button
+                                onClick={ () => props.history.push("/question/" + props.match.params.id + "/answerpossibility/create") }
+                                variant="contained"
+                                color="secondary"
+                                startIcon={<Add/>}>
+                                Antwortmöglichkeit hinzufügen
+                            </Button>
                         </Grid>
                         <Grid item xs={12}>
                             <Button onClick={() => onSubmit()} variant="contained" type="submit" color="primary">Speichern</Button>

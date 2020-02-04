@@ -7,33 +7,19 @@ import {
     Switch,
     Route,
     Link,
-    useLocation,
 } from "react-router-dom";
 
 
 import {
     AppBar,
-    Toolbar,
-    Typography,
     Drawer,
     List,
     ListItem,
     ListItemText,
     ListItemIcon,
     Divider,
-    Breadcrumbs,
     CardMedia
 } from '@material-ui/core';
-
-import {
-    People,
-    LibraryBooks,
-    QuestionAnswer,
-    ChatBubble,
-    ExitToApp,
-    Person
-} from "@material-ui/icons";
-
 
 import CustomerList from "./customer/CustomerList";
 import CustomerCreate from "./customer/CustomerCreate";
@@ -44,9 +30,6 @@ import LogoutHelper from "./auth/LogoutHelper";
 import PersonEdit from "./person/PersonEdit";
 import PersonCreate from "./person/PersonCreate";
 
-import {
-    makeStyles
-} from "@material-ui/core/styles";
 import ThemeList from "./theme/ThemeList";
 import ThemeCreate from "./theme/ThemeCreate";
 import ThemeEdit from "./theme/ThemeEdit";
@@ -60,96 +43,11 @@ import AnswerpossibilityEdit from "./answerpossibility/AnswerpossibilityEdit";
 
 import UserEdit from './user/UserEdit';
 
-const drawerWidth = 240;
+import HomeAppBar from './HomeAppBar';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
-    appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    toolbar: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
-    },
-    logo: {
-        height: '64px'
-    }
-}));
+import { routes, bottomRoutes, useStyles} from '../consts/consts';
 
-const routes = [
-    {
-        id: 0,
-        title: 'Kunden',
-        link: '/customers',
-        icon: <People />
-    },
-    {
-        id: 1,
-        title: 'Themen',
-        link: '/themes',
-        icon: <LibraryBooks />
-    },
-    {
-        id: 2,
-        title: 'Fragen',
-        link: '/questions',
-        icon: <QuestionAnswer />
-    },
-    {
-        id: 3,
-        title: 'Auswertungen',
-        link: '/results',
-        icon: <ChatBubble />
-    }
-];
-
-const bottomRoutes = [
-    {
-        id: 0,
-        title: 'Benutzer',
-        link: '/user',
-        icon: <Person />
-    },
-    {
-        id: 1,
-        title: 'Logout',
-        link: '/logout',
-        icon: <ExitToApp />
-    }
-];
-
-function HomeAppBar() {
-    let location = useLocation();
-
-    let title;
-    routes.forEach( route => {
-        if(location.pathname.indexOf(route.link) != -1) {
-           title = route.title;
-        }
-    });
-
-    return(
-        <Toolbar>
-            <Typography variant="h6" noWrap>
-                {title}
-            </Typography>
-        </Toolbar>
-    )
-}
-
-export default function App() {
+export default function App(props) {
     const classes = useStyles();
 
     return (

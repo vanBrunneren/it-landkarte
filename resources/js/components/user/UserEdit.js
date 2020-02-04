@@ -32,7 +32,7 @@ export default function UserEdit() {
 
             {!isLoading &&
                 <div>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
                                 name={"name"}
@@ -42,7 +42,7 @@ export default function UserEdit() {
                                 id={"name"}
                                 label="Name"
                                 margin="normal"
-                                variant="outlined"
+                                variant="filled"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}/>
@@ -56,7 +56,7 @@ export default function UserEdit() {
                                 id={"email"}
                                 label="E-Mail"
                                 margin="normal"
-                                variant="outlined"
+                                variant="filled"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}/>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Theme;
+use Illuminate\Support\Facades\Storage;
 
 class ThemeController extends Controller
 {
@@ -93,9 +94,13 @@ class ThemeController extends Controller
     public function showImage($id)
     {
         $theme = Theme::find($id);
-        $contents = \Storage::get($theme['img']);
-        header("Content-Type: image/jpg");
-        echo $contents;
+        if($theme['img']) {
+            $contents = Storage::get($theme['img']);
+            header("Content-Type: image/jpg");
+            echo $contents;
+        } else {
+            return "no Image found!";
+        }
     }
 
     public function getQuestionsByTheme(int $theme)

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, CircularProgress, Grid, TextField} from "@material-ui/core";
+import {Button, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 
 export default function QuestionCreate() {
 
@@ -49,38 +49,60 @@ export default function QuestionCreate() {
 
             {!isLoading &&
                 <div>
-                    <TextField
-                        name={"title"}
-                        value={title}
-                        onChange={ e => setTitle(e.target.value) }
-                        fullWidth
-                        id={"title"}
-                        label="Titel"
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }} />
-                    <select name={"theme_id"} value={themeId} onChange={ e => setThemeId(e.target.value)}>
-                        {themes.map( item => (
-                            <option
-                                key={item.id}
-                                value={item.id}>
-                              {item.title}
-                            </option>
-                        ))}
-                    </select>
-                    <select name={"question_type_id"} value={questionTypeId} onChange={ e => setQuestionTypeId(e.target.value)}>
-                        {questionTypes.map( item => (
-                            <option
-                                key={item.id}
-                                value={item.id}>
-                                {item.title}
-                            </option>
-                        ))}
-                    </select>
-                    <Grid container spacing={0}>
-                        <Grid item xs={4}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                name={"title"}
+                                value={title}
+                                onChange={ e => setTitle(e.target.value) }
+                                fullWidth
+                                id={"title"}
+                                label="Titel"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth variant="filled">
+                                <InputLabel id={"theme_id_label"}>Thema</InputLabel>
+                                <Select
+                                    id={"theme_id"}
+                                    labelId={"theme_id_label"}
+                                    name={"theme_id"}
+                                    value={themeId}
+                                    onChange={ (e) => setThemeId(e.target.value)}>
+                                    {themes.map(theme => (
+                                        <MenuItem
+                                            key={theme.id}
+                                            value={theme.id}>
+                                            {theme.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth variant="filled">
+                                <InputLabel id={"question_type_id_label"}>Fragetyp</InputLabel>
+                                <Select
+                                    id={"question_type_id"}
+                                    labelId={"question_type_id_label"}
+                                    name={"question_type_id"}
+                                    value={questionTypeId}
+                                    onChange={ (e) => setQuestionTypeId(e.target.value)}>
+                                    {questionTypes.map(questionType => (
+                                        <MenuItem
+                                            key={questionType.id}
+                                            value={questionType.id}>
+                                            {questionType.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
                             <Button onClick={() => onSubmit()} variant="contained" type="submit" color="primary">Speichern</Button>
                         </Grid>
                     </Grid>

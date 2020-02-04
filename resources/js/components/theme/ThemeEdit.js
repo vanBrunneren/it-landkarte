@@ -2,8 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
     Button, CircularProgress,
     Grid,
-    TextField,
-    CardMedia
+    TextField
 } from "@material-ui/core";
 
 import Alert from '@material-ui/lab/Alert';
@@ -64,58 +63,59 @@ export default function ThemeEdit(props) {
 
     return(
         <div>
-
             {isLoading && <CircularProgress />}
-
+            {successMessage && <Alert severity="success">{successMessage}</Alert> }
             {!isLoading &&
                 <div>
-                    { successMessage && <Alert severity="success">{successMessage}</Alert> }
-                    <TextField
-                        value={title}
-                        required
-                        error={titleError}
-                        helperText={titleError ? "Bitte füllen Sie dieses Feld aus." : ""}
-                        fullWidth
-                        id={"title"}
-                        name={"title"}
-                        label="Titel"
-                        margin="normal"
-                        variant="outlined"
-                        onChange={(e) => setTitle(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}/>
-                    <TextField
-                        value={description}
-                        required
-                        error={descriptionError}
-                        helperText={descriptionError ? "Bitte füllen Sie dieses Feld aus." : ""}
-                        fullWidth
-                        id={"description"}
-                        name={"description"}
-                        label="Beschreibung"
-                        margin="normal"
-                        variant="outlined"
-                        multiline
-                        rows={"8"}
-                        rowsMax="8"
-                        onChange={(e) => setDescription(e.target.value)}
-                        InputLabelProps={{
-                        shrink: true,
-                    }} />
-                    <img
-                        style={{height: '250px'}}
-                        src={"/api/themes/" + props.match.params.id + "/image"} />
-                    <Button
-                        variant="contained"
-                        component="label">
-                        Introbild hochladen
-                        <input
-                            ref={fileInput}
-                            type="file"
-                            style={{ display: "none" }} />
-                    </Button>
                     <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <TextField
+                                value={title}
+                                required
+                                fullWidth
+                                id={"title"}
+                                name={"title"}
+                                label="Titel"
+                                margin="normal"
+                                variant="filled"
+                                onChange={(e) => setTitle(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                value={description}
+                                fullWidth
+                                id={"description"}
+                                name={"description"}
+                                label="Beschreibung"
+                                margin="normal"
+                                variant="filled"
+                                multiline
+                                rows={"8"}
+                                rowsMax="8"
+                                onChange={(e) => setDescription(e.target.value)}
+                                InputLabelProps={{
+                                shrink: true,
+                            }} />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button
+                                variant="contained"
+                                component="label">
+                                Introbild hochladen
+                                <input
+                                    ref={fileInput}
+                                    type="file"
+                                    style={{ display: "none" }} />
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <img
+                                style={{height: '250px'}}
+                                src={"/api/themes/" + props.match.params.id + "/image"} />
+                        </Grid>
                         <Grid item xs={4}>
                             <Button onClick={() => onSubmit()} variant="contained" type="submit" color="primary">Speichern</Button>
                         </Grid>

@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {CircularProgress, TextField, Select, MenuItem, Grid, Button} from "@material-ui/core";
+import {
+    CircularProgress,
+    TextField,
+    Select,
+    MenuItem,
+    Grid,
+    Button,
+    FormControl,
+    InputLabel
+} from "@material-ui/core";
 
 export default function PersonEdit(props) {
 
@@ -24,6 +33,7 @@ export default function PersonEdit(props) {
                 setEmail(person.email);
                 setFunctionId(person.function_id);
                 setIsLoading(false);
+                console.log(person);
             });
 
     }, [props.match.params.personId]);
@@ -62,56 +72,81 @@ export default function PersonEdit(props) {
 
             {!isLoading &&
                 <div>
-                    <select name="sex" value={sex} onChange={(e) => setSex(e.target.value)}>
-                        <option value="male">Herr</option>
-                        <option value="female">Frau</option>
-                    </select>
-                    <TextField
-                        name={"prename"}
-                        value={prename}
-                        onChange={ e => setPrename(e.target.value) }
-                        fullWidth
-                        id={"prename"}
-                        label="Vorname"
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }} />
-                    <TextField
-                        name={"name"}
-                        value={name}
-                        onChange={ e => setName(e.target.value) }
-                        fullWidth
-                        id={"name"}
-                        label="Name"
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }} />
-                    <TextField
-                        name={"email"}
-                        value={email}
-                        onChange={ e => setEmail(e.target.value) }
-                        fullWidth
-                        id={"email"}
-                        label="E-Mail"
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }} />
-                    <select name={"function_id"} value={functionId} onChange={ (e) => setFunctionId(e.target.value)}>
-                        {personFunctions.map(persFunc => (
-                            <option
-                                key={persFunc.id}
-                                value={persFunc.id}>
-                                {persFunc.name}
-                            </option>
-                        ))}
-                    </select>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth variant="filled">
+                                <InputLabel id="sex-label">Anrede</InputLabel>
+                                <Select
+                                    labelId="sex-label"
+                                    id="sex"
+                                    value={sex}
+                                    onChange={ e => setSex(e.target.value) }>
+                                    <MenuItem value={"male"}>Herr</MenuItem>
+                                    <MenuItem value={"female"}>Frau</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth variant="filled">
+                                <InputLabel id={"function_id_label"}>Funktion</InputLabel>
+                                <Select
+                                    id={"function_id"}
+                                    labelId={"function_id_label"}
+                                    name={"function_id"}
+                                    value={functionId}
+                                    onChange={ (e) => setFunctionId(e.target.value)}>
+                                    {personFunctions.map(persFunc => (
+                                        <MenuItem
+                                            key={persFunc.id}
+                                            value={persFunc.id}>
+                                            {persFunc.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name={"prename"}
+                                value={prename}
+                                onChange={ e => setPrename(e.target.value) }
+                                fullWidth
+                                id={"prename"}
+                                label="Vorname"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name={"name"}
+                                value={name}
+                                onChange={ e => setName(e.target.value) }
+                                fullWidth
+                                id={"name"}
+                                label="Name"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name={"email"}
+                                value={email}
+                                onChange={ e => setEmail(e.target.value) }
+                                fullWidth
+                                id={"email"}
+                                label="E-Mail"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }} />
+                        </Grid>
                         <Grid item xs={4}>
                             <Button onClick={() => onSubmit()} variant="contained" type="submit" color="primary">Speichern</Button>
                         </Grid>
