@@ -28,6 +28,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('api/questions/bytype/{id}', 'Api\QuestionTypeController@getQuestionsByType');
     Route::get('api/questions/bytheme/{id}', 'Api\ThemeController@getQuestionsByTheme');
+    Route::get('api/questions/group/theme', 'Api\QuestionController@getQuestionsGroupByTheme');
+    Route::post('api/questions/change-number-select-texts', 'Api\QuestionController@changeNumberSelectText');
+    Route::post('api/questions/add-text-field', 'Api\QuestionController@addTextField');
+    Route::delete('api/questions/remove-text-field/{id}', 'Api\QuestionController@removeTextField');
 
     // User Routes
     Route::get('api/user', 'Api\ApiUserController@show');

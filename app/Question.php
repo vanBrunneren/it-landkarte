@@ -24,4 +24,14 @@ class Question extends Model
         return $this->hasMany('App\AnswerPossibility');
     }
 
+    public function numberSelectTexts()
+    {
+        return $this->hasMany('App\NumberSelectTexts');
+    }
+
+    public function textinputFields()
+    {
+        return $this->hasMany('App\TextinputFields');
+    }
+
 }

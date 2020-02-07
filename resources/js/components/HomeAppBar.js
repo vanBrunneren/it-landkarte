@@ -2,6 +2,18 @@ import {useLocation} from "react-router-dom";
 import {Toolbar, Typography} from "@material-ui/core";
 import React from "react";
 
+const translations = {
+    'customers': 'Kunden',
+    'customer': 'Kunden',
+    'edit': 'bearbeiten',
+    'themes': 'Themen',
+    'theme': 'Thema',
+    'questions': 'Fragen',
+    'question': 'Frage',
+    'create': 'hinzufügen',
+    'person': 'Person'
+};
+
 export default function HomeAppBar() {
     let location = useLocation();
 
@@ -10,10 +22,17 @@ export default function HomeAppBar() {
     let res = location.pathname.split("/");
     let first = true;
     res.forEach( exp => {
+        if(exp == "") return;
+
         if(!first && exp !== "") {
             title += " / ";
         }
-        title += " " + exp;
+
+        if(exp in translations) {
+            title += translations[exp];
+        } else {
+            title += " " + exp;
+        }
         first = false;
     });
     /*routes.forEach( route => {

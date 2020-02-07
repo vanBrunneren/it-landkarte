@@ -75,7 +75,9 @@ export default function CustomerList(props) {
                                             <TableCell>{customer.plz}</TableCell>
                                             <TableCell>{customer.city}</TableCell>
                                             <TableCell>
-                                                <Edit onClick={ () => props.history.push('/customer/edit/'+customer.id)} />
+                                                <Edit
+                                                    style={{cursor: "pointer"}}
+                                                    onClick={ () => props.history.push('/customer/edit/'+customer.id)} />
                                                 <Delete
                                                     style={{cursor: "pointer"}}
                                                     onClick={ () => {

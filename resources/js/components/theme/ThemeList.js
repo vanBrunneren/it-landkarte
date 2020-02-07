@@ -58,19 +58,23 @@ export default function ThemeList(props) {
                                         <TableCell>{theme.title}</TableCell>
                                         <TableCell>{theme.description}</TableCell>
                                         <TableCell align={"right"}>
-                                            <Edit onClick={ () => props.history.push('/theme/edit/'+theme.id) }/>
-                                            <Delete onClick={ () => {
-                                                axios.delete('/api/themes/'+theme.id)
-                                                    .then( () => {
-                                                        setIsLoading(true);
-                                                        fetch('api/themes')
-                                                            .then( response => response.json() )
-                                                            .then( jsonResponse => {
-                                                                setThemes(jsonResponse);
-                                                                setIsLoading(false);
-                                                            });
-                                                    })
-                                            }} />
+                                            <Edit
+                                                style={{cursor: "pointer"}}
+                                                onClick={ () => props.history.push('/theme/edit/'+theme.id) }/>
+                                            <Delete
+                                                style={{cursor: "pointer"}}
+                                                onClick={ () => {
+                                                    axios.delete('/api/themes/'+theme.id)
+                                                        .then( () => {
+                                                            setIsLoading(true);
+                                                            fetch('api/themes')
+                                                                .then( response => response.json() )
+                                                                .then( jsonResponse => {
+                                                                    setThemes(jsonResponse);
+                                                                    setIsLoading(false);
+                                                                });
+                                                        })
+                                                }} />
                                         </TableCell>
                                     </TableRow>
                                 ))}

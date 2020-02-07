@@ -166,8 +166,12 @@ export default function CustomerEdit(props) {
                                         <TableCell>{person.email}</TableCell>
                                         <TableCell>{person.person_function.name}</TableCell>
                                         <TableCell>
-                                            <Edit onClick={ () => props.history.push('/customer/edit/' + props.match.params.id + "/person/" + person.id) } />
-                                            <Delete/>
+                                            <Edit
+                                                style={{cursor: "pointer"}}
+                                                onClick={ () => props.history.push('/customer/edit/' + props.match.params.id + "/person/" + person.id) } />
+                                            <Delete
+                                                style={{cursor: "pointer"}}
+                                                />
                                         </TableCell>
                                     </TableRow>
                                 ))}
