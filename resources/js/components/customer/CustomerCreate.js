@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import TextField from "@material-ui/core/TextField";
 import {Button, Grid} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import {create} from "../../actions/apiActions";
 
-export default function CustomerCreate() {
+export default function CustomerCreate(props) {
 
     const[name, setName] = useState("");
     const[street, setStreet] = useState("");
@@ -12,13 +12,16 @@ export default function CustomerCreate() {
     const[plz, setPlz] = useState("");
     const[city, setCity] = useState("");
     const[successMessage, setSuccessMessage] = useState(null);
+    const[hasErrors, setHasErros] = useState(null);
 
     const onSubmit = () => {
 
-        create("customers", {name, street, houseNumber, plz, city})
-            .then( () => {
-                setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
-            });
+        if(name && street && houseNumber && plz && city) {
+            create("customers", {name, street, houseNumber, plz, city})
+                .then( () => props.history.push('/customers') );
+        } else {
+            setHasErros(true);
+        }
 
     };
 
@@ -33,6 +36,9 @@ export default function CustomerCreate() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
+                        error={!name && hasErrors ? true : false}
+                        required
+                        helperText={!name && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                         onChange={ e => setName(e.target.value) }
                         name={"name"}
                         value={name}
@@ -47,6 +53,9 @@ export default function CustomerCreate() {
                 </Grid>
                 <Grid item xs={10}>
                     <TextField
+                        error={!street && hasErrors ? true : false}
+                        required
+                        helperText={!street && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                         onChange={ e => setStreet(e.target.value) }
                         name={"street"}
                         value={street}
@@ -61,6 +70,9 @@ export default function CustomerCreate() {
                 </Grid>
                 <Grid item xs={2}>
                     <TextField
+                        error={!houseNumber && hasErrors ? true : false}
+                        required
+                        helperText={!houseNumber && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                         onChange={ e => setHouseNumber(e.target.value) }
                         name={"house_number"}
                         value={houseNumber}
@@ -75,6 +87,9 @@ export default function CustomerCreate() {
                 </Grid>
                 <Grid item xs={2}>
                     <TextField
+                        error={!plz && hasErrors ? true : false}
+                        required
+                        helperText={!plz && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                         inputProps={{maxLength: 4}}
                         onChange={ e => setPlz(e.target.value) }
                         fullWidth
@@ -90,6 +105,9 @@ export default function CustomerCreate() {
                 </Grid>
                 <Grid item xs={10}>
                     <TextField
+                        error={!city && hasErrors ? true : false}
+                        required
+                        helperText={!city && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                         onChange={ e => setCity(e.target.value) }
                         fullWidth
                         id={"city"}
@@ -108,5 +126,4 @@ export default function CustomerCreate() {
             </Grid>
         </div>
     )
-
 }

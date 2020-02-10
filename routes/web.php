@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::apiResource('api/questions', 'Api\QuestionController');
     Route::apiResource('api/questiontypes', 'Api\QuestionTypeController');
     Route::apiResource('api/answerpossibility', 'Api\AnswerPossibilityController');
+    Route::apiResource('api/personfunctions', 'Api\PersonFunctionController');
 
 
     // Has to be the last entry ========

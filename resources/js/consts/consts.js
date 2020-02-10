@@ -1,4 +1,4 @@
-import {ChatBubble, ExitToApp, LibraryBooks, People, Person, QuestionAnswer} from "@material-ui/icons";
+import {ChatBubble, ExitToApp, LibraryBooks, People, Person, QuestionAnswer, Extension} from "@material-ui/icons";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
@@ -11,18 +11,24 @@ export const routes = [
     },
     {
         id: 1,
+        title: 'Funktionen',
+        link: '/personfunctions',
+        icon: <Extension />
+    },
+    {
+        id: 2,
         title: 'Themen',
         link: '/themes',
         icon: <LibraryBooks />
     },
     {
-        id: 2,
+        id: 3,
         title: 'Fragen',
         link: '/questions',
         icon: <QuestionAnswer />
     },
     {
-        id: 3,
+        id: 4,
         title: 'Auswertungen',
         link: '/results',
         icon: <ChatBubble />

@@ -9,6 +9,7 @@ import {
     FormControl,
     InputLabel
 } from "@material-ui/core";
+import {fetchAll, fetchSingle, update} from "../../actions/apiActions";
 
 export default function PersonEdit(props) {
 
@@ -24,26 +25,23 @@ export default function PersonEdit(props) {
 
     useEffect( () => {
 
-        axios.get('/api/persons/' + props.match.params.personId)
-            .then( response => {
-                let person = response.data;
+        fetchSingle('persons', props.match.params.personId)
+            .then( person => {
                 setSex(person.sex);
                 setPrename(person.prename);
                 setName(person.name);
                 setEmail(person.email);
                 setFunctionId(person.function_id);
                 setIsLoading(false);
-                console.log(person);
             });
 
     }, [props.match.params.personId]);
 
     useEffect( () => {
 
-        fetch('/api/persons/functions')
-            .then( response => response.json())
-            .then( jsonResponse => {
-                 setPersonFunctions(jsonResponse);
+        fetchAll('persons/functions')
+            .then( response => {
+                setPersonFunctions(response);
             });
 
     }, []);
@@ -51,18 +49,11 @@ export default function PersonEdit(props) {
     const onSubmit = () => {
 
         setIsLoading(true);
-
-        axios.put('/api/persons/' + props.match.params.personId, {
-            sex,
-            prename,
-            name,
-            email,
-            function_id: functionId
-        })
+        update('persons', props.match.params.personId, { sex, prename, name, email, function_id: functionId })
             .then( response => {
-                console.log(response);
+                //console.log(response);
                 setIsLoading(false);
-            })
+            });
 
     };
 

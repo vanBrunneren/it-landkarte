@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {Button, Grid, TextField} from "@material-ui/core";
+import {create} from "../../actions/apiActions";
 
 export default function AnswerpossibilityCreate(props) {
 
@@ -7,12 +8,10 @@ export default function AnswerpossibilityCreate(props) {
 
     const onSubmit = () => {
 
-        axios.post('/api/answerpossibility', {
-            title,
-            question_id: props.match.params.questionId
-        }).then( response => {
-            props.history.push('/question/edit/'+props.match.params.questionId);
-        });
+        create('answerpossibility', { title, question_id: props.match.params.questionId})
+            .then( response => {
+                props.history.push('/question/edit/'+props.match.params.questionId);
+            });
 
     };
 

@@ -65,7 +65,7 @@ export default function CustomerList(props) {
                                         <TableCell>Adresse</TableCell>
                                         <TableCell>PLZ</TableCell>
                                         <TableCell>Ort</TableCell>
-                                        <TableCell>Actions</TableCell>
+                                        <TableCell align={"right"}>Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -77,7 +77,7 @@ export default function CustomerList(props) {
                                             <TableCell>{customer.street + " " + customer.house_number}</TableCell>
                                             <TableCell>{customer.plz}</TableCell>
                                             <TableCell>{customer.city}</TableCell>
-                                            <TableCell>
+                                            <TableCell align={"right"}>
                                                 <Edit
                                                     style={{cursor: "pointer"}}
                                                     onClick={ () => props.history.push('/customer/edit/'+customer.id)} />

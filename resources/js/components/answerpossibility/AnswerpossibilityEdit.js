@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid, TextField} from "@material-ui/core";
+import {fetchSingle, update} from "../../actions/apiActions";
 
 export default function AnswerpossibilityEdit(props) {
 
@@ -8,20 +9,22 @@ export default function AnswerpossibilityEdit(props) {
 
     useEffect( () => {
 
-        axios('/api/answerpossibility/'+props.match.params.id)
+        fetchSingle('answerpossibility', props.match.params.id)
             .then( response => {
                 setTitle(response.data.title);
+                setIsLoading(false);
             });
 
     }, [props.match.params.id]);
 
     const onSubmit = () => {
 
-        axios.put('/api/answerpossibility/'+props.match.params.id, {
-            title
-        }).then( response => {
-            console.log(response);
-        });
+        setIsLoading(true);
+        update('answerpossibility', props.match.params.id, { title })
+            .then( response => {
+                //console.log(response);
+                setIsLoading(false);
+            });
 
     };
 

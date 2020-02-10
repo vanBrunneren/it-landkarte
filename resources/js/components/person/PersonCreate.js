@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Button, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {Button, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Fab} from "@material-ui/core";
+import AddIcon from '@material-ui/icons/Add';
+import {create, fetchAll} from "../../actions/apiActions";
+import {Link} from "react-router-dom";
 
 
 export default function PersonCreate(props) {
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [personFunctions, setPersonFunctions] = useState([]);
 
     const [sex, setSex] = useState("");
@@ -13,29 +16,28 @@ export default function PersonCreate(props) {
     const [email, setEmail] = useState("");
     const [functionId, setFunctionId] = useState("");
 
+    const [hasErrors, setHasErrors] = useState(false);
+
     useEffect( () => {
 
-        axios.get('/api/persons/functions')
-            .then( response => setPersonFunctions(response.data) );
+        fetchAll('persons/functions')
+            .then( response => {
+                setPersonFunctions(response);
+                setIsLoading(false);
+            });
 
     }, []);
 
     const onSubmit = () => {
 
         setIsLoading(true);
-
-        axios.post('/api/persons', {
-            customer_id: props.match.params.id,
-            sex,
-            prename,
-            name,
-            email,
-            function_id: functionId
-        })
-            .then( () => {
-                console.log("Yeah");
-                setIsLoading(false);
-            });
+        if(sex && prename && name && email && functionId) {
+            create('persons', { customer_id: props.match.params.id, sex, prename, name, email, function_id: functionId })
+                .then( () => props.history.push('/customer/edit/' + props.match.params.id));
+        } else {
+            setHasErrors(true);
+        }
+        setIsLoading(false);
 
     };
 
@@ -46,7 +48,11 @@ export default function PersonCreate(props) {
             {!isLoading &&
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <FormControl fullWidth variant="filled">
+                        <FormControl
+                            error={!sex && hasErrors ? true : false}
+                            required
+                            fullWidth
+                            variant="filled">
                             <InputLabel id="sex-label">Anrede</InputLabel>
                             <Select
                                 labelId="sex-label"
@@ -58,27 +64,41 @@ export default function PersonCreate(props) {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth variant="filled">
-                        <InputLabel id={"function_id_label"}>Funktion</InputLabel>
-                        <Select
-                            id={"function_id"}
-                            labelId={"function_id_label"}
-                            name={"function_id"}
-                            value={functionId}
-                            onChange={ (e) => setFunctionId(e.target.value)}>
-                            {personFunctions.map(persFunc => (
-                                <MenuItem
-                                    key={persFunc.id}
-                                    value={persFunc.id}>
-                                    {persFunc.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <Grid item xs={11}>
+                        <FormControl
+                            error={!functionId && hasErrors ? true : false}
+                            required
+                            fullWidth
+                            variant="filled">
+                            <InputLabel id={"function_id_label"}>Funktion</InputLabel>
+                            <Select
+                                id={"function_id"}
+                                labelId={"function_id_label"}
+                                name={"function_id"}
+                                value={functionId}
+                                onChange={ (e) => setFunctionId(e.target.value)}>
+                                {personFunctions.map(persFunc => (
+                                    <MenuItem
+                                        key={persFunc.id}
+                                        value={persFunc.id}>
+                                        {persFunc.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Link to={"/personfunction/create"}>
+                            <Fab size={"small"} color="primary" aria-label="add">
+                                <AddIcon />
+                            </Fab>
+                        </Link>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            error={!prename && hasErrors ? true : false}
+                            required
+                            helperText={!prename && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                             name={"prename"}
                             value={prename}
                             onChange={ e => setPrename(e.target.value) }
@@ -93,6 +113,9 @@ export default function PersonCreate(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            error={!name && hasErrors ? true : false}
+                            required
+                            helperText={!name && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                             name={"name"}
                             value={name}
                             onChange={ e => setName(e.target.value) }
@@ -107,6 +130,9 @@ export default function PersonCreate(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            error={!email && hasErrors ? true : false}
+                            required
+                            helperText={!email && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
                             name={"email"}
                             value={email}
                             onChange={ e => setEmail(e.target.value) }

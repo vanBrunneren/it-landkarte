@@ -40,11 +40,14 @@ import QuestionEdit from "./question/QuestionEdit";
 import AnswerpossibilityCreate from "./answerpossibility/AnswerpossibilityCreate";
 import AnswerpossibilityEdit from "./answerpossibility/AnswerpossibilityEdit";
 
+import PersonfunctionList from "./personfunction/PersonfunctionList";
+
 import UserEdit from './user/UserEdit';
 
 import HomeAppBar from './HomeAppBar';
 
 import { routes, bottomRoutes, useStyles} from '../consts/consts';
+import PersonfunctionCreate from "./personfunction/PersonfunctionCreate";
 
 export default function App(props) {
     const classes = useStyles();
@@ -124,6 +127,9 @@ export default function App(props) {
                         <Route path={"/question/edit/:id"} component={QuestionEdit} />
                         <Route path={"/question/:questionId/answerpossibility/create"} component={AnswerpossibilityCreate} />
                         <Route path={"/question/:questionId/answerpossibility/edit/:id"} component={AnswerpossibilityEdit} />
+
+                        <Route path={"/personfunctions"} component={PersonfunctionList} />
+                        <Route path={"/personfunction/create"} component={PersonfunctionCreate} />
 
                         <Route path={"/user"} component={UserEdit} />
 

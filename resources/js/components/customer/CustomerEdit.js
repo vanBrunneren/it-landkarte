@@ -4,12 +4,12 @@ import {
     CircularProgress,
     Button,
     Grid, TableHead, TableRow, TableCell, Table, TableBody, Paper, TableContainer,
-    TextField
+    TextField, Typography
 } from "@material-ui/core";
 
 import {Delete, Edit} from "@material-ui/icons";
 import Alert from "@material-ui/lab/Alert";
-import {fetchSingle, update} from "../../actions/apiActions";
+import {deleteEntry, fetchSingle, update} from "../../actions/apiActions";
 
 export default function CustomerEdit(props) {
 
@@ -22,8 +22,7 @@ export default function CustomerEdit(props) {
     const[persons, setPersons] = useState(null);
     const[successMessage, setSuccessMessage] = useState(null);
 
-    useEffect( () => {
-
+    function getCustomer() {
         fetchSingle("customers", props.match.params.id)
             .then( customer => {
                 setName(customer.name);
@@ -34,15 +33,16 @@ export default function CustomerEdit(props) {
                 setPersons(customer.people);
                 setIsLoading(false);
             });
+    }
 
+    useEffect( () => {
+        getCustomer();
     }, [props.match.params.id]);
 
     const onSubmit = () => {
 
         update("customers", props.match.params.id, { name, street, houseNumber, plz, city })
-            .then( () => {
-                setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
-            });
+            .then( () => setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!"));
 
     };
 
@@ -138,6 +138,9 @@ export default function CustomerEdit(props) {
 
                 {persons &&
                 <Grid item xs={12}>
+                    <Typography variant="h5" gutterBottom={true}>
+                        Personen
+                    </Typography>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
@@ -146,7 +149,7 @@ export default function CustomerEdit(props) {
                                     <TableCell>Nachname</TableCell>
                                     <TableCell>E-Mail</TableCell>
                                     <TableCell>Funktion</TableCell>
-                                    <TableCell>Actions</TableCell>
+                                    <TableCell align={"right"}>Aktionen</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -156,12 +159,19 @@ export default function CustomerEdit(props) {
                                         <TableCell>{person.name}</TableCell>
                                         <TableCell>{person.email}</TableCell>
                                         <TableCell>{person.person_function.name}</TableCell>
-                                        <TableCell>
+                                        <TableCell align={"right"}>
                                             <Edit
                                                 style={{cursor: "pointer"}}
                                                 onClick={ () => props.history.push('/customer/edit/' + props.match.params.id + "/person/" + person.id) } />
                                             <Delete
                                                 style={{cursor: "pointer"}}
+                                                onClick={ () => {
+                                                    deleteEntry("persons", person.id)
+                                                        .then( response => {
+                                                            //console.log(response);
+                                                            getCustomer();
+                                                        })
+                                                }}
                                                 />
                                         </TableCell>
                                     </TableRow>
