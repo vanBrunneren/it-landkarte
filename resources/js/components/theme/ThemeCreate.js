@@ -5,6 +5,7 @@ import {
     TextField
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
+import {createWithFile} from "../../actions/apiActions";
 
 export default function ThemeCreate() {
 
@@ -33,15 +34,10 @@ export default function ThemeCreate() {
             data.append('title', title);
             data.append('description', description);
 
-            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
-            axios.post('/api/themes', data, config)
+            createWithFile("themes", data)
                 .then(response => {
                     setSuccessMessage("Die Änderungen wurden gespeichert!");
                     setIsLoading(false);
-                })
-                .catch(error => {
-                    console.error(error);
                 });
 
         }

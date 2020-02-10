@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {Link} from "react-router-dom";
+import React, {
+    useState,
+    useEffect
+} from 'react';
 
 import {
     Table,
@@ -19,23 +21,24 @@ import {
     Add
 } from '@material-ui/icons';
 
+import {
+    deleteEntry,
+    fetchAll
+} from "../../actions/apiActions";
+
 export default function CustomerList(props) {
 
     const[isLoading, setIsLoading] = useState(true);
     const[customers, setCustomers] = useState([]);
 
-    const fetchAllCustomers = () => {
+    useEffect( () => {
 
-        axios('/api/customers')
-            .then(response => {
+        fetchAll('customers')
+            .then( customers => {
+                setCustomers(customers);
                 setIsLoading(false);
-                setCustomers(response.data);
             });
 
-    };
-
-    useEffect( () => {
-        fetchAllCustomers();
     }, []);
 
     return (
@@ -81,10 +84,14 @@ export default function CustomerList(props) {
                                                 <Delete
                                                     style={{cursor: "pointer"}}
                                                     onClick={ () => {
-                                                    axios.delete('/api/customers/'+customer.id)
-                                                        .then( () => {
-                                                            setIsLoading(true);
-                                                            fetchAllCustomers();
+                                                        deleteEntry("customers", customer.id)
+                                                            .then( () => {
+                                                                setIsLoading(true);
+                                                                fetchAll("customers")
+                                                                    .then( customers => {
+                                                                        setCustomers(customers);
+                                                                        setIsLoading(false);
+                                                                    });
                                                         });
                                                 }} />
                                             </TableCell>

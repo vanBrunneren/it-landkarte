@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Add, Delete, Edit} from "@material-ui/icons";
+import {deleteEntry, fetchAll} from "../../actions/apiActions";
 
 export default function ThemeList(props) {
 
@@ -19,10 +20,9 @@ export default function ThemeList(props) {
 
     useEffect( () => {
 
-        fetch('api/themes')
-            .then( response => response.json() )
-            .then( jsonResponse => {
-                setThemes(jsonResponse);
+        fetchAll("themes")
+            .then( themes => {
+                setThemes(themes);
                 setIsLoading(false);
             });
 
@@ -64,13 +64,12 @@ export default function ThemeList(props) {
                                             <Delete
                                                 style={{cursor: "pointer"}}
                                                 onClick={ () => {
-                                                    axios.delete('/api/themes/'+theme.id)
+                                                    deleteEntry('themes', theme.id)
                                                         .then( () => {
                                                             setIsLoading(true);
-                                                            fetch('api/themes')
-                                                                .then( response => response.json() )
-                                                                .then( jsonResponse => {
-                                                                    setThemes(jsonResponse);
+                                                            fetchAll('themes')
+                                                                .then( themes => {
+                                                                    setThemes(themes);
                                                                     setIsLoading(false);
                                                                 });
                                                         })

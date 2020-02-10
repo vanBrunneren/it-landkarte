@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import TextField from "@material-ui/core/TextField";
 import {Button, Grid} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
+import {create} from "../../actions/apiActions";
 
 export default function CustomerCreate() {
 
@@ -12,18 +13,12 @@ export default function CustomerCreate() {
     const[city, setCity] = useState("");
     const[successMessage, setSuccessMessage] = useState(null);
 
-    const onSubmit = data => {
+    const onSubmit = () => {
 
-        axios.post('/api/customers', {
-            name,
-            street,
-            houseNumber,
-            plz,
-            city
-        }).then( () => {
-            //console.log(response);
-            setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
-        });
+        create("customers", {name, street, houseNumber, plz, city})
+            .then( () => {
+                setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
+            });
 
     };
 
@@ -68,7 +63,7 @@ export default function CustomerCreate() {
                     <TextField
                         onChange={ e => setHouseNumber(e.target.value) }
                         name={"house_number"}
-                        value={street}
+                        value={houseNumber}
                         fullWidth
                         id={"house_number"}
                         label="Hausnummer"
@@ -108,7 +103,7 @@ export default function CustomerCreate() {
                         }} />
                 </Grid>
                 <Grid item xs={4}>
-                    <Button variant="contained" type="submit" color="primary">Speichern</Button>
+                    <Button onClick={ () => onSubmit() } variant="contained" type="submit" color="primary">Speichern</Button>
                 </Grid>
             </Grid>
         </div>

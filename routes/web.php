@@ -11,10 +11,12 @@
 |
 */
 
-Route::get('public/test', function() {
-    // /storage/test.txt
-    return Storage::url('test.txt');
-});
+Route::get('public/{any?}', function() {
+    return view('public');
+})->where('any', '(.*)');
+
+Route::get('api/public/questions', 'Api\PublicController@questions');
+Route::get('api/public/themes', 'Api\PublicController@themes');
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
@@ -37,8 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::get('api/user', 'Api\ApiUserController@show');
     Route::put('api/user', 'Api\ApiUserController@update');
 
-    // WTF why is PUT not working with Images? -____-
-    //Route::apiResource('api/themes', 'Api\ThemeController');
     Route::get('api/themes', 'Api\ThemeController@index');
     Route::get('api/themes/{id}', 'Api\ThemeController@show');
     Route::post('api/themes', 'Api\ThemeController@store');

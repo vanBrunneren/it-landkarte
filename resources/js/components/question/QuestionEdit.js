@@ -21,6 +21,7 @@ import {
 import {Add, Delete, Edit} from "@material-ui/icons";
 import {Link} from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
+import {fetchAll, fetchSingle, update} from "../../actions/apiActions";
 
 export default function QuestionEdit(props) {
 
@@ -48,12 +49,11 @@ export default function QuestionEdit(props) {
 
     const [successMessage, setSuccessMessage] = useState("");
 
-    const fetchAllQuestions = () => {
+    useEffect( () => {
 
-        axios('/api/questions/' + props.match.params.id)
-            .then( response => {
+        fetchSingle("questions", props.match.params.id)
+            .then( question => {
 
-                let question = response.data;
                 setTitle(question.title);
                 setThemeId(question.theme_id);
                 setQuestionTypeId(question.question_type_id);
@@ -62,14 +62,14 @@ export default function QuestionEdit(props) {
 
                 if(question.number_select_texts) {
                     question.number_select_texts.forEach( text => {
-                       if(text.key == "min") {
-                           setMinTitleId(text.id);
-                           setMinTitle(text.text);
-                       }
-                       if(text.key == "max") {
-                           setMaxTitleId(text.id);
-                           setMaxTitle(text.text);
-                       }
+                        if(text.key == "min") {
+                            setMinTitleId(text.id);
+                            setMinTitle(text.text);
+                        }
+                        if(text.key == "max") {
+                            setMaxTitleId(text.id);
+                            setMaxTitle(text.text);
+                        }
                     });
                 }
 
@@ -79,44 +79,27 @@ export default function QuestionEdit(props) {
 
             });
 
-    };
-
-    useEffect( () => {
-
-        fetchAllQuestions();
-
-    }, []);
-
-    useEffect( () => {
-
-        axios('/api/themes')
-            .then( response => {
+        fetchAll("themes")
+            .then( res => {
+                setThemes(res);
                 setIsLoading(false);
-                setThemes(response.data);
             });
 
-    }, []);
-
-    useEffect( () => {
-
-        axios('/api/questiontypes')
-            .then( response => {
+        fetchAll("questiontypes")
+            .then( res => {
+                setQuestionTypes(res);
                 setIsLoading(false);
-                setQuestionTypes(response.data);
             });
 
     }, []);
 
     const onSubmit = () => {
 
-      axios.put('/api/questions/' + props.match.params.id, {
-          title,
-          theme_id: themeId,
-          question_type_id: questionTypeId
-      }).then( response => {
-          //console.log(response);
-          setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
-      });
+        update('questions', props.match.params.id, { title, theme_id: themeId, question_type_id: questionTypeId})
+            .then( response => {
+                //console.log(response);
+                setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
+            });
 
     };
 

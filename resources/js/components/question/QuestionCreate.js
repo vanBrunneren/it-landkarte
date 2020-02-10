@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 export default function QuestionCreate() {
 
@@ -10,6 +11,8 @@ export default function QuestionCreate() {
 
     const [themeId, setThemeId] = useState(1);
     const [questionTypeId, setQuestionTypeId] = useState(1);
+
+    const [successMessage, setSuccessMessage] = useState("");
 
     useEffect( () => {
 
@@ -38,7 +41,8 @@ export default function QuestionCreate() {
            theme_id: themeId,
            question_type_id: questionTypeId
         }).then( response => {
-            console.log(response);
+            //console.log(response);
+            setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
         });
 
     };
@@ -49,6 +53,11 @@ export default function QuestionCreate() {
 
             {!isLoading &&
                 <div>
+                    {successMessage &&
+                        <Alert onClose={() => setSuccessMessage(false) } severity="success">
+                            {successMessage}
+                        </Alert>
+                    }
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField

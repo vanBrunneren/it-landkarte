@@ -8,10 +8,13 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography,
+    Grid
 } from "@material-ui/core";
 import {Add, Delete, Edit} from "@material-ui/icons";
 import {Link} from "react-router-dom";
+import {deleteEntry, fetchAll} from "../../actions/apiActions";
 
 export default function QuestionList() {
 
@@ -20,9 +23,9 @@ export default function QuestionList() {
 
     useEffect( () => {
 
-        axios('api/questions/group/theme')
+        fetchAll("questions/group/theme")
             .then( response => {
-                setQuestions(response.data);
+                setQuestions(response);
                 setIsLoading(false);
             });
 
@@ -33,7 +36,7 @@ export default function QuestionList() {
             {isLoading && <CircularProgress />}
 
             {questions &&
-                <div>
+                <Grid>
                     <div style={{marginBottom: "20px"}}>
                         <Link to={"/question/create"}>
                             <Button
@@ -44,54 +47,58 @@ export default function QuestionList() {
                             </Button>
                         </Link>
                     </div>
-                    {questions.map( (theme) => (
-                        <div key={theme.id}>
-                            <h1>{theme.title}</h1>
-                            <TableContainer component={Paper}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Titel</TableCell>
-                                            <TableCell>Typ</TableCell>
-                                            <TableCell align={"right"}>Aktionen</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {theme.questions.map( (question) => (
-                                            <TableRow key={question.id}>
-                                                <TableCell>{question.title}</TableCell>
-                                                <TableCell>{question.question_type.title}</TableCell>
-                                                <TableCell align={"right"}>
-                                                    <Link
-                                                        style={{color: "#000000"}}
-                                                        key={question.id}
-                                                        to={'/question/edit/'+question.id}>
-                                                        <Edit />
-                                                    </Link>
-                                                    <Delete
-                                                        style={{cursor: "pointer"}}
-                                                        onClick={ () => {
-                                                        axios.delete('/api/questions/'+question.id)
-                                                            .then( () => {
-                                                                setIsLoading(true);
-                                                                axios('/api/questions')
-                                                                    .then( response => {
-                                                                        setQuestions(response.data);
-                                                                        setIsLoading(false);
-                                                                    });
-                                                            });
-                                                    } } />
-                                                </TableCell>
+                    <Grid container spacing={4}>
+                        {questions.map( (theme) => (
+                            <Grid key={theme.id} item xs={12}>
+                                <Typography variant="h5" gutterBottom={true}>
+                                    {theme.title}
+                                </Typography>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Titel</TableCell>
+                                                <TableCell style={{width: '180px'}}>Typ</TableCell>
+                                                <TableCell style={{width: '80px'}} align={"right"}>Aktionen</TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </div>
-                    ))}
-                </div>
+                                        </TableHead>
+                                        <TableBody>
+                                            {theme.questions.map( (question) => (
+                                                <TableRow key={question.id}>
+                                                    <TableCell>{question.title}</TableCell>
+                                                    <TableCell>{question.question_type.title}</TableCell>
+                                                    <TableCell align={"right"}>
+                                                        <Link
+                                                            style={{color: "#000000"}}
+                                                            key={question.id}
+                                                            to={'/question/edit/'+question.id}>
+                                                            <Edit />
+                                                        </Link>
+                                                        <Delete
+                                                            style={{cursor: "pointer"}}
+                                                            onClick={ () => {
+                                                                deleteEntry("questions", question.id)
+                                                                    .then( () => {
+                                                                        setIsLoading(true);
+                                                                        fetchAll("questions/group/theme")
+                                                                            .then( response => {
+                                                                                setQuestions(response);
+                                                                                setIsLoading(false);
+                                                                            });
+                                                                    });
+                                                        } } />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
             }
         </div>
     );
 
-}
+};

@@ -39,6 +39,7 @@ class ThemeController extends Controller
             $uploadedFile->storeAs('themes', $fileName);
             $theme['img'] = 'themes/' . $fileName;
         }
+
         $theme->save();
 
         return "";
@@ -65,16 +66,19 @@ class ThemeController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $uploadedFile = $request->file('file');
-        $fileName = "intro-image-theme-" . $id . "." . strtolower($uploadedFile->getClientOriginalExtension());
-        $uploadedFile->storeAs('themes', $fileName);
 
         $theme = Theme::find($id);
         $theme['title'] = $request['title'];
         $theme['description'] = $request['description'];
-        $theme['img'] = 'themes/' . $fileName;
-        $theme->save();
 
+        if($request->file('file')) {
+            $uploadedFile = $request->file('file');
+            $fileName = "intro-image-theme-" . $id . "." . strtolower($uploadedFile->getClientOriginalExtension());
+            $uploadedFile->storeAs('themes', $fileName);
+            $theme['img'] = 'themes/' . $fileName;
+        }
+
+        $theme->save();
         return "";
     }
 

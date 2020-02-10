@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core";
 
 import {Delete, Edit} from "@material-ui/icons";
-import {Link} from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
+import {fetchSingle, update} from "../../actions/apiActions";
 
 export default function CustomerEdit(props) {
 
@@ -24,35 +24,26 @@ export default function CustomerEdit(props) {
 
     useEffect( () => {
 
-        axios('/api/customers/' + props.match.params.id)
-            .then( response => {
-
-                let customer = response.data;
+        fetchSingle("customers", props.match.params.id)
+            .then( customer => {
                 setName(customer.name);
                 setStreet(customer.street);
                 setHouseNumber(customer.house_number);
                 setPlz(customer.plz);
                 setCity(customer.city);
-
                 setPersons(customer.people);
-
                 setIsLoading(false);
-
             });
 
     }, [props.match.params.id]);
 
-    const onSubmit = data => {
-        axios.put('/api/customers/' + props.match.params.id, {
-            name,
-            street,
-            houseNumber,
-            plz,
-            city
-        }).then( response => {
-            //console.log(response);
-            setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
-        });
+    const onSubmit = () => {
+
+        update("customers", props.match.params.id, { name, street, houseNumber, plz, city })
+            .then( () => {
+                setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
+            });
+
     };
 
     return (

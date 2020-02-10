@@ -6,6 +6,7 @@ import {
 } from "@material-ui/core";
 
 import Alert from '@material-ui/lab/Alert';
+import {fetchSingle, updateWithFile} from "../../actions/apiActions";
 
 export default function ThemeEdit(props) {
 
@@ -19,14 +20,10 @@ export default function ThemeEdit(props) {
 
     useEffect( () => {
 
-        axios.get('/api/themes/' + props.match.params.id)
-            .then( response => {
-                setTitle(response.data.title);
-                setDescription(response.data.description);
-                setIsLoading(false);
-            })
-            .catch( error => {
-                console.error(error);
+        fetchSingle("themes", props.match.params.id)
+            .then( theme => {
+                setTitle(theme.title);
+                setDescription(theme.description);
                 setIsLoading(false);
             });
 
@@ -48,13 +45,10 @@ export default function ThemeEdit(props) {
 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-            axios.post('/api/themes/' + props.match.params.id, data, config)
+            updateWithFile("themes", data, props.match.params.id)
                 .then(response => {
                     setSuccessMessage("Die Änderungen wurden gespeichert!");
                     setIsLoading(false);
-                })
-                .catch(error => {
-                    console.error(error);
                 });
 
         }

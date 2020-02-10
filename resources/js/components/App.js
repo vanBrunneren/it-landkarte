@@ -24,7 +24,6 @@ import {
 import CustomerList from "./customer/CustomerList";
 import CustomerCreate from "./customer/CustomerCreate";
 import CustomerEdit from "./customer/CustomerEdit";
-import CustomerDetail from "./customer/CustomerDetail";
 import LogoutHelper from "./auth/LogoutHelper";
 
 import PersonEdit from "./person/PersonEdit";
@@ -115,7 +114,6 @@ export default function App(props) {
                         <Route path={"/customer/edit/:id/person/create"} component={PersonCreate} />
                         <Route path={"/customer/edit/:id/person/:personId"} component={PersonEdit} />
                         <Route path={"/customer/edit/:id"} component={CustomerEdit} />
-                        <Route path={"/customer/:id"} component={CustomerDetail} />
 
                         <Route path={"/themes"} component={ThemeList} />
                         <Route path={"/theme/create"} component={ThemeCreate} />
