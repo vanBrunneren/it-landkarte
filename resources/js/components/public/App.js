@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 
 import StartComponent from "./StartComponent";
+import SurveyComponent from "./SurveyComponent";
 
 export default function App() {
 
@@ -23,6 +24,9 @@ export default function App() {
             <div style={{backgroundColor: '#000000'}}>
                 <Container maxWidth="md" style={{backgroundColor: '#FFFFFF'}}>
                     <Switch>
+                        <Route path={"/public/survey/:page?"} component={SurveyComponent} />
+
+
                         <Route path={"/public/start"} component={StartComponent} />
                     </Switch>
                 </Container>
