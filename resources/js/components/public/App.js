@@ -14,20 +14,16 @@ import {
     Switch
 } from "react-router-dom";
 
-import StartComponent from "./StartComponent";
 import SurveyComponent from "./SurveyComponent";
 
 export default function App() {
 
     return(
         <Router>
-            <div style={{backgroundColor: '#000000'}}>
-                <Container maxWidth="md" style={{backgroundColor: '#FFFFFF'}}>
+            <div style={{backgroundColor: '#000000', height: '100%'}}>
+                <Container maxWidth="md" style={{backgroundColor: '#FFFFFF', height: '100%'}}>
                     <Switch>
-                        <Route path={"/public/survey/:page?"} component={SurveyComponent} />
-
-
-                        <Route path={"/public/start"} component={StartComponent} />
+                        <Route path={"/public/survey/:page"} component={SurveyComponent} />
                     </Switch>
                 </Container>
             </div>

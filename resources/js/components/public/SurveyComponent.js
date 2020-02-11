@@ -2,49 +2,55 @@ import React, {useState, useEffect} from 'react';
 import {fetchAll} from "../../actions/apiActions";
 import {Link} from "react-router-dom";
 
+import Intro from './Intro';
+import Question from './Question';
+import {CircularProgress} from "@material-ui/core";
+
 export default function SurveyComponent(props) {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [questions, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState(null);
 
     const fetchAllData = async () => {
-
         let questions = await fetchAll('public/questions');
-        let themes = await fetchAll('public/themes');
-
-        //console.log(questions);
-        //console.log(themes);
-
         setQuestions(questions);
-        //setThemes(themes.data);
-
-    };
-
-    const getQuestionById = (id) => {
-        let questlist = questions.filter( question => {
-            console.log(question.id, parseInt(id), question.id === parseInt(id));
-            return question.id === parseInt(id);
-        });
-        console.log(questlist);
     };
 
     useEffect( () => {
+        fetchAllData().then( () => setIsLoading(false) );
+    }, [props.match.params.page]);
 
-        fetchAllData()
-            .then( () => {
-                setIsLoading(false);
-            });
+    const getComponent = (param) => {
 
-    }, []);
+        switch(param) {
+            case "intro":
+                return <Intro />
+                break;
+            default:
+                return <Question
+                            id={param}
+                            quest={questions[param-1]}/>;
+                break;
+        }
+
+    };
 
     return(
-        <div>
-            <Link to={"/public/survey/1"}>1</Link>
-            <Link to={"/public/survey/2"}>2</Link>
-            <Link to={"/public/survey/3"}>3</Link>
-            <Link to={"/public/survey/4"}>4</Link>
+        <div style={{height: '100%'}}>
+            {isLoading && <CircularProgress />}
+
             {questions &&
-                getQuestionById(props.match.params.page).title
+                <div style={{height: '100%', display: 'flex', flexDirection: 'column', flex: 1}}>
+                    <div style={{display: 'flex', flex: 1}}>
+                        {getComponent(props.match.params.page)}
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Link to={"/public/survey/intro"}>Intro</Link>
+                        {questions.map( (question, index) => (
+                            <Link to={"/public/survey/" + (index+1)} key={index}>{index+1}</Link>
+                        ))}
+                    </div>
+                </div>
             }
         </div>
     )

@@ -12,7 +12,7 @@ class PublicController extends Controller
 
     public function questions()
     {
-        return Question::with(['answerPossibilities', 'questionType', 'numberSelectTexts', 'textinputFields'])->get();
+        return Question::with(['answerPossibilities', 'questionType', 'numberSelectTexts', 'textinputFields', 'theme'])->get();
     }
 
     public function themes()
