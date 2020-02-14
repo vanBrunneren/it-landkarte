@@ -17,6 +17,8 @@ Route::get('public/{any?}', function() {
 
 Route::get('api/public/questions', 'Api\PublicController@questions');
 Route::get('api/public/themes', 'Api\PublicController@themes');
+Route::get('api/public/theme/{id}/image', 'Api\PublicController@showImage');
+Route::get('api/public/theme/{id}', 'Api\PublicController@theme');
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 

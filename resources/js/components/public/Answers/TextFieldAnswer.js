@@ -6,7 +6,7 @@ export default function TextFieldAnswer(props) {
     const [value, setValue] = useState("");
 
     return(
-        <div>
+        <div style={{width: '100%'}}>
             {props.textInputFields.map( field => (
                 <TextField
                     key={field.id}

@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {CircularProgress} from "@material-ui/core";
+import {
+    CircularProgress,
+    Typography,
+    Button
+} from "@material-ui/core";
 
 import TextFieldAnswer from "./Answers/TextFieldAnswer";
 import NumberSelect from "./Answers/NumberSelect";
@@ -38,13 +42,17 @@ export default function Question(props) {
     };
 
     return(
-        <div>
+        <div style={{width: '100%'}}>
             {isLoading && <CircularProgress />}
 
             {quest &&
-                <div>
-                    <div>{quest.theme ? quest.theme.title : ''}</div>
-                    <div>{quest.title}</div>
+                <div style={{width: '100%'}}>
+                    <Typography variant="h2" gutterBottom>
+                        {quest.theme ? quest.theme.title : ''}
+                    </Typography>
+                    <Typography variant="h5" gutterBottom>
+                        {quest.title}
+                    </Typography>
                     <div>{getAnswers(quest.question_type.key)}</div>
                 </div>
             }

@@ -4,16 +4,36 @@ import {Link} from "react-router-dom";
 
 import Intro from './Intro';
 import Question from './Question';
-import {CircularProgress} from "@material-ui/core";
+import {CircularProgress, Button} from "@material-ui/core";
 
 export default function SurveyComponent(props) {
 
+
+
     const [isLoading, setIsLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
+    const [pages, setPages] = useState([]);
+    const [prevPage, setPrevPage] = useState(null);
+    const [nextPage, setNextPage] = useState(null);
 
     const fetchAllData = async () => {
         let questions = await fetchAll('public/questions');
         setQuestions(questions);
+
+        let generatedPages = ['/public/survey/intro/' + questions[0].theme_id];
+        questions.map( (question, index) => {
+            if(questions[index+1] && questions[index+1].theme_id != question.theme_id) {
+                generatedPages.push("/public/survey/" + (index + 1));
+                generatedPages.push("/public/survey/intro/" + questions[index+1].theme_id);
+            } else {
+                generatedPages.push("/public/survey/" + (index + 1));
+            }
+        });
+        setPages(generatedPages);
+        let currentIndex = generatedPages.indexOf(props.match.url);
+        setPrevPage(generatedPages[currentIndex-1] ?? null);
+        setNextPage(generatedPages[currentIndex+1] ?? null);
+
     };
 
     useEffect( () => {
@@ -21,10 +41,10 @@ export default function SurveyComponent(props) {
     }, [props.match.params.page]);
 
     const getComponent = (param) => {
-
         switch(param) {
             case "intro":
-                return <Intro />
+                return <Intro
+                            {...props} />
                 break;
             default:
                 return <Question
@@ -32,23 +52,28 @@ export default function SurveyComponent(props) {
                             quest={questions[param-1]}/>;
                 break;
         }
-
     };
 
     return(
-        <div style={{height: '100%'}}>
+        <div style={{height: '100%', width: '100%'}}>
             {isLoading && <CircularProgress />}
 
             {questions &&
-                <div style={{height: '100%', display: 'flex', flexDirection: 'column', flex: 1}}>
-                    <div style={{display: 'flex', flex: 1}}>
+                <div style={{height: '100%', display: 'flex', flexDirection: 'column', flex: 1, width: '100%'}}>
+                    <div style={{display: 'flex', flex: 1, width: '100%'}}>
                         {getComponent(props.match.params.page)}
                     </div>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <Link to={"/public/survey/intro"}>Intro</Link>
-                        {questions.map( (question, index) => (
-                            <Link to={"/public/survey/" + (index+1)} key={index}>{index+1}</Link>
-                        ))}
+                        {prevPage &&
+                            <Link to={prevPage}>
+                                Vorherige
+                            </Link>
+                        }
+                        {nextPage &&
+                            <Link to={nextPage}>
+                                Nächste
+                            </Link>
+                        }
                     </div>
                 </div>
             }

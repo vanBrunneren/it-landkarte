@@ -3,10 +3,6 @@ import React from "react";
 
 import {
     Container,
-    Typography,
-    List,
-    ListItem,
-    ListItemText
 } from '@material-ui/core';
 import {
     BrowserRouter as Router,
@@ -21,9 +17,9 @@ export default function App() {
     return(
         <Router>
             <div style={{backgroundColor: '#000000', height: '100%'}}>
-                <Container maxWidth="md" style={{backgroundColor: '#FFFFFF', height: '100%'}}>
+                <Container maxWidth="md" style={{backgroundColor: '#FFFFFF', height: '100%', width: '100%'}}>
                     <Switch>
-                        <Route path={"/public/survey/:page"} component={SurveyComponent} />
+                        <Route path={"/public/survey/:page/:id?"} component={SurveyComponent} />
                     </Switch>
                 </Container>
             </div>

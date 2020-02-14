@@ -3,46 +3,35 @@ import React, {useEffect, useState} from 'react';
 import {
     CircularProgress,
     Typography,
-    List,
-    ListItem,
-    ListItemText
 } from "@material-ui/core";
-import {fetchAll} from "../../actions/apiActions";
+import {fetchSingle} from "../../actions/apiActions";
 
-export default function Intro() {
+export default function Intro(props) {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [themes, setThemes] = useState([]);
+    const [theme, setTheme] = useState([]);
 
-    const fetchThemes = async () => {
-        let themes = await fetchAll('public/themes');
-        setThemes(themes);
+    const fetchTheme = async (id) => {
+        let theme = await fetchSingle('public/theme', id);
+        setTheme(theme);
     };
 
     useEffect( () => {
-        fetchThemes().then( () => setIsLoading(false) );
-    }, []);
+        fetchTheme(props.match.params.id).then( () => setIsLoading(false) );
+    }, [props.match.params.id]);
 
     return(
         <div>
             {isLoading && <CircularProgress />}
 
             <Typography variant="h2" gutterBottom>
-                Einführung
+                {theme.title}
             </Typography>
-            <Typography variant="body1" gutterBottom>
-                Wir stellen Ihnen nachfolgend einige Fragen zum Digitalisierungsgrad Ihres Unternehmens. Lassen Sie uns über folgende Bereiche sprechen:
+            <Typography variant="body1" gutterBottom style={{whiteSpace: 'pre-line'}}>
+                {theme.description}
             </Typography>
-            {themes &&
-                <List component="nav" aria-label="secondary mailbox folders">
-                    {themes.map( theme => (
-                        <ListItem key={theme.id}>
-                            <ListItemText primary={"- " + theme.title} />
-                        </ListItem>
-                    ))}
-                </List>
-            }
-            <img src={"/img/intro_image.png"} style={{height: 200}}/>
+
+            <img src={"/api/public/theme/" + theme.id + "/image"} style={{height: 200}}/>
         </div>
     )
 
