@@ -5,6 +5,11 @@ export default function TextFieldAnswer(props) {
 
     const [value, setValue] = useState("");
 
+    const setTextFieldAnswer = (textFieldValue) => {
+        setValue(textFieldValue);
+        props.setTextFieldAnswer(textFieldValue);
+    };
+
     return(
         <div style={{width: '100%'}}>
             {props.textInputFields.map( field => (
@@ -12,7 +17,7 @@ export default function TextFieldAnswer(props) {
                     key={field.id}
                     name={"field_1"}
                     value={value}
-                    onChange={ e => setValue(e.target.value) }
+                    onChange={ e => setTextFieldAnswer(e.target.value) }
                     fullWidth
                     id={field.title}
                     label={field.title}

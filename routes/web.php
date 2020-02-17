@@ -20,9 +20,11 @@ Route::get('api/public/themes', 'Api\PublicController@themes');
 Route::get('api/public/theme/{id}/image', 'Api\PublicController@showImage');
 Route::get('api/public/theme/{id}', 'Api\PublicController@theme');
 
+Route::post('api/public/answer', 'Api\AnswerController@store');
+
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::middleware('auth')->group(function () {
 

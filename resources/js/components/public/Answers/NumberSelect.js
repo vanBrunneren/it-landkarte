@@ -14,6 +14,7 @@ export default function NumberSelect(props) {
 
     const handleChange = (event) => {
         setValue(parseInt(event.target.value));
+        props.setNumberSelect(parseInt(event.target.value));
     };
 
     const getSelectTextByKey = (key) => {

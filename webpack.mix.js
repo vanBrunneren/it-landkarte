@@ -13,8 +13,13 @@ const mix = require('laravel-mix');
 
 mix.react('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
-    .version();
+    .version()
+    .sourceMaps();
+
 
 mix.react('resources/js/app_public.js', 'public/js')
     .sass('resources/sass/app_public.scss', 'public/css')
-    .version();
+    .version()
+    .sourceMaps();
+
+//mix.browserSync('it-landkarte.test');

@@ -8,8 +8,6 @@ import {CircularProgress, Button} from "@material-ui/core";
 
 export default function SurveyComponent(props) {
 
-
-
     const [isLoading, setIsLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
     const [pages, setPages] = useState([]);
@@ -20,19 +18,19 @@ export default function SurveyComponent(props) {
         let questions = await fetchAll('public/questions');
         setQuestions(questions);
 
-        let generatedPages = ['/public/survey/intro/' + questions[0].theme_id];
+        let generatedPages = ['/public/'+props.match.params.hash+'/survey/intro/' + questions[0].theme_id];
         questions.map( (question, index) => {
             if(questions[index+1] && questions[index+1].theme_id != question.theme_id) {
-                generatedPages.push("/public/survey/" + (index + 1));
-                generatedPages.push("/public/survey/intro/" + questions[index+1].theme_id);
+                generatedPages.push("/public/"+props.match.params.hash+"/survey/" + (index + 1));
+                generatedPages.push("/public/"+props.match.params.hash+"/survey/intro/" + questions[index+1].theme_id);
             } else {
-                generatedPages.push("/public/survey/" + (index + 1));
+                generatedPages.push("/public/"+props.match.params.hash+"/survey/" + (index + 1));
             }
         });
         setPages(generatedPages);
         let currentIndex = generatedPages.indexOf(props.match.url);
-        setPrevPage(generatedPages[currentIndex-1] ?? null);
-        setNextPage(generatedPages[currentIndex+1] ?? null);
+        setPrevPage(generatedPages[currentIndex-1] ? generatedPages[currentIndex-1] : null);
+        setNextPage(generatedPages[currentIndex+1] ? generatedPages[currentIndex+1] : null);
 
     };
 

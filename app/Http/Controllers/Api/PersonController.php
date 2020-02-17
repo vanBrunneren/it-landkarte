@@ -41,6 +41,7 @@ class PersonController extends Controller
         $person['name'] = $request['name'];
         $person['email'] = $request['email'];
         $person['function_id'] = $request['function_id'];
+        $person['hash'] = md5($request['email']);
         $person->save();
         return "ja";
     }
@@ -71,6 +72,7 @@ class PersonController extends Controller
         $person['name'] = $request['name'];
         $person['email'] = $request['email'];
         $person['function_id'] = $request['function_id'];
+        $person['hash'] = md5($request['email']);
         $person->save();
         return "";
     }

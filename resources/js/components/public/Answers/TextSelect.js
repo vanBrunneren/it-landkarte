@@ -12,6 +12,7 @@ export default function TextSelect(props) {
 
     const handleChange = (event) => {
         setValue(parseInt(event.target.value));
+        props.setTextSelect(parseInt(event.target.value));
     };
 
     return(
