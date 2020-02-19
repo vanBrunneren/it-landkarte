@@ -1,12 +1,11 @@
 import React from 'react';
-import {
-    FormControl,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    Grid,
-    Typography
-} from "@material-ui/core";
+
+import FormControl from "@material-ui/core/FormControl";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 export default function NumberSelect(props) {
 

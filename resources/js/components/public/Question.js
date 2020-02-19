@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {
-    CircularProgress,
-    Typography,
-    Button
-} from "@material-ui/core";
+
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import TextFieldAnswer from "./Answers/TextFieldAnswer";
 import NumberSelect from "./Answers/NumberSelect";
 import TextSelect from './Answers/TextSelect';
-import {Add} from "@material-ui/icons";
+//import {Add} from "@material-ui/icons";
 import {create} from "../../actions/apiActions";
 
 export default function Question(props) {

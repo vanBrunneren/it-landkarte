@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {fetchAll} from "../../actions/apiActions";
-import {Link} from "react-router-dom";
+import Link from "react-router-dom/Link";
 
 import Intro from './Intro';
 import Question from './Question';
-import {CircularProgress, Button} from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function SurveyComponent(props) {
 

@@ -1,10 +1,9 @@
 import React from 'react';
-import {
-    FormControl,
-    RadioGroup,
-    FormControlLabel,
-    Radio
-} from "@material-ui/core";
+
+import FormControl from "@material-ui/core/FormControl";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
 
 export default function TextSelect(props) {
 

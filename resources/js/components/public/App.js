@@ -1,9 +1,7 @@
 import ReactDOM from "react-dom";
 import React from "react";
 
-import {
-    Container,
-} from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import {
     BrowserRouter as Router,
     Route,

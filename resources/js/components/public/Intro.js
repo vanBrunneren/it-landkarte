@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 
-import {
-    CircularProgress,
-    Typography,
-} from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+
 import {fetchSingle} from "../../actions/apiActions";
 
 export default function Intro(props) {
