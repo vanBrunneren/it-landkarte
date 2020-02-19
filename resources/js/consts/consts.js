@@ -1,6 +1,13 @@
-import {ChatBubble, ExitToApp, LibraryBooks, People, Person, QuestionAnswer, Extension} from "@material-ui/icons";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
+
+import ChatBubble from "@material-ui/icons/ChatBubble";
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import People from "@material-ui/icons/People";
+import Person from "@material-ui/icons/Person";
+import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
+import Extension from "@material-ui/icons/Extension";
 
 export const routes = [
     {

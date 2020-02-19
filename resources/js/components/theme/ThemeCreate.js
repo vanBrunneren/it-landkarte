@@ -1,10 +1,10 @@
 import React, {useRef, useState} from 'react';
-import {
-    Button,
-    Grid,
-    TextField
-} from "@material-ui/core";
+
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
+
 import {createWithFile} from "../../actions/apiActions";
 
 export default function ThemeCreate() {

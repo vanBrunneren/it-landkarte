@@ -1,19 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {
-    Button,
-    CircularProgress,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-    Grid
-} from "@material-ui/core";
-import {Add, Delete, Edit} from "@material-ui/icons";
-import {Link} from "react-router-dom";
+
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+
+import Add from "@material-ui/icons/Add";
+import Delete from "@material-ui/icons/Delete";
+import Edit from "@material-ui/icons/Edit";
+
+import Link from "react-router-dom/Link";
+
 import {deleteEntry, fetchAll} from "../../actions/apiActions";
 
 export default function QuestionList() {

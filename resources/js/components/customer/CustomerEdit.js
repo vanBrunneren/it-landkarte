@@ -1,13 +1,21 @@
 import React, {useEffect, useState} from 'react';
 
-import {
-    CircularProgress,
-    Button,
-    Grid, TableHead, TableRow, TableCell, Table, TableBody, Paper, TableContainer,
-    TextField, Typography
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
-import {Delete, Edit} from "@material-ui/icons";
+import Delete from "@material-ui/icons/Delete";
+import Edit from "@material-ui/icons/Edit";
+
 import Alert from "@material-ui/lab/Alert";
 import {deleteEntry, fetchSingle, update} from "../../actions/apiActions";
 

@@ -1,8 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Button, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Fab} from "@material-ui/core";
+
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import Fab from "@material-ui/core/Fab";
+import Grid from "@material-ui/core/Grid";
+
 import AddIcon from '@material-ui/icons/Add';
 import {create, fetchAll} from "../../actions/apiActions";
-import {Link} from "react-router-dom";
+import Link from "react-router-dom/Link";
 
 
 export default function PersonCreate(props) {

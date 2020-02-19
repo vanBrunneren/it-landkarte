@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import {Button, Grid, TextField} from "@material-ui/core";
 import {create} from "../../actions/apiActions";
+
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
 
 export default function PersonfunctionCreate(props) {
 

@@ -3,23 +3,20 @@ import React, {
     useEffect
 } from 'react';
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    CircularProgress,
-    Button, Grid
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
-import {
-    Edit,
-    Delete,
-    Add
-} from '@material-ui/icons';
+import Add from "@material-ui/icons/Add";
+import Delete from "@material-ui/icons/Delete";
+import Edit from "@material-ui/icons/Edit";
 
 import {
     deleteEntry,

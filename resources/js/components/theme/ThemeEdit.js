@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-    Button, CircularProgress,
-    Grid,
-    TextField
-} from "@material-ui/core";
+
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 import Alert from '@material-ui/lab/Alert';
 import {fetchSingle, updateWithFile} from "../../actions/apiActions";
