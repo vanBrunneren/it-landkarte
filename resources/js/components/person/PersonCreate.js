@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 
 import AddIcon from '@material-ui/icons/Add';
 import {create, fetchAll} from "../../actions/apiActions";
-import Link from "react-router-dom/Link";
+import { Link } from "react-router-dom";
 
 
 export default function PersonCreate(props) {

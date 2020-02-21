@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 
 import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
+import Visibility from "@material-ui/icons/Visibility";
 
 import Alert from "@material-ui/lab/Alert";
 import {deleteEntry, fetchSingle, update} from "../../actions/apiActions";
@@ -168,6 +169,9 @@ export default function CustomerEdit(props) {
                                         <TableCell>{person.email}</TableCell>
                                         <TableCell>{person.person_function.name}</TableCell>
                                         <TableCell align={"right"}>
+                                            <Visibility
+                                                style={{cursor: "pointer"}}
+                                                onClick={ () => window.open('/public/survey/'+person.hash+'/intro/4', "_blank") }/>
                                             <Edit
                                                 style={{cursor: "pointer"}}
                                                 onClick={ () => props.history.push('/customer/edit/' + props.match.params.id + "/person/" + person.id) } />

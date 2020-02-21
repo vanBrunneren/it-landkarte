@@ -10,7 +10,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-import Link from "react-router-dom/Link";
+import { Link } from "react-router-dom";
 
 import Add from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";

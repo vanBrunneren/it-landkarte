@@ -6,6 +6,7 @@ import {
     Switch,
     Route,
     Link,
+    Redirect
 } from "react-router-dom";
 
 import AppBar from "@material-ui/core/AppBar";
@@ -45,6 +46,7 @@ import HomeAppBar from './HomeAppBar';
 
 import { routes, bottomRoutes, useStyles} from '../consts/consts';
 import PersonfunctionCreate from "./personfunction/PersonfunctionCreate";
+import AnswerList from "./answer/AnswerList";
 
 export default function App(props) {
     const classes = useStyles();
@@ -109,6 +111,12 @@ export default function App(props) {
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     <Switch>
+                        <Route exact path="/">
+                            <Redirect to="/customers" />
+                        </Route>
+                        <Route exact path="/home">
+                            <Redirect to="/customers" />
+                        </Route>
                         <Route path={"/customers"} component={CustomerList} />
                         <Route path={"/customer/create"} component={CustomerCreate} />
                         <Route path={"/customer/edit/:id/person/create"} component={PersonCreate} />
@@ -127,6 +135,8 @@ export default function App(props) {
 
                         <Route path={"/personfunctions"} component={PersonfunctionList} />
                         <Route path={"/personfunction/create"} component={PersonfunctionCreate} />
+
+                        <Route path={"/results"} component={AnswerList} />
 
                         <Route path={"/user"} component={UserEdit} />
 

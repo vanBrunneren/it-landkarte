@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 
 import {fetchSingle} from "../../actions/apiActions";
@@ -21,16 +20,20 @@ export default function Intro(props) {
 
     return(
         <div>
-            {isLoading && <CircularProgress />}
+            <div className={'intro-content-container'}>
+                <Typography variant="h4" gutterBottom>
+                    {theme.title}
+                </Typography>
+                <div className={'question-title-container'}>
+                    <Typography variant="body1" gutterBottom style={{whiteSpace: 'pre-line'}}>
+                        {theme.description}
+                    </Typography>
+                </div>
+            </div>
 
-            <Typography variant="h2" gutterBottom>
-                {theme.title}
-            </Typography>
-            <Typography variant="body1" gutterBottom style={{whiteSpace: 'pre-line'}}>
-                {theme.description}
-            </Typography>
-
-            <img src={"/api/public/theme/" + theme.id + "/image"} style={{height: 200}}/>
+            <div className={'intro-image-container'}>
+                <img src={"/api/public/theme/" + theme.id + "/image"} style={{height: 250}}/>
+            </div>
         </div>
     )
 

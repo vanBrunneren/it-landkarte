@@ -21,6 +21,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
+import Typography from "@material-ui/core/Typography";
 
 import Add from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";
@@ -28,6 +29,7 @@ import Edit from "@material-ui/icons/Edit";
 
 import Alert from "@material-ui/lab/Alert";
 import {fetchAll, fetchSingle, update} from "../../actions/apiActions";
+import RadioGroup from "@material-ui/core/RadioGroup";
 
 export default function QuestionEdit(props) {
 
@@ -36,6 +38,7 @@ export default function QuestionEdit(props) {
     const [themes, setThemes] = useState([]);
     const [questionTypes, setQuestionTypes] = useState([]);
 
+    const [header, setHeader] = useState("");
     const [title, setTitle] = useState("");
     const [themeId, setThemeId] = useState("");
     const [questionTypeId, setQuestionTypeId] = useState("");
@@ -60,6 +63,7 @@ export default function QuestionEdit(props) {
         fetchSingle("questions", props.match.params.id)
             .then( question => {
 
+                setHeader(question.header);
                 setTitle(question.title);
                 setThemeId(question.theme_id);
                 setQuestionTypeId(question.question_type_id);
@@ -101,7 +105,7 @@ export default function QuestionEdit(props) {
 
     const onSubmit = () => {
 
-        update('questions', props.match.params.id, { title, theme_id: themeId, question_type_id: questionTypeId})
+        update('questions', props.match.params.id, { header, title, theme_id: themeId, question_type_id: questionTypeId})
             .then( response => {
                 //console.log(response);
                 setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
@@ -147,7 +151,9 @@ export default function QuestionEdit(props) {
                                     text: minTitle,
                                     questionId: props.match.params.id,
                                     key: 'min'
-                                }).then( response => console.log(response) );
+                                }).then( response => {
+                                    setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
+                                });
                                 setMinDialogOpen(false);
 
                             }} color="primary">
@@ -183,7 +189,9 @@ export default function QuestionEdit(props) {
                                     text: maxTitle,
                                     questionId: props.match.params.id,
                                     key: 'max'
-                                }).then( response => console.log(response) );
+                                }).then( response => {
+                                    setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
+                                } );
                                 setMaxDialogOpen(false);
 
                             }} color="primary">
@@ -234,14 +242,33 @@ export default function QuestionEdit(props) {
                     </Dialog>
 
                     <Grid container spacing={2}>
+
                         <Grid item xs={12}>
                             <TextField
+                                name={"header"}
+                                value={header}
+                                onChange={ e => setHeader(e.target.value) }
+                                fullWidth
+                                id={"header"}
+                                label={"Titel"}
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }} />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                multiline
+                                rows={"5"}
+                                rowsMax={"5"}
                                 name={"title"}
                                 value={title}
                                 onChange={ e => setTitle(e.target.value) }
                                 fullWidth
                                 id={"title"}
-                                label="Titel"
+                                label="Frage"
                                 margin="normal"
                                 variant="filled"
                                 InputLabelProps={{
@@ -348,24 +375,32 @@ export default function QuestionEdit(props) {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                { [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map( i => (
-                                    <FormControlLabel control={<Radio disabled value={i} name="radio-button-demo" />}
-                                        value={i}
-                                        key={i}
-                                        label={i}
-                                        labelPlacement="bottom"/>
-                                ))
-                                }
+
+                                <FormControl fullWidth component="fieldset">
+                                    <RadioGroup
+                                        style={{justifyContent: 'space-between'}}
+                                        row
+                                        aria-label="answers"
+                                        name="answers">
+                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map( nr => (
+                                            <FormControlLabel
+                                                key={nr}
+                                                value={nr}
+                                                control={<Radio disabled />}
+                                                label={nr}
+                                                labelPlacement={"bottom"}
+                                            />
+                                        ))}
+                                    </RadioGroup>
+                                </FormControl>
+
                             </Grid>
-                            <Grid item xs={3}>
-                                <Typography variant="subtitle1" gutterBottom>
+                            <Grid container justify="space-between">
+                                <Typography variant="subtitle1" gutterBottom style={{cursor: 'pointer'}}>
                                     {minTitle}
                                     <Edit onClick={() => setMinDialogOpen(true) }/>
                                 </Typography>
-                            </Grid>
-                            <Grid item xs={6} />
-                            <Grid item xs={3}>
-                                <Typography variant="subtitle1" gutterBottom>
+                                <Typography variant="subtitle1" gutterBottom style={{cursor: 'pointer'}}>
                                     {maxTitle}
                                     <Edit onClick={() => setMaxDialogOpen(true) }/>
                                 </Typography>

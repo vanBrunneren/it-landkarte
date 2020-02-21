@@ -17,33 +17,40 @@ export default function NumberSelect(props) {
     };
 
     const getSelectTextByKey = (key) => {
-        return props.numberSelectTexts.find( selectText => selectText.key == key);
+        let numberSelectText = props.numberSelectTexts.find( selectText => selectText.key == key);
+        if(numberSelectText) {
+            return numberSelectText;
+        } else {
+            return [];
+        }
     };
 
     return(
         <div>
-            <FormControl fullWidth component="fieldset">
-                <RadioGroup
-                    style={{justifyContent: 'space-between'}}
-                    row
-                    aria-label="answers"
-                    name="answers"
-                    value={value}
-                    onChange={handleChange}>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map( nr => (
-                        <FormControlLabel
-                            key={nr}
-                            value={nr}
-                            control={<Radio />}
-                            label={nr}
-                            labelPlacement={"bottom"}
-                        />
-                    ))}
-                </RadioGroup>
-            </FormControl>
+            <div className={'number-select-radio-container'}>
+                <FormControl fullWidth component="fieldset">
+                    <RadioGroup
+                        style={{justifyContent: 'space-between'}}
+                        row
+                        aria-label="answers"
+                        name="answers"
+                        value={value}
+                        onChange={handleChange}>
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map( nr => (
+                            <FormControlLabel
+                                key={nr}
+                                value={nr}
+                                control={<Radio />}
+                                label={nr}
+                                labelPlacement={"bottom"}
+                            />
+                        ))}
+                    </RadioGroup>
+                </FormControl>
+            </div>
             <Grid container justify="space-between">
-                <Typography variant="body1" >{getSelectTextByKey("min").text}</Typography>
-                <Typography variant="body1" >{getSelectTextByKey("max").text}</Typography>
+                <Typography variant="body2" >{getSelectTextByKey("min").text}</Typography>
+                <Typography variant="body2" >{getSelectTextByKey("max").text}</Typography>
             </Grid>
         </div>
     );

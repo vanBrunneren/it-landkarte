@@ -14,8 +14,8 @@ export default function App() {
 
     return(
         <Router>
-            <div style={{backgroundColor: '#000000', height: '100%'}}>
-                <Container maxWidth="md" style={{backgroundColor: '#FFFFFF', height: '100%', width: '100%'}}>
+            <div className={'root-container'}>
+                <Container maxWidth="md" className={'public-container'}>
                     <Switch>
                         <Route path={"/public/survey/:hash/:page/:id?"} component={SurveyComponent} />
                     </Switch>

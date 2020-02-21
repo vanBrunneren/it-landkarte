@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::post('api/questions/add-text-field', 'Api\QuestionController@addTextField');
     Route::delete('api/questions/remove-text-field/{id}', 'Api\QuestionController@removeTextField');
 
+    Route::get('api/answers', 'Api\AnswerController@index');
+
     // User Routes
     Route::get('api/user', 'Api\ApiUserController@show');
     Route::put('api/user', 'Api\ApiUserController@update');

@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import TextFieldAnswer from "./Answers/TextFieldAnswer";
 import NumberSelect from "./Answers/NumberSelect";
 import TextSelect from './Answers/TextSelect';
-//import {Add} from "@material-ui/icons";
 import {create} from "../../actions/apiActions";
 
 export default function Question(props) {
@@ -66,24 +65,22 @@ export default function Question(props) {
     };
 
     return(
-        <div style={{width: '100%'}}>
+        <div className={'question-single-container'}>
             {isLoading && <CircularProgress />}
 
             {quest &&
-                <div style={{width: '100%'}}>
-                    <Typography variant="h2" gutterBottom>
-                        {quest.theme ? quest.theme.title : ''}
+                <div className={'question-content-container'}>
+                    <Typography variant="h4" gutterBottom>
+                        {quest.header}
                     </Typography>
-                    <Typography variant="h5" gutterBottom>
-                        {quest.title}
-                    </Typography>
-                    <div>{getAnswers(quest.question_type.key)}</div>
-                    <Button
-                        onClick={ () => sendAnswer() }
-                        variant="contained"
-                        color="primary">
-                        Speichern
-                    </Button>
+                    <div className={'question-title-container'}>
+                        <Typography variant="body1" gutterBottom>
+                            {quest.title}
+                        </Typography>
+                    </div>
+                    <div>
+                        {getAnswers(quest.question_type.key)}
+                    </div>
                 </div>
             }
         </div>

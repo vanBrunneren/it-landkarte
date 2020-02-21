@@ -31,11 +31,12 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $question = new Question();
+        $question['header'] = $request['header'];
         $question['title'] = $request['title'];
         $question['theme_id'] = $request['theme_id'];
         $question['question_type_id'] = $request['question_type_id'];
         $question->save();
-        return "";
+        return $question;
     }
 
     /**
@@ -59,6 +60,7 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
+        $question['header'] = $request['header'];
         $question['title'] = $request['title'];
         $question['theme_id'] = $request['theme_id'];
         $question['question_type_id'] = $request['question_type_id'];

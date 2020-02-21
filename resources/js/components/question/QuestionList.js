@@ -16,7 +16,7 @@ import Add from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 
-import Link from "react-router-dom/Link";
+import { Link } from "react-router-dom";
 
 import {deleteEntry, fetchAll} from "../../actions/apiActions";
 
@@ -61,7 +61,8 @@ export default function QuestionList() {
                                     <Table>
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Titel</TableCell>
+                                                <TableCell style={{width: '220px'}}>Titel</TableCell>
+                                                <TableCell>Frage</TableCell>
                                                 <TableCell style={{width: '180px'}}>Typ</TableCell>
                                                 <TableCell style={{width: '80px'}} align={"right"}>Aktionen</TableCell>
                                             </TableRow>
@@ -69,6 +70,7 @@ export default function QuestionList() {
                                         <TableBody>
                                             {theme.questions.map( (question) => (
                                                 <TableRow key={question.id}>
+                                                    <TableCell>{question.header}</TableCell>
                                                     <TableCell>{question.title}</TableCell>
                                                     <TableCell>{question.question_type.title}</TableCell>
                                                     <TableCell align={"right"}>

@@ -13,7 +13,10 @@ const translations = {
     'questions': 'Fragen',
     'question': 'Frage',
     'create': 'hinzufügen',
-    'person': 'Person'
+    'person': 'Person',
+    'personfunctions': 'Funktionen',
+    'user': 'Benutzer',
+    'results': 'Auswertungen'
 };
 
 export default function HomeAppBar() {

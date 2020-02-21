@@ -20,4 +20,10 @@ class AnswerController extends Controller
         $answer->save();
         return "stored";
     }
+
+    public function index()
+    {
+        return Answer::with(['person', 'question', 'questionType'])->get();
+    }
+
 }
