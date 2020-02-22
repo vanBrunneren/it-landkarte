@@ -12,10 +12,20 @@ class AnswerController extends Controller
 {
     public function store(Request $request)
     {
-        $answer = new Answer();
-        $answer['person_id'] = $request['person_id'];
-        $answer['question_id'] = $request['question_id'];
-        $answer['question_type_id'] = $request['question_type_id'];
+        $person = Person::where('hash', '=', $request['hash'])->first();
+
+        $answer = Answer::where([
+            ['person_id', '=', $person['id']],
+            ['question_id', '=', $request['question_id']]
+        ])->first();
+
+        if(!$answer) {
+            $answer = new Answer();
+            $answer['person_id'] = $person['id'];
+            $answer['question_id'] = $request['question_id'];
+            $answer['question_type_id'] = $request['question_type_id'];
+        }
+
         $answer['number_answer'] = $request['number_answer'];
         $answer['text_answer'] = $request['text_answer'];
         $answer->save();

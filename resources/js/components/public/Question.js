@@ -20,11 +20,6 @@ export default function Question(props) {
     const [answer, setAnswer] = useState(null);
 
     useEffect( () => {
-        setQuest(props.quest);
-        setIsLoading(false);
-    }, [props.quest] );
-
-    useEffect( () => {
 
         fetchAll('answers/'+props.quest.id+"/"+props.match.params.hash)
             .then( response => {
@@ -33,9 +28,13 @@ export default function Question(props) {
                 } else {
                     setAnswer(null);
                 }
+
+                setQuest(props.quest);
+                setIsLoading(false);
+
             });
 
-    }, [props.quest])
+    }, [props.quest] );
 
     const getAnswers = (key) => {
 
@@ -67,17 +66,24 @@ export default function Question(props) {
 
     const sendAnswer = () => {
 
-        create('public/answer', {
-            person_id: 1,
-            question_id: quest.id,
-            question_type_id: quest.question_type.id,
-            number_answer: numberSelect,
-            text_answer: textFieldAnswer
-        })
-        .then( (res) => {
-            console.log(res);
-            //props.history.push('/customers')
-        });
+        setIsLoading(true);
+        if(numberSelect || textFieldAnswer) {
+            create('public/answer', {
+                hash: props.match.params.hash,
+                question_id: quest.id,
+                question_type_id: quest.question_type.id,
+                number_answer: numberSelect,
+                text_answer: textFieldAnswer
+            })
+                .then((res) => {
+                    setNumberSelect(null);
+                    setTextFieldAnswer(null);
+                    setAnswer(null);
+                    setIsLoading(false);
+                });
+        } else {
+            setIsLoading(false);
+        }
 
     };
 
@@ -85,7 +91,7 @@ export default function Question(props) {
         <div className={'question-single-container'}>
             {isLoading && <CircularProgress />}
 
-            {quest &&
+            {!isLoading &&
                 <div className={'question-content-container'}>
                     <Typography variant="h4" gutterBottom>
                         {quest.header}
@@ -104,7 +110,9 @@ export default function Question(props) {
             <div className={'question-component-buttons'}>
                 {props.prevPage ?
                     <Button
-                        onClick={ () => props.history.push(props.prevPage) }
+                        onClick={ () => {
+                            props.history.push(props.prevPage)
+                        }}
                         variant="contained"
                         color="secondary">
                         Vorherige Frage
@@ -113,14 +121,20 @@ export default function Question(props) {
 
                 {props.nextPage ?
                     <Button
-                        onClick={ () => props.history.push(props.nextPage) }
+                        onClick={ () => {
+                            sendAnswer();
+                            props.history.push(props.nextPage);
+                        }}
                         variant="contained"
                         color="primary">
                         Nächste Frage
                     </Button>
                     :
                     <Button
-                        onClick={() => props.history.push("/public/survey/" + props.match.params.hash + "/outro")}
+                        onClick={() => {
+                            sendAnswer();
+                            props.history.push("/public/survey/" + props.match.params.hash + "/outro")
+                        }}
                         variant="contained"
                         color="primary">
                         Umfrage abschliessen
