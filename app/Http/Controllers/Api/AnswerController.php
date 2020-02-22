@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Answer;
+use App\Person;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,6 +25,19 @@ class AnswerController extends Controller
     public function index()
     {
         return Answer::with(['person', 'question', 'questionType'])->get();
+    }
+
+    public function getAnswerByHashAndId(int $questionId, string $hash)
+    {
+        $person = Person::where('hash', '=', $hash)->first();
+        $answer = Answer::where([
+            ['person_id', '=', $person['id']],
+            ['question_id', '=', $questionId]
+        ])->first();
+
+        return $answer;
+
+
     }
 
 }

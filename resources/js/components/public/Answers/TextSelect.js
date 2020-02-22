@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import FormControl from "@material-ui/core/FormControl";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -14,12 +14,22 @@ export default function TextSelect(props) {
         props.setTextSelect(parseInt(event.target.value));
     };
 
+    useEffect( () => {
+        if(props.answer && props.answer.number_answer) {
+            setValue(props.answer.number_answer);
+        }
+    }, [props.answer]);
+
     return(
-        <div>
+        <div className={'text-select-container'}>
             <FormControl component="fieldset">
                 <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     {props.answerPossibilities.map( answer => (
-                        <FormControlLabel key={answer.id} value={answer.id} control={<Radio />} label={answer.title} />
+                        <FormControlLabel
+                            key={answer.id}
+                            value={answer.id}
+                            control={<Radio />}
+                            label={answer.title} />
                     ))}
                 </RadioGroup>
             </FormControl>

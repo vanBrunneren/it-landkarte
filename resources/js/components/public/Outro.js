@@ -22,7 +22,7 @@ export default function Outro() {
                         Damit wir uns optimal auf den Workshop mit Ihnen vorbereiten können, benötigen wir noch ein paar wenige Angaben von Ihnen.
                     </Typography>
                 </div>
-                <Grid container spacing={2}>
+                <div container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
                             required
@@ -128,7 +128,15 @@ export default function Outro() {
                                 shrink: true,
                             }}/>
                     </Grid>
-                </Grid>
+                    <div className={'outro-button-container'}>
+                        <Button
+                            onClick={() => props.history.push("/public/survey/" + props.match.params.hash + "/outro")}
+                            variant="contained"
+                            color="primary">
+                            Umfrage absenden
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     );

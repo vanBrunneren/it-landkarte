@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TextField from "@material-ui/core/TextField";
 
 export default function TextFieldAnswer(props) {
@@ -9,6 +9,12 @@ export default function TextFieldAnswer(props) {
         setValue(textFieldValue);
         props.setTextFieldAnswer(textFieldValue);
     };
+
+    useEffect( () => {
+        if(props.answer && props.answer.text_answer) {
+            setValue(props.answer.text_answer);
+        }
+    }, [props.answer]);
 
     return(
         <div style={{width: '100%'}}>

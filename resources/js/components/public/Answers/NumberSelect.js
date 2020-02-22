@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import FormControl from "@material-ui/core/FormControl";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -24,6 +24,14 @@ export default function NumberSelect(props) {
             return [];
         }
     };
+
+    useEffect( () => {
+        if(props.answer && props.answer.number_answer) {
+            setValue(props.answer.number_answer);
+        } else {
+            setValue(0);
+        }
+    }, [props.answer]);
 
     return(
         <div>

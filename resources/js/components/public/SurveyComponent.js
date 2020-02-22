@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {fetchAll} from "../../actions/apiActions";
-import { Link } from "react-router-dom";
 
 import Intro from './Intro';
 import Question from './Question';
@@ -44,14 +43,21 @@ export default function SurveyComponent(props) {
         switch(param) {
             case "intro":
                 return <Intro
+                            prevPage={prevPage}
+                            nextPage={nextPage}
                             {...props} />;
                 break;
             case "outro":
                 return <Outro
+                            prevPage={prevPage}
+                            nextPage={nextPage}
                             {...props} />;
                 break;
             default:
                 return <Question
+                            {...props}
+                            prevPage={prevPage}
+                            nextPage={nextPage}
                             id={param}
                             quest={questions[param-1]}/>;
                 break;
@@ -60,40 +66,11 @@ export default function SurveyComponent(props) {
 
     return(
         <div className={'survey-component-container'}>
-            {isLoading && <CircularProgress color={'black'}/>}
+            {isLoading && <CircularProgress color={'primary'}/>}
 
             {questions &&
                 <div className={'questions-container'}>
-                    <div className={'questions-component-container'}>
-                        {getComponent(props.match.params.page)}
-                    </div>
-                    <div className={'question-component-buttons'}>
-                        {prevPage ?
-                            <Button
-                                onClick={ () => props.history.push(prevPage) }
-                                variant="contained"
-                                color="secondary">
-                                Vorherige Frage
-                            </Button>
-                            :
-                            <div />
-                        }
-                        {nextPage ?
-                            <Button
-                                onClick={ () => props.history.push(nextPage) }
-                                variant="contained"
-                                color="primary">
-                                Nächste Frage
-                            </Button>
-                            :
-                            <Button
-                                onClick={() => props.history.push("/public/survey/" + props.match.params.hash + "/outro")}
-                                variant="contained"
-                                color="primary">
-                                Umfrage abschliessen
-                            </Button>
-                        }
-                    </div>
+                    {getComponent(props.match.params.page)}
                 </div>
             }
         </div>
