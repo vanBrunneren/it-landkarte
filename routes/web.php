@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('api/questions/remove-text-field/{id}', 'Api\QuestionController@removeTextField');
 
     Route::get('api/answers', 'Api\AnswerController@index');
+    Route::get('api/answers/answersByCustomer/{id}', 'Api\AnswerController@getAnswersGroupedByCustomers');
     Route::get('api/answers/{questionId}/{hash}', 'Api\AnswerController@getAnswerByHashAndId');
 
     // User Routes

@@ -10,6 +10,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableBody from "@material-ui/core/TableBody";
 
+import RadarChart from 'react-svg-radar-chart';
+
 export default function AnswerList() {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +19,7 @@ export default function AnswerList() {
 
     useEffect( () => {
 
-        fetchAll('answers')
+        fetchAll('answers/answersByCustomer/1')
             .then( answers => {
                 console.log(answers);
                 setAnswers(answers);
@@ -31,6 +33,85 @@ export default function AnswerList() {
             {isLoading && <CircularProgress />}
 
             {answers &&
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Kundenname</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {answers.map((answer) => {
+
+
+                                    let singleAnswer = answer.answers.map( singleAnswer => (
+                                        <div>
+                                            <p>{singleAnswer.number_answer}</p>
+                                            <p>{singleAnswer.text_answer}</p>
+                                        </div>
+                                    ));
+
+
+                                    return (
+                                        <TableRow>
+                                            <TableCell>
+                                                <p>{answer.question.header}</p>
+                                                <p>{answer.question.title}</p>
+                                                {singleAnswer}
+                                                <RadarChart
+                                                    captions={
+                                                        {
+                                                            // columns
+                                                            website: 'Webseite / Webauftritt',
+                                                            webshop: 'Webseite - Webshop',
+                                                            social: 'Social Media Integration',
+                                                            campaign: 'Online Kampagnen',
+                                                            crm: 'Lead-Management / CRM',
+                                                            customer: 'Kundendaten Mgt',
+                                                        }
+                                                    }
+                                                    data={[
+                                                        {
+                                                            data: {
+                                                                website: 0.7,
+                                                                webshop: .8,
+                                                                social: 0.9,
+                                                                campaign: 0.67,
+                                                                crm: 0.8,
+                                                                customer: 0.2
+                                                            },
+                                                            meta: { color: 'blue' }
+                                                        },
+                                                        {
+                                                            data: {
+                                                                website: 0.6,
+                                                                webshop: 0.7,
+                                                                social: 0.7,
+                                                                campaign: 0.7,
+                                                                crm: 0.9,
+                                                                customer: 0.5
+                                                            },
+                                                            meta: { color: 'red' }
+                                                        }
+                                                    ]}
+                                                    size={450}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            </Grid>
+
+            }
+
+            {/*answers &&
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TableContainer component={Paper}>
@@ -62,7 +143,7 @@ export default function AnswerList() {
                         </TableContainer>
                     </Grid>
                 </Grid>
-            }
+            */}
         </div>
     )
 

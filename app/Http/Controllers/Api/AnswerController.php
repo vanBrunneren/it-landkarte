@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Answer;
+use App\Customer;
 use App\Person;
+use App\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -47,7 +49,62 @@ class AnswerController extends Controller
 
         return $answer;
 
+    }
+
+    public function getAnswersGroupedByCustomers(int $id)
+    {
+        $customer = Customer::with('people')->find($id);
+        $questions = Question::all();
+
+        $answerArray = array();
+
+        foreach($questions as $question) {
+
+            foreach($customer['people'] as $person) {
+
+                $answer = Answer::where([
+                    ['question_id', '=', $question['id']],
+                    ['person_id', '=', $person['id']]
+                ])->first();
+
+                if($answer) {
+                    $answerArray[$question['id']]['question'] = $question;
+                    $answerArray[$question['id']]['answers'][] = $answer;
+                }
+
+            }
+
+        }
+
+        $result = array();
+        foreach($answerArray as $item) {
+            $result[] = $item;
+        }
+
+        return $result;
 
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
