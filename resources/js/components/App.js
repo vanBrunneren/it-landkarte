@@ -47,6 +47,7 @@ import HomeAppBar from './HomeAppBar';
 import { routes, bottomRoutes, useStyles} from '../consts/consts';
 import PersonfunctionCreate from "./personfunction/PersonfunctionCreate";
 import AnswerList from "./answer/AnswerList";
+import ConfluenceExport from "./export/ConfluenceExport";
 
 export default function App(props) {
     const classes = useStyles();
@@ -135,6 +136,8 @@ export default function App(props) {
 
                         <Route path={"/personfunctions"} component={PersonfunctionList} />
                         <Route path={"/personfunction/create"} component={PersonfunctionCreate} />
+
+                        <Route path={"/export"} component={ConfluenceExport} />
 
                         <Route path={"/results"} component={AnswerList} />
 
