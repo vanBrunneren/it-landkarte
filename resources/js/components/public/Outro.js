@@ -17,13 +17,14 @@ export default function Outro() {
                 <Typography variant="h4" gutterBottom>
                     Informationen
                 </Typography>
+                {/*
                 <div className={'question-title-container'}>
                     <Typography variant="body1" gutterBottom style={{whiteSpace: 'pre-line'}}>
                         Damit wir uns optimal auf den Workshop mit Ihnen vorbereiten können, benötigen wir noch ein paar wenige Angaben von Ihnen.
                     </Typography>
-                </div>
+                </div>*/}
                 <div container spacing={2}>
-                    <Grid item xs={12}>
+                    {/*<Grid item xs={12}>
                         <TextField
                             required
                             fullWidth
@@ -108,6 +109,7 @@ export default function Outro() {
                             </RadioGroup>
                         </FormControl>
                     </Grid>
+                    */}
                     <Grid item xs={12}>
                         <Typography variant="h6" gutterBottom>
                             Und zum Schluss...

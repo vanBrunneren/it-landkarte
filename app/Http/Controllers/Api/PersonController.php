@@ -94,4 +94,5 @@ class PersonController extends Controller
     {
         return PersonFunction::all();
     }
+
 }
