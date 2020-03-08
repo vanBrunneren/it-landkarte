@@ -10,6 +10,7 @@ export default function UserEdit() {
     const [isLoading, setIsLoading] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [confluenceEmail, setConfluenceEmail] = useState("");
     const [confluenceToken, setConfluenceToken] = useState("");
 
@@ -27,7 +28,7 @@ export default function UserEdit() {
 
     const onSubmit = () => {
 
-        axios.put('/api/user', { name, email, confluenceEmail, confluenceToken })
+        axios.put('/api/user', { name, email, confluenceEmail, confluenceToken, password })
             .then( response => {
                 console.log(response)
             });
@@ -63,6 +64,21 @@ export default function UserEdit() {
                                 fullWidth
                                 id={"email"}
                                 label="E-Mail"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                type="password"
+                                name={"password"}
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                fullWidth
+                                id={"password"}
+                                label="Passwort"
                                 margin="normal"
                                 variant="filled"
                                 InputLabelProps={{
