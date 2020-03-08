@@ -28,7 +28,7 @@ Auth::routes(['register' => false]);
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('api/export/confluence', 'Api\ExportController@confluence');
+    Route::get('api/export/confluence/{id}', 'Api\ExportController@confluence');
 
     // Custom Routes
     Route::get('api/persons/functions', 'Api\PersonController@personFunctions');

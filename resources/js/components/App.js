@@ -46,7 +46,9 @@ import HomeAppBar from './HomeAppBar';
 
 import { routes, bottomRoutes, useStyles} from '../consts/consts';
 import PersonfunctionCreate from "./personfunction/PersonfunctionCreate";
+
 import AnswerList from "./answer/AnswerList";
+import AnswerDetail from "./answer/AnswerDetail";
 
 export default function App(props) {
     const classes = useStyles();
@@ -137,6 +139,7 @@ export default function App(props) {
                         <Route path={"/personfunction/create"} component={PersonfunctionCreate} />
 
                         <Route path={"/results"} component={AnswerList} />
+                        <Route path={"/result/:id"} component={AnswerDetail} />
 
                         <Route path={"/user"} component={UserEdit} />
 

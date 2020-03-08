@@ -19,6 +19,8 @@ class ApiUserController extends Controller
         $user = Auth::user();
         $user['name'] = $request['name'];
         $user['email'] = $request['email'];
+        $user['confluence_email'] = $request['confluenceEmail'];
+        $user['confluence_token'] = $request['confluenceToken'];
         $user->save();
         return "updated";
     }

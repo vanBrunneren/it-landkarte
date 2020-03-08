@@ -51,10 +51,10 @@ class AnswerController extends Controller
 
     }
 
-    public function getAnswersGroupedByCustomers(int $id)
+    public function getAnswersGroupedByCustomers(string $id)
     {
         $customer = Customer::with('people')->find($id);
-        $questions = Question::with('questionType')->get();
+        $questions = Question::with(['questionType', 'answerPossibilities'])->get();
 
         $answerArray = array();
 

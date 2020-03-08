@@ -28,6 +28,8 @@ export default function CustomerEdit(props) {
     const[houseNumber, setHouseNumber] = useState("");
     const[plz, setPlz] = useState("");
     const[city, setCity] = useState("");
+    const[confluenceSpace, setConfluenceSpace] = useState("");
+    const[confluenceUrl, setConfluenceUrl] = useState();
     const[persons, setPersons] = useState(null);
     const[successMessage, setSuccessMessage] = useState(null);
 
@@ -40,6 +42,8 @@ export default function CustomerEdit(props) {
                 setPlz(customer.plz);
                 setCity(customer.city);
                 setPersons(customer.people);
+                setConfluenceSpace(customer.confluence_space);
+                setConfluenceUrl(customer.confluence_url);
                 setIsLoading(false);
             });
     }
@@ -50,7 +54,7 @@ export default function CustomerEdit(props) {
 
     const onSubmit = () => {
 
-        update("customers", props.match.params.id, { name, street, houseNumber, plz, city })
+        update("customers", props.match.params.id, { name, street, houseNumber, plz, city, confluenceSpace, confluenceUrl })
             .then( () => setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!"));
 
     };
@@ -131,6 +135,34 @@ export default function CustomerEdit(props) {
                         name={"city"}
                         value={city}
                         label="Ort"
+                        margin="normal"
+                        variant="filled"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}/>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        onChange={ e => setConfluenceSpace(e.target.value) }
+                        fullWidth
+                        id={"confluenceSpace"}
+                        name={"confluenceSpace"}
+                        value={confluenceSpace}
+                        label="Confluence Space"
+                        margin="normal"
+                        variant="filled"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}/>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        onChange={ e => setConfluenceUrl(e.target.value) }
+                        fullWidth
+                        id={"confluenceUrl"}
+                        name={"confluenceUrl"}
+                        value={confluenceUrl}
+                        label="Confluence Url"
                         margin="normal"
                         variant="filled"
                         InputLabelProps={{

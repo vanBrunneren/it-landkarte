@@ -10,6 +10,8 @@ export default function UserEdit() {
     const [isLoading, setIsLoading] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [confluenceEmail, setConfluenceEmail] = useState("");
+    const [confluenceToken, setConfluenceToken] = useState("");
 
     useEffect( () => {
 
@@ -17,13 +19,15 @@ export default function UserEdit() {
             .then( response => {
                 setName(response.data.name);
                 setEmail(response.data.email);
+                setConfluenceEmail(response.data.confluence_email);
+                setConfluenceToken(response.data.confluence_token);
             });
 
     }, []);
 
     const onSubmit = () => {
 
-        axios.put('/api/user', { name, email })
+        axios.put('/api/user', { name, email, confluenceEmail, confluenceToken })
             .then( response => {
                 console.log(response)
             });
@@ -59,6 +63,34 @@ export default function UserEdit() {
                                 fullWidth
                                 id={"email"}
                                 label="E-Mail"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name={"confluenceEmail"}
+                                value={confluenceEmail}
+                                onChange={e => setConfluenceEmail(e.target.value)}
+                                fullWidth
+                                id={"confluenceEmail"}
+                                label="Confluence E-Mail Adresse"
+                                margin="normal"
+                                variant="filled"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name={"confluenceToken"}
+                                value={confluenceToken}
+                                onChange={e => setConfluenceToken(e.target.value)}
+                                fullWidth
+                                id={"confluenceToken"}
+                                label="Confluence Token"
                                 margin="normal"
                                 variant="filled"
                                 InputLabelProps={{

@@ -84,6 +84,8 @@ class CustomerController extends Controller
         $customer['house_number'] = $request['houseNumber'];
         $customer['plz'] = $request['plz'];
         $customer['city'] = $request['city'];
+        $customer['confluence_space'] = $request['confluenceSpace'];
+        $customer['confluence_url'] = $request['confluenceUrl'];
         $customer->save();
         return $customer;
     }
