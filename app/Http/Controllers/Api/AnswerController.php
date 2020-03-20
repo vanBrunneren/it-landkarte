@@ -54,7 +54,7 @@ class AnswerController extends Controller
     public function getAnswersGroupedByCustomers(string $id)
     {
         $customer = Customer::with('people')->find($id);
-        $questions = Question::with(['questionType', 'answerPossibilities'])->get();
+        $questions = Question::with(['questionType', 'answerPossibilities', 'theme'])->get();
 
         $answerArray = array();
 
@@ -62,7 +62,7 @@ class AnswerController extends Controller
 
             foreach($customer['people'] as $person) {
 
-                $answer = Answer::where([
+                $answer = Answer::with(['person', 'person.personFunction'])->where([
                     ['question_id', '=', $question['id']],
                     ['person_id', '=', $person['id']]
                 ])->first();

@@ -48,6 +48,7 @@ import { routes, bottomRoutes, useStyles} from '../consts/consts';
 import PersonfunctionCreate from "./personfunction/PersonfunctionCreate";
 
 import AnswerList from "./answer/AnswerList";
+//import AnswerDetail from "./answer/__AnswerDetail";
 import AnswerDetail from "./answer/AnswerDetail";
 
 export default function App(props) {

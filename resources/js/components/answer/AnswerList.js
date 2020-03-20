@@ -42,23 +42,17 @@ export default function AnswerList(props) {
                                             <TableCell>Adresse</TableCell>
                                             <TableCell>PLZ</TableCell>
                                             <TableCell>Ort</TableCell>
-                                            <TableCell align={"right"}>Actions</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {customers.map((customer, index) => (
-                                            <TableRow key={customer.id}>
+                                            <TableRow style={{cursor: "pointer"}} key={customer.id} onClick={ () => props.history.push('/result/' + customer.id) }>
                                                 <TableCell component="th" scope="row">
                                                     {customer.name}
                                                 </TableCell>
                                                 <TableCell>{customer.street + " " + customer.house_number}</TableCell>
                                                 <TableCell>{customer.plz}</TableCell>
                                                 <TableCell>{customer.city}</TableCell>
-                                                <TableCell align={"right"}>
-                                                    <Visibility
-                                                        style={{cursor: "pointer"}}
-                                                        onClick={ () => props.history.push('/result/' + customer.id) }/>
-                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
