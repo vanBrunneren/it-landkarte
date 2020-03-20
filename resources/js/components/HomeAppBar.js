@@ -16,7 +16,8 @@ const translations = {
     'person': 'Person',
     'personfunctions': 'Funktionen',
     'user': 'Benutzer',
-    'results': 'Auswertungen'
+    'results': 'Auswertungen',
+    'result': 'Auswertung',
 };
 
 export default function HomeAppBar() {

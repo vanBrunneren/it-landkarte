@@ -2,18 +2,22 @@ import React, {useEffect, useState} from 'react';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {fetchAll} from "../../actions/apiActions";
 import Grid from "@material-ui/core/Grid";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 export default function AnswerDetail(props) {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [answers, setAnswers] = useState([]);
     const [answersByTheme, setAnswersByTheme] = useState([]);
 
     useEffect( () => {
 
         fetchAll('answers/answersByCustomer/'+props.match.params.id)
             .then( answers => {
-                setAnswers(answers);
 
                 let answerThemeArray = [];
                 answers.forEach( answer => {
@@ -31,9 +35,11 @@ export default function AnswerDetail(props) {
 
     return(
         <div>
-            {isLoading && <CircularProgress />}
+            {isLoading && <div style={{justifyContent: "center", alignItems: "center", display: "flex", height: "500px"}}>
+                <CircularProgress />
+            </div>}
 
-            {answers &&
+            {!isLoading &&
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     { answersByTheme &&
@@ -57,7 +63,6 @@ export default function AnswerDetail(props) {
 
                             // Number Select Answers ---------
                             let numberSelectContainer;
-                            let themeData;
                             if(numberSelects) {
 
                                 if(numberSelects.length > 2) {
@@ -78,7 +83,6 @@ export default function AnswerDetail(props) {
 
                                     let answerStringArray = [];
                                     numberSelects.map(nrSel => {
-                                        themeData = nrSel.question.theme;
                                         nrSel.answers.map((answer, i) => {
                                             if (!answerStringArray[i]) answerStringArray[i] = [];
                                             answerStringArray[i].push(answer.number_answer * 10 + ",");
@@ -107,26 +111,25 @@ export default function AnswerDetail(props) {
                                     numberSelectUrl += "&";
 
                                     let answerTable = numberSelects.map( numberSelect => {
-                                        
+
                                         let numberSelectTableAnswers = numberSelect.answers.map( numberSelectTableAnswer => {
                                               return(
-                                                  <td>
+                                                  <TableCell align={"center"}>
                                                       {numberSelectTableAnswer.number_answer}
-                                                  </td>
+                                                  </TableCell>
                                               );
                                         });
 
                                         return(
-                                            <tr>
-                                                <td>{numberSelect.question.title}</td>
+                                            <TableRow>
+                                                <TableCell>{numberSelect.question.title}</TableCell>
                                                 {numberSelectTableAnswers}
-                                            </tr>
+                                            </TableRow>
                                         );
                                     });
 
                                     let tableNames = [];
                                     for(let nrSel of numberSelects) {
-                                        themeData = nrSel.question.theme;
                                         for(let nrSelAnsw of nrSel.answers) {
                                             let personString = nrSelAnsw.person.prename + " " + nrSelAnsw.person.name + " (" + nrSelAnsw.person.person_function.name + ")";
                                             if(tableNames.indexOf(personString) == -1) {
@@ -136,31 +139,30 @@ export default function AnswerDetail(props) {
                                     }
 
                                     numberSelectContainer = (
-                                        <div>
-                                            <h2>{themeData.title}</h2>
-                                            <img src={numberSelectUrl} />
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Frage</th>
+                                        <div style={{marginBottom: "20px"}}>
+                                            <Table>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Frage</TableCell>
                                                         {tableNames.map( tblNms => (
-                                                            <th>{tblNms}</th>
+                                                            <TableCell align={"center"}>{tblNms}</TableCell>
                                                         ))}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
                                                     {answerTable}
-                                                </tbody>
-                                            </table>
+                                                </TableBody>
+                                            </Table>
+                                            <div style={{marginTop: "30px"}}>
+                                                <img src={numberSelectUrl} />
+                                            </div>
                                         </div>
                                     );
 
                                 } else {
 
-                                    let themeData = [];
                                     let tableNames = [];
                                     for(let nrSel of numberSelects) {
-                                        themeData = nrSel.question.theme;
                                         for(let nrSelAnsw of nrSel.answers) {
                                             let personString = nrSelAnsw.person.prename + " " + nrSelAnsw.person.name + " (" + nrSelAnsw.person.person_function.name + ")";
                                             if(tableNames.indexOf(personString) == -1) {
@@ -201,37 +203,36 @@ export default function AnswerDetail(props) {
 
                                         let nrSelAnswer = nrSel.answers.map( nrSelAnsw => {
                                             return(
-                                                <td>{nrSelAnsw.number_answer}</td>
+                                                <TableCell align={"center"}>{nrSelAnsw.number_answer}</TableCell>
                                             );
                                         });
 
                                         return(
-                                            <tr>
-                                                <td>{++i}</td>
-                                                <td>{nrSel.question.title}</td>
+                                            <TableRow>
+                                                <TableCell>{++i}</TableCell>
+                                                <TableCell>{nrSel.question.title}</TableCell>
                                                 {nrSelAnswer}
-                                            </tr>
+                                            </TableRow>
                                         );
                                     });
 
                                     numberSelectContainer = (
-                                        <div>
-                                            <h1>{themeData.title}</h1>
+                                        <div style={{marginTop: "40px", marginBottom: "30px"}}>
                                             <img src={numberSelectUrl}/>
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nummer</th>
-                                                        <th>Frage</th>
+                                            <Table>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Nummer</TableCell>
+                                                        <TableCell>Frage</TableCell>
                                                         {tableNames.map( tblNms => (
-                                                            <th>{tblNms}</th>
+                                                            <TableCell align={"center"}>{tblNms}</TableCell>
                                                         ))}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
                                                     {tableAnswers}
-                                                </tbody>
-                                            </table>
+                                                </TableBody>
+                                            </Table>
                                         </div>
                                     );
 
@@ -247,24 +248,57 @@ export default function AnswerDetail(props) {
 
                                     let answerPossibilities = text.question.answer_possibilities.map( answerPos => {
 
-                                        let counter = 0;
-                                        text.answers.map( answer => {
-                                            if(answer.number_answer == answerPos.id) counter++;
+                                        let personAnswers = text.answers.map( pAns => {
+
+                                            if(pAns.number_answer == answerPos.id) {
+                                                return (
+                                                    <TableCell style={{width: "100px"}} align={"center"}>
+                                                        <CheckBoxIcon />
+                                                    </TableCell>
+                                                );
+                                            } else {
+                                                return (
+                                                    <TableCell></TableCell>
+                                                );
+                                            }
+
                                         });
 
                                         return(
-                                            <div key={answerPos.title}>
-                                                <p>{counter + " " + answerPos.title}</p>
-                                            </div>
+                                            <TableRow>
+                                                <TableCell>{answerPos.title}</TableCell>
+                                                {personAnswers}
+                                            </TableRow>
                                         );
+
                                     });
 
-                                    return (
-                                        <div key={text.question.title}>
-                                            <h2>{text.question.title}</h2>
-                                            {answerPossibilities}
-                                        </div>
+
+                                    let tableNames = [];
+                                    for(let txtSelAnsw of text.answers) {
+                                        let personString = txtSelAnsw.person.prename + " " + txtSelAnsw.person.name + " (" + txtSelAnsw.person.person_function.name + ")";
+                                        if(tableNames.indexOf(personString) == -1) {
+                                            tableNames.push(personString);
+                                        }
+                                    }
+
+
+                                    return(
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell style={{width: '800px'}}>{text.question.title}</TableCell>
+                                                    {tableNames.map( tblNms => (
+                                                        <TableCell>{tblNms}</TableCell>
+                                                    ))}
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {answerPossibilities}
+                                            </TableBody>
+                                        </Table>
                                     );
+
                                 });
                             }
                             // ------------------------------------------------
@@ -272,21 +306,42 @@ export default function AnswerDetail(props) {
                             // Text Field Answers -----------------------------
                             let textFieldAnswers;
                             if(textFields) {
+
+                                let tableNames = [];
+                                for(let nrSel of numberSelects) {
+                                    for(let nrSelAnsw of nrSel.answers) {
+                                        let personString = nrSelAnsw.person.prename + " " + nrSelAnsw.person.name + " (" + nrSelAnsw.person.person_function.name + ")";
+                                        if(tableNames.indexOf(personString) == -1) {
+                                            tableNames.push(personString);
+                                        }
+                                    }
+                                }
+
                                 textFieldAnswers = textFields.map( tfAnswers => {
 
                                     let answers = tfAnswers.answers.map( ans => {
                                         return(
-                                            <div key={ans.text_answer}>
-                                                <p>{ans.text_answer}</p>
-                                            </div>
+                                            <TableCell align={"center"}>{ans.text_answer}</TableCell>
                                         )
                                     });
 
                                     return(
-                                        <div key={tfAnswers.question.title}>
-                                            <p>{tfAnswers.question.title}</p>
-                                            {answers}
-                                        </div>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Frage</TableCell>
+                                                    {tableNames.map( tblNms => (
+                                                        <TableCell align={"center"}>{tblNms}</TableCell>
+                                                    ))}
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell>{tfAnswers.question.title}</TableCell>
+                                                    {answers}
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
                                     )
                                 });
                             }
@@ -294,9 +349,10 @@ export default function AnswerDetail(props) {
 
                             return(
                                 <div key={index}>
-                                    {textSelectContainer}
-                                    {textFieldAnswers}
-                                    {numberSelectContainer}
+                                    <h3>Thema: {theme[0].question.theme.title}</h3>
+                                    <div>{textFieldAnswers}</div>
+                                    <div>{textSelectContainer}</div>
+                                    <div>{numberSelectContainer}</div>
                                 </div>
                             );
                         })
