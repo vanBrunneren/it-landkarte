@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Question;
 use App\Theme;
+use App\Person;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -36,6 +37,13 @@ class PublicController extends Controller
         } else {
             echo "";
         }
+    }
+
+    public function checkhash($hash)
+    {
+        $person = Person::where('hash', '=', $hash)->first();
+        if($person) return $person;
+        else return null;
     }
 
 }

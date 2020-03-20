@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {fetchAll} from "../../actions/apiActions";
+import {
+    fetchAll,
+    fetchSingle
+} from "../../actions/apiActions";
 
 import Intro from './Intro';
 import Question from './Question';
@@ -14,6 +17,8 @@ export default function SurveyComponent(props) {
     const [pages, setPages] = useState([]);
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
+
+    const [hashCheck, setHashCheck] = useState(false);
 
     const fetchAllData = async () => {
         let questions = await fetchAll('public/questions');
@@ -35,8 +40,26 @@ export default function SurveyComponent(props) {
 
     };
 
+    const checkHashValue = async () => {
+
+        let hashCheck = await fetchSingle('public/checkhash', props.match.params.hash);
+        if(!hashCheck) {
+            return false;
+        }
+        return true;
+
+    };
+
     useEffect( () => {
-        fetchAllData().then( () => setIsLoading(false) );
+
+        checkHashValue().then( hashCheck => {
+            if(hashCheck) {
+                fetchAllData().then(() => setIsLoading(false));
+            } else {
+                props.history.push('/public/error');
+            }
+        });
+
     }, [props.match.params.page]);
 
     const getComponent = (param) => {

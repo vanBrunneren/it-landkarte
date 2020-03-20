@@ -67,7 +67,7 @@ export default function CustomerList(props) {
                                 </TableHead>
                                 <TableBody>
                                     {customers.map((customer, index) => (
-                                        <TableRow key={customer.id}>
+                                        <TableRow key={customer.id} onClick={ () => props.history.push('/customer/edit/'+customer.id) } style={{cursor: "pointer"}}>
                                             <TableCell component="th" scope="row">
                                                 {customer.name}
                                             </TableCell>

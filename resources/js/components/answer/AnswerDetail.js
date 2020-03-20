@@ -143,7 +143,7 @@ export default function AnswerDetail(props) {
                                             <Table>
                                                 <TableHead>
                                                     <TableRow>
-                                                        <TableCell>Frage</TableCell>
+                                                        <TableCell style={{width: '60%'}}>Frage</TableCell>
                                                         {tableNames.map( tblNms => (
                                                             <TableCell align={"center"}>{tblNms}</TableCell>
                                                         ))}
@@ -222,8 +222,8 @@ export default function AnswerDetail(props) {
                                             <Table>
                                                 <TableHead>
                                                     <TableRow>
-                                                        <TableCell>Nummer</TableCell>
-                                                        <TableCell>Frage</TableCell>
+                                                        <TableCell style={{width: "5%"}}>Nummer</TableCell>
+                                                        <TableCell style={{width: "55%"}}>Frage</TableCell>
                                                         {tableNames.map( tblNms => (
                                                             <TableCell align={"center"}>{tblNms}</TableCell>
                                                         ))}
@@ -252,7 +252,7 @@ export default function AnswerDetail(props) {
 
                                             if(pAns.number_answer == answerPos.id) {
                                                 return (
-                                                    <TableCell style={{width: "100px"}} align={"center"}>
+                                                    <TableCell align={"center"}>
                                                         <CheckBoxIcon />
                                                     </TableCell>
                                                 );
@@ -287,9 +287,9 @@ export default function AnswerDetail(props) {
                                         <Table>
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell style={{width: '800px'}}>{text.question.title}</TableCell>
+                                                    <TableCell style={{width: '60%'}}>{text.question.title}</TableCell>
                                                     {tableNames.map( tblNms => (
-                                                        <TableCell>{tblNms}</TableCell>
+                                                        <TableCell align={"center"}>{tblNms}</TableCell>
                                                     ))}
                                                 </TableRow>
                                             </TableHead>
@@ -329,7 +329,7 @@ export default function AnswerDetail(props) {
                                         <Table>
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell>Frage</TableCell>
+                                                    <TableCell style={{width: '60%'}}>Frage</TableCell>
                                                     {tableNames.map( tblNms => (
                                                         <TableCell align={"center"}>{tblNms}</TableCell>
                                                     ))}

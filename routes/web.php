@@ -20,6 +20,8 @@ Route::get('api/public/themes', 'Api\PublicController@themes');
 Route::get('api/public/theme/{id}/image', 'Api\PublicController@showImage');
 Route::get('api/public/theme/{id}', 'Api\PublicController@theme');
 
+Route::get('api/public/checkhash/{hash}', 'Api\PublicController@checkhash');
+
 Route::post('api/public/answer', 'Api\AnswerController@store');
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

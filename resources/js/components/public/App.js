@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import SurveyComponent from "./SurveyComponent";
+import ErrorComponent from "./ErrorComponent";
 
 export default function App() {
 
@@ -17,6 +18,7 @@ export default function App() {
             <div className={'root-container'}>
                 <Container maxWidth="md" className={'public-container'}>
                     <Switch>
+                        <Route path={"/public/error"} component={ErrorComponent} />
                         <Route path={"/public/survey/:hash/:page/:id?"} component={SurveyComponent} />
                     </Switch>
                 </Container>
