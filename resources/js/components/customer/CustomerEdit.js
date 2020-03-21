@@ -18,7 +18,8 @@ import Edit from "@material-ui/icons/Edit";
 import Visibility from "@material-ui/icons/Visibility";
 
 import Alert from "@material-ui/lab/Alert";
-import {deleteEntry, fetchSingle, update, updateWithFile} from "../../actions/apiActions";
+import {create, deleteEntry, fetchAll, fetchSingle, update, updateWithFile} from "../../actions/apiActions";
+import {Checkbox} from "@material-ui/core";
 
 export default function CustomerEdit(props) {
 
@@ -32,12 +33,17 @@ export default function CustomerEdit(props) {
     const[confluenceUrl, setConfluenceUrl] = useState("");
     const[img, setImg] = useState("");
     const[persons, setPersons] = useState(null);
+    const[questions, setQuestions] = useState([]);
+    const[customerQuestions, setCustomerQuestions] = useState([]);
     const[successMessage, setSuccessMessage] = useState(null);
     const fileInput = useRef(null);
 
     function getCustomer() {
         fetchSingle("customers", props.match.params.id)
             .then( customer => {
+
+                setCustomerQuestions(customer.questions);
+
                 setName(customer.name);
                 setStreet(customer.street);
                 setHouseNumber(customer.house_number);
@@ -51,7 +57,13 @@ export default function CustomerEdit(props) {
             });
     }
 
+    async function getQuestions() {
+        let questions = await fetchAll("questions");
+        setQuestions(questions);
+    }
+
     useEffect( () => {
+        getQuestions();
         getCustomer();
     }, [props.match.params.id]);
 
@@ -275,6 +287,49 @@ export default function CustomerEdit(props) {
                         type="submit"
                         color="secondary">Person hinzufügen</Button>
                 </Grid>
+
+                { questions &&
+                    <div style={{marginTop: "40px"}}>
+                        <h5>Fragen für den Kunden bestimmen</h5>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Checkbox
+                                            checked={true}
+                                            onChange={ () => {
+                                                create("customers/setallquestions/" + props.match.params.id, {})
+                                                    .then( response => {
+                                                        console.log(response);
+                                                    });
+                                            }}
+                                        />
+                                    </TableCell>
+                                    <TableCell>Frage</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {questions.map( question => {
+                                    return(
+                                        <TableRow key={question.id}>
+                                            <TableCell>
+                                                <Checkbox
+                                                    checked={true}
+                                                    onChange={ () => {
+                                                        create("customers/setquestion/" + props.match.params.id + "/" + question.id, {})
+                                                            .then( response => {
+                                                                console.log(response);
+                                                            });
+                                                    }} />
+                                            </TableCell>
+                                            <TableCell>{question.title}</TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </div>
+                }
             </Grid>
         }
         </div>

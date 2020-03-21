@@ -34,4 +34,9 @@ class Question extends Model
         return $this->hasMany('App\TextinputFields');
     }
 
+    public function customers()
+    {
+        return $this->belongsToMany('App\Customer');
+    }
+
 }

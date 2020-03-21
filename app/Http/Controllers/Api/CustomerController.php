@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Customer;
+use App\CustomerQuestion;
+use App\Question;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -40,7 +42,7 @@ class CustomerController extends Controller
 
     public function show(customer $customer)
     {
-        return Customer::with(['people', 'people.personFunction'])->find($customer['id']);
+        return Customer::with(['people', 'people.personFunction', 'questions'])->find($customer['id']);
     }
 
     public function edit(customer $customer)
@@ -87,6 +89,52 @@ class CustomerController extends Controller
             echo $contents;
         } else {
             return "no Image found!";
+        }
+    }
+
+    public function setQuestion(int $customerId, int $questionId)
+    {
+
+        $customerQuestion = CustomerQuestion::where([
+            array("customer_id", "=", $customerId),
+            array("question_id", "=", $questionId)
+        ])->first();
+
+        if($customerQuestion) {
+            $saved = $customerQuestion->delete();
+        } else {
+            $customerQuestion = new CustomerQuestion();
+            $customerQuestion['customer_id'] = $customerId;
+            $customerQuestion['question_id'] = $questionId;
+            $saved = $customerQuestion->save();
+        }
+
+        if($saved) {
+            return [
+                "status" => "success"
+            ];
+        } else {
+            return [
+                "status" => "error"
+            ];
+        }
+    }
+
+    public function setAllQuestions(int $customerId)
+    {
+        $questions = Question::all();
+        foreach($questions as $question) {
+            $customerQuestion = CustomerQuestion::where([
+                array("customer_id", "=", $customerId),
+                array("question_id", "=", $question['id'])
+            ])->first();
+
+            if(!$customerQuestion) {
+                $customerQuestion = new CustomerQuestion();
+                $customerQuestion['customer_id'] = $customerId;
+                $customerQuestion['question_id'] = $question['id'];
+                $customerQuestion->save();
+            }
         }
     }
 

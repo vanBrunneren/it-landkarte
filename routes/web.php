@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('api/customers/{id}', 'Api\CustomerController@update');
     Route::get('api/customers/{id}/image', 'Api\CustomerController@showImage');
+    Route::post('api/customers/setquestion/{customerId}/{questionId}', 'Api\CustomerController@setQuestion');
+    Route::post('api/customers/setallquestions/{customerId}', 'Api\CustomerController@setAllQuestions');
 
     // CRUD Routes (must be under the custom routes)
     Route::apiResource('api/customers', 'Api\CustomerController');
