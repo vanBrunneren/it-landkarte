@@ -43,8 +43,6 @@ export default function ThemeEdit(props) {
             data.append('title', title);
             data.append('description', description);
 
-            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
             updateWithFile("themes", data, props.match.params.id)
                 .then(response => {
                     setSuccessMessage("Die Änderungen wurden gespeichert!");

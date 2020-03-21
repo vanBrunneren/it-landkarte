@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -18,7 +18,7 @@ import Edit from "@material-ui/icons/Edit";
 import Visibility from "@material-ui/icons/Visibility";
 
 import Alert from "@material-ui/lab/Alert";
-import {deleteEntry, fetchSingle, update} from "../../actions/apiActions";
+import {deleteEntry, fetchSingle, update, updateWithFile} from "../../actions/apiActions";
 
 export default function CustomerEdit(props) {
 
@@ -29,9 +29,11 @@ export default function CustomerEdit(props) {
     const[plz, setPlz] = useState("");
     const[city, setCity] = useState("");
     const[confluenceSpace, setConfluenceSpace] = useState("");
-    const[confluenceUrl, setConfluenceUrl] = useState();
+    const[confluenceUrl, setConfluenceUrl] = useState("");
+    const[img, setImg] = useState("");
     const[persons, setPersons] = useState(null);
     const[successMessage, setSuccessMessage] = useState(null);
+    const fileInput = useRef(null);
 
     function getCustomer() {
         fetchSingle("customers", props.match.params.id)
@@ -44,6 +46,7 @@ export default function CustomerEdit(props) {
                 setPersons(customer.people);
                 setConfluenceSpace(customer.confluence_space);
                 setConfluenceUrl(customer.confluence_url);
+                setImg(customer.img);
                 setIsLoading(false);
             });
     }
@@ -54,8 +57,27 @@ export default function CustomerEdit(props) {
 
     const onSubmit = () => {
 
-        update("customers", props.match.params.id, { name, street, houseNumber, plz, city, confluenceSpace, confluenceUrl })
-            .then( () => setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!"));
+        setIsLoading(true);
+
+        const data = new FormData();
+        data.append('file', fileInput.current.files[0]);
+        data.append('name', name);
+        data.append('street', street);
+        data.append('houseNumber', houseNumber);
+        data.append('plz', plz);
+        data.append('city', city);
+        data.append('confluenceSpace', confluenceSpace);
+        data.append('confluenceUrl', confluenceUrl);
+
+        updateWithFile(
+            "customers",
+            data,
+            props.match.params.id
+        )
+            .then(response => {
+                setSuccessMessage("Die Änderungen wurden gespeichert!");
+                getCustomer();
+            });
 
     };
 
@@ -168,6 +190,26 @@ export default function CustomerEdit(props) {
                         InputLabelProps={{
                             shrink: true,
                         }}/>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button
+                        variant="contained"
+                        component="label">
+                        Logo des Kunden hochladen
+                        <input
+                            ref={fileInput}
+                            type="file"
+                            style={{ display: "none" }} />
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Grid item xs={6}>
+                        {img &&
+                        <img
+                            style={{height: '250px'}}
+                            src={"/api/customers/" + props.match.params.id + "/image"}/>
+                        }
+                    </Grid>
                 </Grid>
                 <Grid item xs={4}>
                     <Button
