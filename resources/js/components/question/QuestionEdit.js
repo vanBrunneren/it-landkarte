@@ -22,6 +22,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
+import RadioGroup from "@material-ui/core/RadioGroup";
 
 import Add from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";
@@ -29,7 +30,6 @@ import Edit from "@material-ui/icons/Edit";
 
 import Alert from "@material-ui/lab/Alert";
 import {fetchAll, fetchSingle, update} from "../../actions/apiActions";
-import RadioGroup from "@material-ui/core/RadioGroup";
 
 export default function QuestionEdit(props) {
 
@@ -58,33 +58,42 @@ export default function QuestionEdit(props) {
 
     const [successMessage, setSuccessMessage] = useState("");
 
+    const [questionDisabled, setQuestionDisabled] = useState(false);
+
     useEffect( () => {
 
         fetchSingle("questions", props.match.params.id)
-            .then( question => {
+            .then( response => {
 
-                setHeader(question.header);
-                setTitle(question.title);
-                setThemeId(question.theme_id);
-                setQuestionTypeId(question.question_type_id);
-                setIsLoading(false);
-                setAnswerPossibilities(question.answer_possibilities);
+                if(response.status == "success") {
+                    let question = response.data;
 
-                if(question.number_select_texts) {
-                    question.number_select_texts.forEach( text => {
-                        if(text.key == "min") {
-                            setMinTitleId(text.id);
-                            setMinTitle(text.text);
-                        }
-                        if(text.key == "max") {
-                            setMaxTitleId(text.id);
-                            setMaxTitle(text.text);
-                        }
-                    });
-                }
+                    setHeader(question.header);
+                    setTitle(question.title);
+                    setThemeId(question.theme_id);
+                    setQuestionTypeId(question.question_type_id);
+                    setQuestionDisabled(question.disabled);
+                    setIsLoading(false);
+                    setAnswerPossibilities(question.answer_possibilities);
 
-                if(question.textinput_fields) {
-                    setTextinputFields(question.textinput_fields);
+                    if (question.number_select_texts) {
+                        question.number_select_texts.forEach(text => {
+                            if (text.key == "min") {
+                                setMinTitleId(text.id);
+                                setMinTitle(text.text);
+                            }
+                            if (text.key == "max") {
+                                setMaxTitleId(text.id);
+                                setMaxTitle(text.text);
+                            }
+                        });
+                    }
+
+                    if (question.textinput_fields) {
+                        setTextinputFields(question.textinput_fields);
+                    }
+                } else {
+                    console.error(response.data.message);
                 }
 
             });
@@ -107,7 +116,6 @@ export default function QuestionEdit(props) {
 
         update('questions', props.match.params.id, { header, title, theme_id: themeId, question_type_id: questionTypeId})
             .then( response => {
-                //console.log(response);
                 setSuccessMessage("Die Änderungen wurden erfolgreich gespeichert!");
             });
 
@@ -123,7 +131,6 @@ export default function QuestionEdit(props) {
             }
             {!isLoading &&
                 <div>
-
                     <Dialog open={minDialogOpen} onClose={() => setMinDialogOpen(false) } aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">Minimum Beschriftung ändern</DialogTitle>
                         <DialogContent>
@@ -145,7 +152,6 @@ export default function QuestionEdit(props) {
                                 Abbrechen
                             </Button>
                             <Button onClick={() => {
-
                                 axios.post('/api/questions/change-number-select-texts', {
                                     id: minTitleId,
                                     text: minTitle,
@@ -161,7 +167,6 @@ export default function QuestionEdit(props) {
                             </Button>
                         </DialogActions>
                     </Dialog>
-
                     <Dialog open={maxDialogOpen} onClose={() => setMaxDialogOpen(false) } aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">Maximum Beschriftung ändern</DialogTitle>
                         <DialogContent>
@@ -183,7 +188,6 @@ export default function QuestionEdit(props) {
                                 Abbrechen
                             </Button>
                             <Button onClick={() => {
-
                                 axios.post('/api/questions/change-number-select-texts', {
                                     id: maxTitleId,
                                     text: maxTitle,
@@ -199,7 +203,6 @@ export default function QuestionEdit(props) {
                             </Button>
                         </DialogActions>
                     </Dialog>
-
                     <Dialog
                         open={addFieldDialogOpen}
                         onClose={() => setAddFieldDialogOpen(false) }
@@ -240,9 +243,8 @@ export default function QuestionEdit(props) {
                             </Button>
                         </DialogActions>
                     </Dialog>
-
                     <Grid container spacing={2}>
-
+                        { questionDisabled && <h3 style={{color: "red"}}>Die Frage kann nicht bearbeitet werden, da bereits Antworten dazu existieren</h3>}
                         <Grid item xs={12}>
                             <TextField
                                 name={"header"}
@@ -294,27 +296,6 @@ export default function QuestionEdit(props) {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        {/*
-                        <Grid item xs={12}>
-                            <FormControl fullWidth variant="filled">
-                                <InputLabel id={"question_type_id_label"}>Fragetyp</InputLabel>
-                                <Select
-                                    id={"question_type_id"}
-                                    labelId={"question_type_id_label"}
-                                    name={"question_type_id"}
-                                    value={questionTypeId}
-                                    onChange={ (e) => setQuestionTypeId(e.target.value)}>
-                                    {questionTypes.map(questionType => (
-                                        <MenuItem
-                                            key={questionType.id}
-                                            value={questionType.id}>
-                                            {questionType.title}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        */}
                     </Grid>
                     {questionTypeId == 1 &&
                         <Grid container spacing={2}>
@@ -337,18 +318,24 @@ export default function QuestionEdit(props) {
                                                 <TableRow key={item.id}>
                                                     <TableCell>{item.title}</TableCell>
                                                     <TableCell align={"right"}>
-                                                        <Edit
-                                                            style={{cursor: "pointer"}}
-                                                            onClick={ () => props.history.push('/question/'+props.match.params.id+'/answerpossibility/edit/'+item.id) } />
-                                                        <Delete
-                                                            style={{cursor: "pointer"}}
-                                                            onClick={ () => {
-                                                                axios.delete('/api/answerpossibility/'+item.id)
+                                                        {!questionDisabled &&
+                                                        <div>
+                                                            <Edit
+                                                                style={{cursor: "pointer"}}
+                                                                onClick={() => {
+                                                                    props.history.push('/question/' + props.match.params.id + '/answerpossibility/edit/' + item.id)
+                                                                }}/>
+                                                            <Delete
+                                                                style={{cursor: "pointer"}}
+                                                                onClick={() => {
+                                                                    axios.delete('/api/answerpossibility/'+item.id)
                                                                     .then( () => {
                                                                         setIsLoading(true);
                                                                         fetchAllQuestions();
                                                                     });
-                                                            } } />
+                                                                }}/>
+                                                            </div>
+                                                        }
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -358,6 +345,7 @@ export default function QuestionEdit(props) {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
+                                    disabled={questionDisabled}
                                     onClick={ () => props.history.push("/question/" + props.match.params.id + "/answerpossibility/create") }
                                     variant="contained"
                                     color="secondary"
@@ -438,7 +426,6 @@ export default function QuestionEdit(props) {
                                                                     .then( response => {
                                                                         setIsLoading(true);
                                                                         fetchAllQuestions();
-                                                                        //console.log(response)
                                                                     });
 
                                                             }}/>
@@ -451,6 +438,7 @@ export default function QuestionEdit(props) {
                             </TableContainer>
                             <Grid item xs={12}>
                                 <Button
+                                    disabled={questionDisabled}
                                     onClick={ () => setAddFieldDialogOpen(true) }
                                     variant="contained"
                                     color="secondary"
@@ -462,7 +450,12 @@ export default function QuestionEdit(props) {
                     }
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Button onClick={() => onSubmit()} variant="contained" type="submit" color="primary">Speichern</Button>
+                            <Button
+                                disabled={questionDisabled}
+                                onClick={() => onSubmit()}
+                                variant="contained"
+                                type="submit"
+                                color="primary">Speichern</Button>
                         </Grid>
                     </Grid>
                 </div>

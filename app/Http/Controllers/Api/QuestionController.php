@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Answer;
 use App\NumberSelectTexts;
 use App\Question;
 use App\Http\Controllers\Controller;
@@ -32,7 +33,28 @@ class QuestionController extends Controller
     public function show(Question $question)
     {
         $question = Question::with(['answerPossibilities', 'questionType', 'numberSelectTexts', 'textinputFields'])->find($question['id']);
-        return $question;
+
+        if($question) {
+
+            $answer = Answer::where('question_id', '=', $question['id'])->first();
+            if($answer) {
+                $question['disabled'] = true;
+            } else {
+                $question['disabled'] = false;
+            }
+
+            return [
+                "status" => "success",
+                "data" => $question
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "data" => array("message" => "Die Frage konnte nicht gefunden werden!")
+            ];
+        }
+
+
     }
 
     public function update(Request $request, Question $question)

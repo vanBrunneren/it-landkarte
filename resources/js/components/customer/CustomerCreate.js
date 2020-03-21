@@ -20,7 +20,13 @@ export default function CustomerCreate(props) {
 
         if(name && street && houseNumber && plz && city) {
             create("customers", {name, street, houseNumber, plz, city})
-                .then( () => props.history.push('/customers') );
+                .then( response => {
+                    if(response.status == "success") {
+                        props.history.push('/customers')
+                    } else {
+                        console.error(response.data.message);
+                    }
+                });
         } else {
             setHasErros(true);
         }
@@ -40,7 +46,7 @@ export default function CustomerCreate(props) {
                     <TextField
                         error={!name && hasErrors ? true : false}
                         required
-                        helperText={!name && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
+                        helperText={!name && hasErrors ? "Bitte geben Sie einen gültigen Namen ein" : ""}
                         onChange={ e => setName(e.target.value) }
                         name={"name"}
                         value={name}
@@ -57,7 +63,7 @@ export default function CustomerCreate(props) {
                     <TextField
                         error={!street && hasErrors ? true : false}
                         required
-                        helperText={!street && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
+                        helperText={!street && hasErrors ? "Bitte geben Sie eine gültige Strasse ein" : ""}
                         onChange={ e => setStreet(e.target.value) }
                         name={"street"}
                         value={street}
@@ -74,7 +80,7 @@ export default function CustomerCreate(props) {
                     <TextField
                         error={!houseNumber && hasErrors ? true : false}
                         required
-                        helperText={!houseNumber && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
+                        helperText={!houseNumber && hasErrors ? "Bitte geben Sie eine gültige Hausnummer ein" : ""}
                         onChange={ e => setHouseNumber(e.target.value) }
                         name={"house_number"}
                         value={houseNumber}
@@ -91,9 +97,11 @@ export default function CustomerCreate(props) {
                     <TextField
                         error={!plz && hasErrors ? true : false}
                         required
-                        helperText={!plz && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
+                        helperText={!plz && hasErrors ? "Bitte geben Sie eine gültige PLZ ein" : ""}
                         inputProps={{maxLength: 4}}
-                        onChange={ e => setPlz(e.target.value) }
+                        onChange={ e => {
+                            setPlz(e.target.value.replace(/[^0-9]/g, ''));
+                        }}
                         fullWidth
                         id={"plz"}
                         name={"plz"}
@@ -109,7 +117,7 @@ export default function CustomerCreate(props) {
                     <TextField
                         error={!city && hasErrors ? true : false}
                         required
-                        helperText={!city && hasErrors ? "Bitte füllen Sie dieses Feld aus" : ""}
+                        helperText={!city && hasErrors ? "Bitte geben Sie einen gültigen Ort ein" : ""}
                         onChange={ e => setCity(e.target.value) }
                         fullWidth
                         id={"city"}

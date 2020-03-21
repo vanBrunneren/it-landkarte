@@ -15,13 +15,6 @@ class CustomerController extends Controller
         return Customer::all();
     }
 
-    public function create()
-    {
-        return response()->json([
-            'create customer'
-        ]);
-    }
-
     public function store(Request $request)
     {
         $customer = new Customer();
@@ -30,8 +23,19 @@ class CustomerController extends Controller
         $customer['house_number'] = $request['houseNumber'];
         $customer['plz'] = $request['plz'];
         $customer['city'] = $request['city'];
-        $customer->save();
-        return $customer;
+        $saved = $customer->save();
+
+        if($saved) {
+            return [
+                "status" => "success",
+                "data" => $customer
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "data" => array("message", "Der Kunde konnte nicht gespeichert werden!")
+            ];
+        }
     }
 
     public function show(customer $customer)

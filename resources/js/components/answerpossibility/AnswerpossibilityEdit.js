@@ -14,8 +14,8 @@ export default function AnswerpossibilityEdit(props) {
     useEffect( () => {
 
         fetchSingle('answerpossibility', props.match.params.id)
-            .then( response => {
-                setTitle(response.data.title);
+            .then( answerPossibility => {
+                setTitle(answerPossibility.title);
                 setIsLoading(false);
             });
 
@@ -26,8 +26,8 @@ export default function AnswerpossibilityEdit(props) {
         setIsLoading(true);
         update('answerpossibility', props.match.params.id, { title })
             .then( response => {
-                //console.log(response);
                 setIsLoading(false);
+                props.history.push('/question/edit/'+props.match.params.questionId);
             });
 
     };
