@@ -21,7 +21,7 @@ export default function SurveyComponent(props) {
     const [hashCheck, setHashCheck] = useState(false);
 
     const fetchAllData = async () => {
-        let questions = await fetchAll('public/questions');
+        let questions = await fetchAll('public/questions/'+props.match.params.hash);
         setQuestions(questions);
 
         let generatedPages = ['/public/survey/'+props.match.params.hash+'/intro/' + questions[0].theme_id];

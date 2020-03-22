@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Question;
+use App\Customer;
 use App\Theme;
 use App\Person;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class PublicController extends Controller
 {
 
-    public function questions()
+    public function questions($hash)
     {
-        return Question::with(['answerPossibilities', 'questionType', 'numberSelectTexts', 'textinputFields', 'theme'])->get();
+        $person = Person::where('hash', '=', $hash)->first();
+        return Customer::find($person['customer_id'])->questions()->with(['answerPossibilities', 'questionType', 'numberSelectTexts', 'textinputFields', 'theme'])->get();
     }
 
     public function themes()

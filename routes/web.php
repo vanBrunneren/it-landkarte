@@ -15,7 +15,7 @@ Route::get('public/{any?}', function() {
     return view('public');
 })->where('any', '(.*)');
 
-Route::get('api/public/questions', 'Api\PublicController@questions');
+Route::get('api/public/questions/{hash}', 'Api\PublicController@questions');
 Route::get('api/public/themes', 'Api\PublicController@themes');
 Route::get('api/public/theme/{id}/image', 'Api\PublicController@showImage');
 Route::get('api/public/theme/{id}', 'Api\PublicController@theme');

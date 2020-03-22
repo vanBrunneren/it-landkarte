@@ -95,47 +95,18 @@ class CustomerController extends Controller
     public function setQuestion(int $customerId, int $questionId)
     {
 
-        $customerQuestion = CustomerQuestion::where([
-            array("customer_id", "=", $customerId),
-            array("question_id", "=", $questionId)
-        ])->first();
-
-        if($customerQuestion) {
-            $saved = $customerQuestion->delete();
+        $customer = Customer::find($customerId);
+        $exists = $customer->questions->contains($questionId);
+        if($exists) {
+            $customer->questions()->detach($questionId);
         } else {
-            $customerQuestion = new CustomerQuestion();
-            $customerQuestion['customer_id'] = $customerId;
-            $customerQuestion['question_id'] = $questionId;
-            $saved = $customerQuestion->save();
+            $customer->questions()->attach($questionId);
         }
 
-        if($saved) {
-            return [
-                "status" => "success"
-            ];
-        } else {
-            return [
-                "status" => "error"
-            ];
-        }
-    }
+        return [
+            "status" => "success"
+        ];
 
-    public function setAllQuestions(int $customerId)
-    {
-        $questions = Question::all();
-        foreach($questions as $question) {
-            $customerQuestion = CustomerQuestion::where([
-                array("customer_id", "=", $customerId),
-                array("question_id", "=", $question['id'])
-            ])->first();
-
-            if(!$customerQuestion) {
-                $customerQuestion = new CustomerQuestion();
-                $customerQuestion['customer_id'] = $customerId;
-                $customerQuestion['question_id'] = $question['id'];
-                $customerQuestion->save();
-            }
-        }
     }
 
 }

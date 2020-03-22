@@ -41,9 +41,7 @@ export default function CustomerEdit(props) {
     function getCustomer() {
         fetchSingle("customers", props.match.params.id)
             .then( customer => {
-
                 setCustomerQuestions(customer.questions);
-
                 setName(customer.name);
                 setStreet(customer.street);
                 setHouseNumber(customer.house_number);
@@ -294,31 +292,28 @@ export default function CustomerEdit(props) {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
-                                        <Checkbox
-                                            checked={true}
-                                            onChange={ () => {
-                                                create("customers/setallquestions/" + props.match.params.id, {})
-                                                    .then( response => {
-                                                        console.log(response);
-                                                    });
-                                            }}
-                                        />
-                                    </TableCell>
+                                    <TableCell></TableCell>
                                     <TableCell>Frage</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {questions.map( question => {
+
+                                    let result = customerQuestions.find( cQ => {
+                                        return cQ.id == question.id
+                                    });
+
                                     return(
                                         <TableRow key={question.id}>
                                             <TableCell>
                                                 <Checkbox
-                                                    checked={true}
+                                                    checked={result ? true : false}
                                                     onChange={ () => {
+                                                        setIsLoading(true);
                                                         create("customers/setquestion/" + props.match.params.id + "/" + question.id, {})
-                                                            .then( response => {
-                                                                console.log(response);
+                                                            .then( () => {
+                                                                getQuestions();
+                                                                getCustomer();
                                                             });
                                                     }} />
                                             </TableCell>
