@@ -8,6 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Button from "@material-ui/core/Button";
 
 export default function AnswerDetail(props) {
 
@@ -290,7 +291,7 @@ export default function AnswerDetail(props) {
     };
 
     return(
-        <div>
+        <div className={"answer-detail"}>
             {isLoading && <div style={{justifyContent: "center", alignItems: "center", display: "flex", height: "500px"}}>
                 <CircularProgress />
             </div>}
@@ -360,6 +361,24 @@ export default function AnswerDetail(props) {
                             );
                         })
                     }
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        onClick={() => {
+
+
+
+                            //var x = document.getElementsByTagName("html");
+                            //var x = document.getElementsByClassName("answer-detail");
+                            //console.log(x[0].innerHTML);
+                            //console.log(x[0]);
+                            //props.history.push('/customer/edit/' + props.match.params.id + "/person/create")
+                        }}
+                        variant="contained"
+                        type="submit"
+                        color="secondary">
+                        Auswertung exportieren
+                    </Button>
                 </Grid>
             </Grid>
             }

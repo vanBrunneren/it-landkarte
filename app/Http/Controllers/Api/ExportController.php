@@ -12,6 +12,9 @@ class ExportController extends Controller
     public function confluence(int $id)
     {
 
+        return "hallo";
+
+        /*
         $user = Auth::user();
         $customer = Customer::find($id);
 
@@ -43,6 +46,7 @@ class ExportController extends Controller
         curl_close($ch);
 
         return json_decode($data);
+        */
 
     }
 }
