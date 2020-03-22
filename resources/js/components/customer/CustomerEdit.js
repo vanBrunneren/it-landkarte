@@ -242,6 +242,7 @@ export default function CustomerEdit(props) {
                                     <TableCell>Nachname</TableCell>
                                     <TableCell>E-Mail</TableCell>
                                     <TableCell>Funktion</TableCell>
+                                    <TableCell align={"right"}>Umfrage ausgefüllt</TableCell>
                                     <TableCell align={"right"}>Aktionen</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -252,6 +253,11 @@ export default function CustomerEdit(props) {
                                         <TableCell>{person.name}</TableCell>
                                         <TableCell>{person.email}</TableCell>
                                         <TableCell>{person.person_function.name}</TableCell>
+                                        <TableCell align={"right"}>
+                                            <Checkbox
+                                                disabled={true}
+                                                checked={person.finished} />
+                                        </TableCell>
                                         <TableCell align={"right"}>
                                             <Visibility
                                                 style={{cursor: "pointer"}}
@@ -264,7 +270,6 @@ export default function CustomerEdit(props) {
                                                 onClick={ () => {
                                                     deleteEntry("persons", person.id)
                                                         .then( response => {
-                                                            //console.log(response);
                                                             getCustomer();
                                                         })
                                                 }}
