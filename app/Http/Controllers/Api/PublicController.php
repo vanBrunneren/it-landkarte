@@ -6,6 +6,7 @@ use App\Customer;
 use App\Theme;
 use App\Person;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PublicController extends Controller
@@ -46,4 +47,49 @@ class PublicController extends Controller
         else return null;
     }
 
+    public function getPersonByHash($hash)
+    {
+        return Person::where('hash', '=', $hash)->first();
+    }
+
+    public function saveComment(Request $request)
+    {
+        $person = Person::where('hash', '=', $request['hash'])->first();
+        $person->comment = $request['comment'];
+        $person->finished = true;
+        $saved = $person->save();
+
+        if($saved) {
+            return [
+                "status" => "success"
+            ];
+        } else {
+            return [
+                "status" => "error"
+            ];
+        }
+
+    }
+
+    public function checkFinish($hash)
+    {
+        $person = Person::where('hash', '=', $hash)->first();
+        return $person->finished;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

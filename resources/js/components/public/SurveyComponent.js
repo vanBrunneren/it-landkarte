@@ -7,7 +7,6 @@ import {
 import Intro from './Intro';
 import Question from './Question';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
 import Outro from "./Outro";
 
 export default function SurveyComponent(props) {
@@ -50,13 +49,23 @@ export default function SurveyComponent(props) {
 
     };
 
+    const checkFinished = async () => {
+        return await fetchSingle('public/checkfinish', props.match.params.hash);
+    };
+
     useEffect( () => {
 
-        checkHashValue().then( hashCheck => {
-            if(hashCheck) {
-                fetchAllData().then(() => setIsLoading(false));
+        checkFinished().then( finished => {
+            if(!finished) {
+                checkHashValue().then( hashCheck => {
+                    if(hashCheck) {
+                        fetchAllData().then(() => setIsLoading(false));
+                    } else {
+                        props.history.push('/public/error');
+                    }
+                });
             } else {
-                props.history.push('/public/error');
+                props.history.push('/public/finished');
             }
         });
 

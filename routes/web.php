@@ -19,8 +19,10 @@ Route::get('api/public/questions/{hash}', 'Api\PublicController@questions');
 Route::get('api/public/themes', 'Api\PublicController@themes');
 Route::get('api/public/theme/{id}/image', 'Api\PublicController@showImage');
 Route::get('api/public/theme/{id}', 'Api\PublicController@theme');
-
+Route::get('api/public/persons/hash/{hash}', 'Api\PublicController@getPersonByHash');
+Route::post('api/public/persons/save-comment', 'Api\PublicController@saveComment');
 Route::get('api/public/checkhash/{hash}', 'Api\PublicController@checkhash');
+Route::get('api/public/checkfinish/{hash}', 'Api\PublicController@checkFinish');
 
 Route::post('api/public/answer', 'Api\AnswerController@store');
 
