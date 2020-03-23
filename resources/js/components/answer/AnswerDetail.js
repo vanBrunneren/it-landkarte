@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import {fetchAll, fetchSingle} from "../../actions/apiActions";
+import {create, fetchAll, fetchSingle} from "../../actions/apiActions";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -15,6 +15,13 @@ export default function AnswerDetail(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [answersByTheme, setAnswersByTheme] = useState([]);
     const [customer, setCustomer] = useState([]);
+
+    let exportData = {
+        textFields: [],
+        textSelects: [],
+        smallNumberSelects: [],
+        bigNumberSelects: []
+    };
 
     useEffect( () => {
 
@@ -104,10 +111,35 @@ export default function AnswerDetail(props) {
 
             return(
                 <TableRow key={nsIndex}>
+                    <TableCell>{numberSelect.question.header}</TableCell>
                     <TableCell>{numberSelect.question.title}</TableCell>
                     {numberSelectTableAnswers}
                 </TableRow>
             );
+        });
+
+        let tableHeaders = [];
+        tableHeaders.push("Header");
+        tableHeaders.push("Frage");
+        generateTableNames(numberSelects).map( tblNms => {
+            tableHeaders.push(tblNms);
+        });
+
+        let tableRows = [];
+        numberSelects.map( nrSel => {
+            let row = [];
+            row.push(nrSel.question.header);
+            row.push(nrSel.question.title);
+            nrSel.answers.map( nrSelAnsw => {
+                row.push(nrSelAnsw.number_answer);
+            });
+            tableRows.push(row);
+        });
+
+        exportData.bigNumberSelects.push({
+            graph: numberSelectUrl,
+            tableHeaders,
+            tableRows
         });
 
         return (
@@ -115,6 +147,7 @@ export default function AnswerDetail(props) {
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <TableCell>Header</TableCell>
                             <TableCell style={{width: '60%'}}>Frage</TableCell>
                             {generateTableNames(numberSelects).map( (tblNms, tnIndex) => (
                                 <TableCell key={tnIndex} align={"center"}>{tblNms}</TableCell>
@@ -154,6 +187,7 @@ export default function AnswerDetail(props) {
         numberSelectUrl += graphAnswers;
         numberSelectUrl += "&chxr=1,0,10,1&chxt=x,y&chxl=0:"+lineDescription+"&";
 
+        i = 1;
         let tableAnswers = numberSelects.map( (nrSel, nsIndex) => {
 
             let nrSelAnswer = nrSel.answers.map( (nrSelAnsw, nsaIndex) => {
@@ -166,11 +200,37 @@ export default function AnswerDetail(props) {
 
             return(
                 <TableRow key={nsIndex}>
-                    <TableCell>{++i}</TableCell>
+                    <TableCell>{i++}</TableCell>
                     <TableCell>{nrSel.question.title}</TableCell>
                     {nrSelAnswer}
                 </TableRow>
             );
+        });
+
+        let tableHeaders = [];
+        tableHeaders.push("Nummer");
+        tableHeaders.push("Frage");
+        generateTableNames(numberSelects).map( tblNms => {
+            tableHeaders.push(tblNms);
+        });
+
+        let tableRows = [];
+        i = 1;
+        numberSelects.map( nrSel => {
+            let row = [];
+            row.push(i);
+            i++;
+            row.push(nrSel.question.title);
+            nrSel.answers.map( nrSelAnsw => {
+                row.push(nrSelAnsw.number_answer);
+            });
+            tableRows.push(row);
+        });
+
+        exportData.smallNumberSelects.push({
+            graph: numberSelectUrl,
+            tableHeaders,
+            tableRows
         });
 
         return (
@@ -235,6 +295,30 @@ export default function AnswerDetail(props) {
                 }
             }
 
+            let tableHeaders = [];
+            tableHeaders.push(text.question.title);
+            tableNames.map( (tblNms) => {
+                tableHeaders.push(tblNms);
+            });
+
+            let tableRows = [];
+            text.question.answer_possibilities.map( answerPos => {
+                let row = [];
+                row.push(answerPos.title);
+                text.answers.map( pAns => {
+                    if(pAns.number_answer == answerPos.id) {
+                        row.push(1)
+                    } else {
+                        row.push(0);
+                    }
+                });
+                tableRows.push(row);
+            });
+
+            exportData.textSelects.push({
+                tableHeaders,
+                tableRows
+            });
 
             return(
                 <Table>
@@ -268,6 +352,23 @@ export default function AnswerDetail(props) {
                 )
             });
 
+            let tableHeaders = [];
+            tableHeaders.push("Frage");
+            generateTableNames(textFields).map( tblNms => {
+                tableHeaders.push(tblNms);
+            });
+
+            let tableRows = [];
+            tableRows.push(tfAnswers.question.title);
+            tfAnswers.answers.map( ans => {
+                tableRows.push(ans.text_answer);
+            });
+
+            exportData.textFields.push({
+                tableHeaders,
+                tableRows
+            });
+
             return(
                 <Table>
                     <TableHead>
@@ -290,6 +391,23 @@ export default function AnswerDetail(props) {
 
     };
 
+    const onExportClick = () => {
+
+        console.log(exportData);
+        //console.log(JSON.stringify(exportData));
+
+        create("export/confluence/" + props.match.params.id,
+            {
+                exportData
+            }
+        ).then( response => {
+            console.log(response);
+        });
+
+        //props.history.push('/customer/edit/' + props.match.params.id + "/person/create")
+
+    };
+
     return(
         <div className={"answer-detail"}>
             {isLoading && <div style={{justifyContent: "center", alignItems: "center", display: "flex", height: "500px"}}>
@@ -309,6 +427,8 @@ export default function AnswerDetail(props) {
                 <Grid item xs={12}>
                     { answersByTheme &&
                         answersByTheme.map( (theme, tIndex) => {
+
+
 
                             // Map Questions to Type Arrays
                             let numberSelects = [];
@@ -364,16 +484,7 @@ export default function AnswerDetail(props) {
                 </Grid>
                 <Grid item xs={12}>
                     <Button
-                        onClick={() => {
-
-
-
-                            //var x = document.getElementsByTagName("html");
-                            //var x = document.getElementsByClassName("answer-detail");
-                            //console.log(x[0].innerHTML);
-                            //console.log(x[0]);
-                            //props.history.push('/customer/edit/' + props.match.params.id + "/person/create")
-                        }}
+                        onClick={onExportClick}
                         variant="contained"
                         type="submit"
                         color="secondary">
