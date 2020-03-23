@@ -9,12 +9,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
 
 export default function AnswerDetail(props) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [answersByTheme, setAnswersByTheme] = useState([]);
     const [customer, setCustomer] = useState([]);
+    const [successMessage, setSuccessMessage] = useState(false);
 
     let exportData = {
         textFields: [],
@@ -393,9 +395,9 @@ export default function AnswerDetail(props) {
 
     const onExportClick = () => {
 
-        console.log(exportData);
         //console.log(JSON.stringify(exportData));
 
+        /*
         create("export/confluence/" + props.match.params.id,
             {
                 exportData
@@ -404,7 +406,11 @@ export default function AnswerDetail(props) {
             console.log(response);
         });
 
+         */
+
         //props.history.push('/customer/edit/' + props.match.params.id + "/person/create")
+
+        setSuccessMessage(true);
 
     };
 
@@ -413,6 +419,13 @@ export default function AnswerDetail(props) {
             {isLoading && <div style={{justifyContent: "center", alignItems: "center", display: "flex", height: "500px"}}>
                 <CircularProgress />
             </div>}
+
+            {
+                successMessage &&
+                <Alert onClose={() => setSuccessMessage(false) } severity="error">
+                    <p>Diese Auswertung wurde bereits exportiert!</p>
+                </Alert>
+            }
 
             {!isLoading &&
             <Grid container spacing={2}>

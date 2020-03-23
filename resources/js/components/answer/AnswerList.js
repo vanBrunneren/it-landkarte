@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import Visibility from "@material-ui/icons/Visibility";
+import ListIcon from '@material-ui/icons/List';
 
 export default function AnswerList(props) {
 
@@ -42,17 +43,26 @@ export default function AnswerList(props) {
                                             <TableCell>Adresse</TableCell>
                                             <TableCell>PLZ</TableCell>
                                             <TableCell>Ort</TableCell>
+                                            <TableCell>Actions</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {customers.map((customer, index) => (
-                                            <TableRow style={{cursor: "pointer"}} key={customer.id} onClick={ () => props.history.push('/result/' + customer.id) }>
+                                            <TableRow  key={customer.id}>
                                                 <TableCell component="th" scope="row">
                                                     {customer.name}
                                                 </TableCell>
                                                 <TableCell>{customer.street + " " + customer.house_number}</TableCell>
                                                 <TableCell>{customer.plz}</TableCell>
                                                 <TableCell>{customer.city}</TableCell>
+                                                <TableCell>
+                                                    <Visibility
+                                                        onClick={ () => props.history.push('/result/' + customer.id) }
+                                                        style={{cursor: "pointer"}} />
+                                                    <ListIcon
+                                                        onClick={ () => props.history.push('/result/' + customer.id + "/single") }
+                                                        style={{cursor: "pointer", marginLeft: "10px"}} />
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

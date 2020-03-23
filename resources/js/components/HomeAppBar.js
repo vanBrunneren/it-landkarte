@@ -18,6 +18,7 @@ const translations = {
     'user': 'Benutzer',
     'results': 'Auswertungen',
     'result': 'Auswertung',
+    'single': 'Einzeln'
 };
 
 export default function HomeAppBar() {
