@@ -9,6 +9,36 @@ use Illuminate\Support\Facades\Auth;
 
 class ExportController extends Controller
 {
+
+    public function shortenUrl($url)
+    {
+        $data = array(
+            "domain" => 'bit.ly',
+            "long_url" => $url
+        );
+
+        $payload = json_encode($data);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api-ssl.bitly.com/v4/shorten");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type: application/json",
+            "Authorization: Bearer 70e5e6c7b94fdc6e5235f4a53b481c8ea203bb83",
+            'Content-Length: ' .strlen($payload)
+        ));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        $output = json_decode($data);
+
+        return $output->link;
+
+    }
+
     public function confluence(Request $request, int $id)
     {
 
@@ -21,7 +51,6 @@ class ExportController extends Controller
         $smallNumberSelects = $exportData['smallNumberSelects'];
         $bigNumberSelects = $exportData['bigNumberSelects'];
 
-        /*
         foreach($textSelects as $textSelect) {
             $outputHtml .= '<table><thead><tr>';
             foreach($textSelect['tableHeaders'] as $tableHeader) {
@@ -52,12 +81,11 @@ class ExportController extends Controller
             $outputHtml .= '</tr></tbody></table>';
 
         }
-        */
+
         foreach($smallNumberSelects as $smallNumberSelect) {
 
-            $outputHtml .= '<img src="'.$smallNumberSelect['graph'].'" />';
+            $outputHtml .= '<img src="'.$this->shortenUrl($smallNumberSelect['graph']).'" />';
 
-            /*
             $outputHtml .= '<table><thead><tr>';
             foreach($smallNumberSelect['tableHeaders'] as $tableHeader) {
                 $outputHtml .= '<th>' . $tableHeader . '</th>';
@@ -71,18 +99,17 @@ class ExportController extends Controller
                 }
                 $outputHtml .= '</tr>';
             }
-            $outputHtml .= '</tbody></table>';*/
+            $outputHtml .= '</tbody></table>';
 
         }
 
-        /*
         foreach($bigNumberSelects as $bigNumberSelect) {
 
             $outputHtml .= '<table><thead><tr>';
             foreach($bigNumberSelect['tableHeaders'] as $tableHeader) {
-                $outputHtml .= '<th>' . $tableHeader . '</th>';
+                $outputHtml .= '<th>' . htmlentities($tableHeader) . '</th>';
             }
-            $outputHtml .= '</tr><tbody>';
+            $outputHtml .= '</tr></thead><tbody>';
 
             foreach($bigNumberSelect['tableRows'] as $tableRow) {
                 $outputHtml .= '<tr>';
@@ -93,12 +120,9 @@ class ExportController extends Controller
             }
             $outputHtml .= '</tbody></table>';
 
-            //$outputHtml .= '<img src="'.$bigNumberSelect['graph'].'" />';
+            $outputHtml .= '<img src="'.$this->shortenUrl($bigNumberSelect['graph']).'" />';
 
         }
-        */
-
-        //return $outputHtml;
 
         $outputHtml = str_replace("\r\n", "", $outputHtml);
 
@@ -128,12 +152,12 @@ class ExportController extends Controller
             'Content-Length: ' .strlen($payload)
         ));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
 
         $data = curl_exec($ch);
         curl_close($ch);
 
-        return $outputHtml;
-        //return json_decode($data);
+        return $data;
 
     }
 }

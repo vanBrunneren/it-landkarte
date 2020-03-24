@@ -174,6 +174,7 @@ export default function AnswerDetailSingle(props) {
                     })
                 }
                 </Grid>
+                {/*
                 <Grid item xs={12}>
                     <Button
                         onClick={onExportClick}
@@ -183,6 +184,7 @@ export default function AnswerDetailSingle(props) {
                         Auswertung exportieren
                     </Button>
                 </Grid>
+                */}
             </Grid>
             }
         </div>

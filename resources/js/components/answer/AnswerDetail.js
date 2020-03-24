@@ -16,7 +16,7 @@ export default function AnswerDetail(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [answersByTheme, setAnswersByTheme] = useState([]);
     const [customer, setCustomer] = useState([]);
-    const [successMessage, setSuccessMessage] = useState(false);
+    const [successMessage, setSuccessMessage] = useState({});
 
     let exportData = {
         textFields: [],
@@ -395,22 +395,29 @@ export default function AnswerDetail(props) {
 
     const onExportClick = () => {
 
-        //console.log(JSON.stringify(exportData));
+        setIsLoading(true);
 
-        /*
         create("export/confluence/" + props.match.params.id,
             {
                 exportData
             }
         ).then( response => {
-            console.log(response);
+
+            if(response.statusCode == 400) {
+                setSuccessMessage({
+                    status: "error",
+                    message: response.message
+                });
+            } else {
+                setSuccessMessage({
+                    status: "success",
+                    message: "Die Auswertung wurde erfolgreich exportiert!"
+                });
+            }
+
+            setIsLoading(false);
+
         });
-
-         */
-
-        //props.history.push('/customer/edit/' + props.match.params.id + "/person/create")
-
-        setSuccessMessage(true);
 
     };
 
@@ -421,9 +428,9 @@ export default function AnswerDetail(props) {
             </div>}
 
             {
-                successMessage &&
-                <Alert onClose={() => setSuccessMessage(false) } severity="error">
-                    <p>Diese Auswertung wurde bereits exportiert!</p>
+                successMessage.status &&
+                <Alert onClose={() => setSuccessMessage({}) } severity={successMessage.status}>
+                    {successMessage.message}
                 </Alert>
             }
 
