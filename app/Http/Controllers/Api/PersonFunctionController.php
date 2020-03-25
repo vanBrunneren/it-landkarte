@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 
 class PersonFunctionController extends Controller
 {
-
     public function index()
     {
         return PersonFunction::all();

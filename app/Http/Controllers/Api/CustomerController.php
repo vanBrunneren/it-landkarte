@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Customer;
-use App\CustomerQuestion;
-use App\Question;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
-
     public function index()
     {
         return Customer::all();
