@@ -22,6 +22,15 @@
     <!-- Styles -->
     <link href="{{ asset('css/app_public.css') }}" rel="stylesheet">
 
+    <!--
+        <script src="https://www.google.com/recaptcha/api.js?render=6LfWU-QUAAAAAAucANvV5QixnQ7kZNLH02GaHq3Y"></script>
+        <script>
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LfWU-QUAAAAAAucANvV5QixnQ7kZNLH02GaHq3Y', {action: 'homepage'}));
+        });
+        </script>
+    -->
+
     <style>
         html, body {
             height: 100%;

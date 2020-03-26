@@ -11,6 +11,10 @@ class ApiUserController extends Controller
 {
     public function show()
     {
+
+        // reCaptcha AuthKey = 6LfWU-QUAAAAAAucANvV5QixnQ7kZNLH02GaHq3Y
+        // reCaptcha Secret = 6LfWU-QUAAAAAKDjS7mftdZy27OLcf9gSnAm5oBW
+
         return Auth::user();
     }
 
