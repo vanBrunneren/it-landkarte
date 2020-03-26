@@ -16,10 +16,12 @@ import Typography from "@material-ui/core/Typography";
 import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 import Visibility from "@material-ui/icons/Visibility";
+import SendIcon from '@material-ui/icons/Send';
 
 import Alert from "@material-ui/lab/Alert";
 import {create, deleteEntry, fetchAll, fetchSingle, update, updateWithFile} from "../../actions/apiActions";
 import {Checkbox} from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export default function CustomerEdit(props) {
 
@@ -37,10 +39,12 @@ export default function CustomerEdit(props) {
     const[customerQuestions, setCustomerQuestions] = useState([]);
     const[successMessage, setSuccessMessage] = useState(null);
     const fileInput = useRef(null);
+    const [active, setActive] = useState(null);
 
     function getCustomer() {
         fetchSingle("customers", props.match.params.id)
             .then( customer => {
+                setActive(customer.active);
                 setCustomerQuestions(customer.questions);
                 setName(customer.name);
                 setStreet(customer.street);
@@ -103,6 +107,35 @@ export default function CustomerEdit(props) {
 
             {!isLoading &&
             <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <p>Der Kunde ist {active ? "Aktiv" : "Inaktiv"}</p>
+                    {active ?
+                        <Button
+                            onClick={() => {
+                                fetchAll("customers/set-active/"+props.match.params.id+"/0")
+                                    .then( response => {
+                                        console.log(response);
+                                        getCustomer();
+                                    });
+                            }}
+                            variant="contained"
+                            type="submit"
+                            color="secondary">Deaktivieren</Button>
+                        :
+                        <Button
+                            onClick={() => {
+                                fetchAll("customers/set-active/"+props.match.params.id+"/1")
+                                    .then( response => {
+                                        console.log(response);
+                                        getCustomer();
+                                    })
+                            }}
+                            variant="contained"
+                            type="submit"
+                            color="primary">Aktivieren</Button>
+                    }
+
+                </Grid>
                 <Grid item xs={12}>
                     <TextField
                         onChange={ e => setName(e.target.value)}
@@ -259,21 +292,36 @@ export default function CustomerEdit(props) {
                                                 checked={person.finished} />
                                         </TableCell>
                                         <TableCell align={"right"}>
-                                            <Visibility
-                                                style={{cursor: "pointer"}}
-                                                onClick={ () => window.open('/public/survey/'+person.hash+'/intro/4', "_blank") }/>
-                                            <Edit
-                                                style={{cursor: "pointer"}}
-                                                onClick={ () => props.history.push('/customer/edit/' + props.match.params.id + "/person/" + person.id) } />
-                                            <Delete
-                                                style={{cursor: "pointer"}}
-                                                onClick={ () => {
-                                                    deleteEntry("persons", person.id)
-                                                        .then( response => {
-                                                            getCustomer();
-                                                        })
-                                                }}
-                                                />
+                                            <Tooltip title={"Antworten dieser Person ansehen"}>
+                                                <Visibility
+                                                    style={{cursor: "pointer"}}
+                                                    onClick={ () => window.open('/public/survey/'+person.hash+'/intro/4', "_blank") }/>
+                                            </Tooltip>
+                                            <Tooltip title={"Email versenden"}>
+                                                <SendIcon
+                                                    style={{cursor: "pointer"}}
+                                                    onClick={ () => {
+                                                        fetchAll("customers/"+props.match.params.id+"/person/"+person.id+"/send-mail")
+                                                            .then( response => {
+                                                                console.log(response);
+                                                            });
+                                                    }} />
+                                            </Tooltip>
+                                            <Tooltip title={"Person editieren"}>
+                                                <Edit
+                                                    style={{cursor: "pointer"}}
+                                                    onClick={ () => props.history.push('/customer/edit/' + props.match.params.id + "/person/" + person.id) } />
+                                            </Tooltip>
+                                            <Tooltip title={"Person löschen"}>
+                                                <Delete
+                                                    style={{cursor: "pointer"}}
+                                                    onClick={ () => {
+                                                        deleteEntry("persons", person.id)
+                                                            .then( response => {
+                                                                getCustomer();
+                                                            })
+                                                    }} />
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -289,6 +337,17 @@ export default function CustomerEdit(props) {
                         variant="contained"
                         type="submit"
                         color="secondary">Person hinzufügen</Button>
+                    <Button
+                        style={{marginLeft: '20px'}}
+                        onClick={() => {
+                            fetchAll("customers/"+props.match.params.id+"/send-mail")
+                                .then( response => {
+                                    console.log(response);
+                                });
+                        }}
+                        variant="contained"
+                        type="submit"
+                        color="primary">Umfrage an alle Teilnehmer senden</Button>
                 </Grid>
 
                 { questions &&

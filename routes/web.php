@@ -23,6 +23,7 @@ Route::get('api/public/persons/hash/{hash}', 'Api\PublicController@getPersonByHa
 Route::post('api/public/persons/save-comment', 'Api\PublicController@saveComment');
 Route::get('api/public/checkhash/{hash}', 'Api\PublicController@checkhash');
 Route::get('api/public/checkfinish/{hash}', 'Api\PublicController@checkFinish');
+Route::get('api/public/checkactive/{hash}', 'Api\PublicController@checkActive');
 
 Route::post('api/public/answer', 'Api\AnswerController@store');
 
@@ -65,6 +66,9 @@ Route::middleware('auth')->group(function () {
     Route::get('api/customers/{id}/image', 'Api\CustomerController@showImage');
     Route::post('api/customers/setquestion/{customerId}/{questionId}', 'Api\CustomerController@setQuestion');
     Route::post('api/customers/setallquestions/{customerId}', 'Api\CustomerController@setAllQuestions');
+    Route::get('api/customers/{id}/send-mail', 'Api\CustomerController@sendMail');
+    Route::get('api/customers/{id}/person/{personId}/send-mail', 'Api\CustomerController@sendPersonMail');
+    Route::get('api/customers/set-active/{customerId}/{active}', 'Api\CustomerController@setActive');
 
     // CRUD Routes (must be under the custom routes)
     Route::apiResource('api/customers', 'Api\CustomerController');

@@ -53,19 +53,29 @@ export default function SurveyComponent(props) {
         return await fetchSingle('public/checkfinish', props.match.params.hash);
     };
 
+    const checkActive = async () => {
+        return await fetchSingle('public/checkactive', props.match.params.hash);
+    };
+
     useEffect( () => {
 
-        checkFinished().then( finished => {
-            if(!finished) {
-                checkHashValue().then( hashCheck => {
-                    if(hashCheck) {
-                        fetchAllData().then(() => setIsLoading(false));
+        checkActive().then(active => {
+            if(active) {
+                checkFinished().then( finished => {
+                    if(!finished) {
+                        checkHashValue().then( hashCheck => {
+                            if(hashCheck) {
+                                fetchAllData().then(() => setIsLoading(false));
+                            } else {
+                                props.history.push('/public/error');
+                            }
+                        });
                     } else {
-                        props.history.push('/public/error');
+                        props.history.push('/public/finished');
                     }
                 });
             } else {
-                props.history.push('/public/finished');
+                props.history.push('/public/error');
             }
         });
 

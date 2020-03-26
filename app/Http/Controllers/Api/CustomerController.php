@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Customer;
 use App\Http\Controllers\Controller;
+use App\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -99,6 +100,55 @@ class CustomerController extends Controller
         } else {
             $customer->questions()->attach($questionId);
         }
+
+        return [
+            "status" => "success"
+        ];
+
+    }
+
+    public function sendMail(int $id)
+    {
+        $people = Person::where('customer_id', '=', $id)->get();
+        foreach($people as $person) {
+            //Mail::to(array( 'email' => $person['email'], 'name' => $person['prename'] . " " . $person['name']))
+            //->send();
+        }
+
+        return [
+            "status" => "success"
+        ];
+    }
+
+    public function sendPersonMail(int $id, int $personId)
+    {
+
+        $person = Person::find($personId);
+        //Mail::to(array( 'email' => $person['email'], 'name' => $person['prename'] . " " . $person['name']))
+        //->send();
+
+        return [
+            "status" => "success"
+        ];
+    }
+
+    public function reminderEmail(int $customerId)
+    {
+        $people = Person::where([
+            ['customer_id', '=', $customerId],
+            ['finished', '=', 0]
+        ])->get();
+        foreach($people as $person) {
+            //Mail::to(array( 'email' => $person['email'], 'name' => $person['prename'] . " " . $person['name']))
+            //->send();
+        }
+    }
+
+    public function setActive(int $customerId, int $active)
+    {
+        $customer = Customer::find($customerId);
+        $customer->active = $active;
+        $customer->save();
 
         return [
             "status" => "success"

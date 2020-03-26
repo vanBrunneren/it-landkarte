@@ -7,6 +7,7 @@ use App\Theme;
 use App\Person;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PublicController extends Controller
@@ -57,6 +58,21 @@ class PublicController extends Controller
         $person = Person::where('hash', '=', $request['hash'])->first();
         $person->comment = $request['comment'];
         $person->finished = true;
+
+        // Bestätigungsmail Endkunde
+        //Mail::to(array( 'email' => $person['email'], 'name' => $person['prename'] . " " . $person['name']))
+        //->send();
+
+        /*
+         * Notification für Admin
+        $adminUser = [
+            [
+                'email' => 'pascal.brunner@gmx.ch',
+                'name' => 'Pascal Brunner'
+            ]
+        ];
+        Mail::to($adminUser)->send();*/
+
         $saved = $person->save();
 
         if($saved) {
@@ -75,6 +91,14 @@ class PublicController extends Controller
     {
         $person = Person::where('hash', '=', $hash)->first();
         return $person->finished;
+
+    }
+
+    public function checkActive($hash)
+    {
+        $person = Person::where('hash', '=', $hash)->first();
+        $customer = Customer::find($person['customer_id']);
+        return $customer->active;
     }
 
 }

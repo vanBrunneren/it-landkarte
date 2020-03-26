@@ -55,10 +55,15 @@ return [
     |
     */
 
+    'from' => ['address' => 'pascal@pascalbrunner.ch', 'name' => 'IT Landkarte'],
+    'reply_to' => ['address' => 'pascal@pascalbrunner.ch', 'name' => 'IT Landkarte'],
+
+    /*
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -132,5 +137,10 @@ return [
     */
 
     'log_channel' => env('MAIL_LOG_CHANNEL'),
+
+    'to' => [
+        'address' => 'pascal.brunner@gmx.ch',
+        'name' => 'Pascal Brunner'
+    ],
 
 ];
