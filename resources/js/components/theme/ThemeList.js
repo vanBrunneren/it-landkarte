@@ -17,11 +17,13 @@ import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 
 import {deleteEntry, fetchAll} from "../../actions/apiActions";
+import Alert from "@material-ui/lab/Alert";
 
 export default function ThemeList(props) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [themes, setThemes] = useState([]);
+    const [message, setMessage] = useState(null);
 
     useEffect( () => {
 
@@ -36,6 +38,11 @@ export default function ThemeList(props) {
     return(
         <div>
             {isLoading && <CircularProgress />}
+            {message &&
+                    <Alert onClose={() => setMessage(null) } severity={message.status}>
+                        {message.message}
+                    </Alert>
+            }
             {themes &&
                 <div>
                     <div style={{marginBottom: "20px"}}>
@@ -70,8 +77,9 @@ export default function ThemeList(props) {
                                                 style={{cursor: "pointer"}}
                                                 onClick={ () => {
                                                     deleteEntry('themes', theme.id)
-                                                        .then( () => {
+                                                        .then( response => {
                                                             setIsLoading(true);
+                                                            setMessage(response);
                                                             fetchAll('themes')
                                                                 .then( themes => {
                                                                     setThemes(themes);

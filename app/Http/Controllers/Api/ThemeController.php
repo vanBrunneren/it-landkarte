@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Question;
 use Illuminate\Http\Request;
 use App\Theme;
 use Illuminate\Support\Facades\Storage;
@@ -60,9 +61,23 @@ class ThemeController extends Controller
 
     public function destroy($id)
     {
-        $theme = Theme::find($id);
-        $theme->delete();
-        return "deleted";
+
+        $question = Question::where("theme_id", "=", $id)->first();
+
+        if($question) {
+            return [
+                'status' => 'error',
+                'message' => 'Das Thema konnte nicht gelöscht werden, da es mit Fragen verknüpft ist!'
+            ];
+        } else {
+            $theme = Theme::find($id);
+            $theme->delete();
+            return [
+                'status' => 'success',
+                'message' => 'Das Thema wurde erfolgreich gelöscht!'
+            ];
+        }
+
     }
 
     public function showImage($id)

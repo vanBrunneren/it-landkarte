@@ -402,21 +402,8 @@ export default function AnswerDetail(props) {
                 exportData
             }
         ).then( response => {
-
-            if(response.statusCode == 400) {
-                setSuccessMessage({
-                    status: "error",
-                    message: response.message
-                });
-            } else {
-                setSuccessMessage({
-                    status: "success",
-                    message: "Die Auswertung wurde erfolgreich exportiert!"
-                });
-            }
-
+            setSuccessMessage(response);
             setIsLoading(false);
-
         });
 
     };

@@ -14,11 +14,13 @@ import Grid from "@material-ui/core/Grid";
 
 import Add from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";
+import Alert from "@material-ui/lab/Alert";
 
 export default function PersonfunctionList(props) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [personFunctions, setPersonFunctions] = useState([]);
+    const [message, setMessage] = useState(null);
 
     function fetchPersonFunctions() {
         fetchAll('personfunctions')
@@ -35,6 +37,12 @@ export default function PersonfunctionList(props) {
     return(
         <div>
             {isLoading && <CircularProgress />}
+
+            { message &&
+                <Alert onClose={() => setMessage(null) } severity={message.status}>
+                    {message.message}
+                </Alert>
+            }
 
             {personFunctions &&
                 <Grid container spacing={2}>
@@ -66,7 +74,8 @@ export default function PersonfunctionList(props) {
                                                     onClick={ () => {
                                                         setIsLoading(true);
                                                         deleteEntry("personfunctions", persFunc.id)
-                                                            .then( () => {
+                                                            .then( response => {
+                                                                setMessage(response);
                                                                 fetchPersonFunctions();
                                                             });
                                                     }}>

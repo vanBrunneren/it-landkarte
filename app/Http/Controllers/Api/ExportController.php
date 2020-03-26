@@ -42,6 +42,37 @@ class ExportController extends Controller
     public function confluence(Request $request, int $id)
     {
 
+        $user = Auth::user();
+        $customer = Customer::find($id);
+
+        if(!$customer['confluence_space']) {
+            return [
+                "status" => "error",
+                "message" => "Die Auswertung konnte nicht exportiert werden! Es ist kein Confluence Space gesetzt"
+            ];
+        }
+
+        if(!$customer['confluence_url']) {
+            return [
+                "status" => "error",
+                "message" => "Die Auswertung konnte nicht exportiert werden! Es ist keine Confluence Url gesetzt"
+            ];
+        }
+
+        if(!$user['confluence_email']) {
+            return [
+                "status" => "error",
+                "message" => "Die Auswertung konnte nicht exportiert werden! Es ist keine Confluence Email gesetzt"
+            ];
+        }
+
+        if(!$user['confluence_token']) {
+            return [
+                "status" => "error",
+                "message" => "Die Auswertung konnte nicht exportiert werden! Es ist kein Confluence Token gesetzt"
+            ];
+        }
+
         $outputHtml = '';
 
         $exportData = $request['exportData'];
@@ -126,9 +157,6 @@ class ExportController extends Controller
 
         $outputHtml = str_replace("\r\n", "", $outputHtml);
 
-        $user = Auth::user();
-        $customer = Customer::find($id);
-
         $data = array(
             "type" => "page",
             "title" => "Auswertung " . $customer['name'],
@@ -157,7 +185,19 @@ class ExportController extends Controller
         $data = curl_exec($ch);
         curl_close($ch);
 
-        return $data;
+        $data = json_decode($data);
+
+        if($data->statusCode == 400) {
+            return [
+                "status" => "error",
+                "message" => "Die Auswertung konnte nicht exportiert werden! Es besteht bereits eine Auswertung mit demselben Namen"
+            ];
+        } else {
+            return [
+                "status" => "success",
+                "message" => "Die Auswertung wurde erfolgreich exportiert!"
+            ];
+        }
 
     }
 }

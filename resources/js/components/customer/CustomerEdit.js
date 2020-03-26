@@ -44,6 +44,9 @@ export default function CustomerEdit(props) {
     function getCustomer() {
         fetchSingle("customers", props.match.params.id)
             .then( customer => {
+
+                console.log(customer);
+
                 setActive(customer.active);
                 setCustomerQuestions(customer.questions);
                 setName(customer.name);
@@ -331,7 +334,7 @@ export default function CustomerEdit(props) {
                 </Grid>
                 }
 
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                     <Button
                         onClick={() => props.history.push('/customer/edit/' + props.match.params.id + "/person/create")}
                         variant="contained"

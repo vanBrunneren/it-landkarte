@@ -111,8 +111,12 @@ class CustomerController extends Controller
     {
         $people = Person::where('customer_id', '=', $id)->get();
         foreach($people as $person) {
-            //Mail::to(array( 'email' => $person['email'], 'name' => $person['prename'] . " " . $person['name']))
-            //->send();
+            /*Mail::to(
+                array(
+                    'email' => $person['email'],
+                    'name' => $person['prename'] . " " . $person['name']
+                )
+            )->send();*/
         }
 
         return [
