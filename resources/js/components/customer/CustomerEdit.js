@@ -44,9 +44,6 @@ export default function CustomerEdit(props) {
     function getCustomer() {
         fetchSingle("customers", props.match.params.id)
             .then( customer => {
-
-                console.log(customer);
-
                 setActive(customer.active);
                 setCustomerQuestions(customer.questions);
                 setName(customer.name);
@@ -117,7 +114,6 @@ export default function CustomerEdit(props) {
                             onClick={() => {
                                 fetchAll("customers/set-active/"+props.match.params.id+"/0")
                                     .then( response => {
-                                        console.log(response);
                                         getCustomer();
                                     });
                             }}

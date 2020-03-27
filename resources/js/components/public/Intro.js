@@ -48,7 +48,10 @@ export default function Intro(props) {
 
                 {props.nextPage ?
                     <Button
-                        onClick={ () => props.history.push(props.nextPage) }
+                        onClick={ () => {
+                            props.history.push(props.nextPage);
+                            window.location.reload();
+                        }}
                         variant="contained"
                         color="primary">
                         Nächste Frage

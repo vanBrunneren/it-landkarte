@@ -28,8 +28,20 @@ class ApiUserController extends Controller
         if($request['password']) {
             $user['password'] = bcrypt($request['password']);
         }
-        $user->save();
-        return $user;
+        $saved = $user->save();
+
+        if($saved) {
+            return [
+                "status" => "success",
+                "message" => "Die Benutzerdaten wurden erfolgreich gespeichert!"
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Die Benutzerdaten konnten nicht gespeichert werden!"
+            ];
+        }
+
     }
 
 }

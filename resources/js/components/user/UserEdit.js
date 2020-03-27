@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
 
 export default function UserEdit() {
 
@@ -13,6 +14,7 @@ export default function UserEdit() {
     const [password, setPassword] = useState("");
     const [confluenceEmail, setConfluenceEmail] = useState("");
     const [confluenceToken, setConfluenceToken] = useState("");
+    const [message, setMessage] = useState(null);
 
     useEffect( () => {
 
@@ -29,15 +31,19 @@ export default function UserEdit() {
     const onSubmit = () => {
 
         axios.put('/api/user', { name, email, confluenceEmail, confluenceToken, password })
-            .then( response => {
-                console.log(response)
-            });
+            .then( response => setMessage(response.data) );
 
     };
 
     return(
         <div>
             {isLoading && <CircularProgress />}
+
+            {message &&
+                <Alert severity={message.status}>
+                    {message.message}
+                </Alert>
+            }
 
             {!isLoading &&
                 <div>

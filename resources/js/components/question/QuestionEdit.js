@@ -36,7 +36,6 @@ export default function QuestionEdit(props) {
     const [isLoading, setIsLoading] = useState(true);
 
     const [themes, setThemes] = useState([]);
-    const [questionTypes, setQuestionTypes] = useState([]);
 
     const [header, setHeader] = useState("");
     const [title, setTitle] = useState("");
@@ -60,8 +59,7 @@ export default function QuestionEdit(props) {
 
     const [questionDisabled, setQuestionDisabled] = useState(false);
 
-    useEffect( () => {
-
+    const fetchQuestion = () => {
         fetchSingle("questions", props.match.params.id)
             .then( response => {
 
@@ -97,16 +95,15 @@ export default function QuestionEdit(props) {
                 }
 
             });
+    };
+
+    useEffect( () => {
+
+        fetchQuestion();
 
         fetchAll("themes")
             .then( res => {
                 setThemes(res);
-                setIsLoading(false);
-            });
-
-        fetchAll("questiontypes")
-            .then( res => {
-                setQuestionTypes(res);
                 setIsLoading(false);
             });
 
@@ -235,7 +232,7 @@ export default function QuestionEdit(props) {
                                     setIsLoading(true);
                                     setAddFieldTitle("");
                                     setAddFieldDialogOpen(false);
-                                    fetchAllQuestions();
+                                    fetchQuestion();
                                 });
 
                             }} color="primary">
@@ -331,7 +328,7 @@ export default function QuestionEdit(props) {
                                                                     axios.delete('/api/answerpossibility/'+item.id)
                                                                     .then( () => {
                                                                         setIsLoading(true);
-                                                                        fetchAllQuestions();
+                                                                        fetchQuestion();
                                                                     });
                                                                 }}/>
                                                             </div>
@@ -399,7 +396,7 @@ export default function QuestionEdit(props) {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography variant="h5" gutterBottom>
-                                    Antworten
+                                    Antwort
                                 </Typography>
                             </Grid>
                             <TableContainer>
@@ -420,12 +417,12 @@ export default function QuestionEdit(props) {
                                                                 }} />
                                                         </TableCell>
                                                         <TableCell>
-                                                            <Delete onClick={ () => {
+                                                            <Delete style={{cursor: "pointer"}} onClick={ () => {
 
                                                                 axios.delete('/api/questions/remove-text-field/' + field.id)
                                                                     .then( response => {
                                                                         setIsLoading(true);
-                                                                        fetchAllQuestions();
+                                                                        fetchQuestion();
                                                                     });
 
                                                             }}/>
@@ -437,14 +434,16 @@ export default function QuestionEdit(props) {
                                 </Table>
                             </TableContainer>
                             <Grid item xs={12}>
-                                <Button
-                                    disabled={questionDisabled}
-                                    onClick={ () => setAddFieldDialogOpen(true) }
-                                    variant="contained"
-                                    color="secondary"
-                                    startIcon={<Add/>}>
-                                    Feld hinzufügen
-                                </Button>
+                                { textinputFields.length == 0 &&
+                                    <Button
+                                        disabled={questionDisabled}
+                                        onClick={() => setAddFieldDialogOpen(true)}
+                                        variant="contained"
+                                        color="secondary"
+                                        startIcon={<Add/>}>
+                                        Feld hinzufügen
+                                    </Button>
+                                }
                             </Grid>
                         </Grid>
                     }

@@ -31,8 +31,21 @@ class PersonController extends Controller
         $person['email'] = $request['email'];
         $person['function_id'] = $request['function_id'];
         $person['hash'] = md5($request['email']);
-        $person->save();
-        return "ja";
+        $person['finished'] = false;
+        $saved = $person->save();
+
+        if($saved) {
+            return [
+                "status" => "success",
+                "message" => "Die Person wurde erfolgreich gespeichert!"
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Die Person konnte nicht gespeichert werden!"
+            ];
+        }
+
     }
 
     public function show(int $id)
